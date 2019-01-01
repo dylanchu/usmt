@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    return '请访问/cards获取数据'
 
 
 @app.route('/cards')
