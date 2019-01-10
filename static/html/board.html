@@ -3,11 +3,12 @@
 
 <head>
     <title>Demo &raquo; Serialize &raquo; gridster.js</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="../css/demo.css">
     <link rel="stylesheet" type="text/css" href="../libs/gridster/jquery.gridster.min.css">
     <script src="../libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="../libs/gridster/jquery.gridster.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../libs/layer/layer.js"></script>
 
     <style type="text/css">
         #log {
@@ -82,13 +83,14 @@
 
 <body>
     <div class="controls">
-        <button class="js-seralize">ĞòÁĞ»¯×ø±êºÍÄÚ²¿ÎÄ±¾</button>
-        <button class="js-reload-from-array">´ÓĞòÁĞ»¯Êı¾İ¼ÓÔØ</button>
+        <button class="js-seralize">åºåˆ—åŒ–åæ ‡å’Œå†…éƒ¨æ–‡æœ¬</button>
+        <button class="js-reload-from-array">ä»åºåˆ—åŒ–æ•°æ®åŠ è½½</button>
+        <button id="testb">test</button>
     </div>
 
     <textarea id="log"></textarea>
 
-    <div id="activity" class="gridster">
+    <div id="activity" class="gridster card">
         <ul>
             <li data-row="1" data-col="1" data-sizex="2" data-sizey="3" style="background:#aed9e9">
                 <div>
@@ -100,7 +102,7 @@
         </ul>
     </div>
 
-    <div id="tasks" class="gridster">
+    <div id="tasks" class="gridster card">
         <ul>
             <li data-row="1" data-col="1" data-sizex="2" data-sizey="3" style="background:#f4e459">
                 <div>
@@ -112,7 +114,7 @@
         </ul>
     </div>
 
-    <div id="releases" class="gridster">
+    <div id="releases" class="gridster card">
         <ul>
             <li data-row="1" data-col="1" data-sizex="2" data-sizey="3" style="background:#ffffff">
                 <div>
@@ -126,42 +128,24 @@
 
     <script type="text/javascript">
         var gridsters = [];
+        let gridster_style = {
+            widget_base_dimensions: [100, 50],
+            widget_margins: [5, 5],
+            shift_widgets_up: false,
+            shift_larger_widgets_down: false,
+            collision: {
+                wait_for_mouseup: true
+            }
+        };
 
         $(function () {
-
-            gridsters[0] = $("#activity ul").gridster({
-                widget_base_dimensions: [100, 55],
-                widget_margins: [5, 5],
-                shift_widgets_up: false,
-                shift_larger_widgets_down: false,
-                collision: {
-                    wait_for_mouseup: true
-                }
-            }).data('gridster');
-
-            gridsters[1] = $("#tasks ul").gridster({
-                widget_base_dimensions: [100, 55],
-                widget_margins: [10, 10],
-                shift_widgets_up: false,
-                shift_larger_widgets_down: false,
-                collision: {
-                    wait_for_mouseup: true
-                }
-            }).data('gridster');
-
-            gridsters[2] = $("#releases ul").gridster({
-                widget_base_dimensions: [200, 110],
-                widget_margins: [15, 15],
-                shift_widgets_up: false,
-                shift_larger_widgets_down: false,
-                collision: {
-                    wait_for_mouseup: true
-                }
-            }).data('gridster');
+            gridsters[0] = $("#activity ul").gridster(gridster_style).data('gridster');
+            gridsters[1] = $("#tasks ul").gridster(gridster_style).data('gridster');
+            gridsters[2] = $("#releases ul").gridster(gridster_style).data('gridster');
 
             $('.js-seralize').on('click', function () {
                 let s = [];
-                gridsters[0].$widgets.each(function (i) { // map¸ñÊ½´æ´¢£¬iÖ»ÊÇindex
+                gridsters[0].$widgets.each(function (i) { // mapæ ¼å¼å­˜å‚¨ï¼Œiåªæ˜¯index
                     let w = gridsters[0].$widgets[i];
                     let arr = gridsters[0].serialize($(w));
                     arr[0].text = w.textContent;
@@ -174,9 +158,9 @@
             $('.js-reload-from-array').on('click', function () {
                 // same object that generated with gridster.serialize() method
                 var serialization = [
-                    { col: 1, row: 1, size_x: 2, size_y: 2 },
-                    { col: 3, row: 1, size_x: 2, size_y: 2 },
-                    { col: 5, row: 2, size_x: 1, size_y: 1 }
+                    {col: 1, row: 1, size_x: 2, size_y: 2},
+                    {col: 3, row: 1, size_x: 2, size_y: 2},
+                    {col: 5, row: 2, size_x: 1, size_y: 1}
                 ];
                 // sort serialization
                 serialization = Gridster.sort_by_row_and_col_asc(serialization);
@@ -190,38 +174,41 @@
             });
 
             $(document).on('click', 'li .add', function () {
-                //»ñÈ¡µã»÷°´Å¥µÄ×îÉÏ²ã¸¸ÔªËØ
+
+                //TODO: æŠŠå¤§ä¸²å®šä¹‰å¡ç‰‡çš„htmlå­—ç¬¦æå–å‡ºæ¥
+
+                //è·å–ç‚¹å‡»æŒ‰é’®çš„æœ€ä¸Šå±‚çˆ¶å…ƒç´ 
                 var i = $(this).parent().parent().index();
-                //»ñÈ¡µã»÷°´Å¥µÄ×îÍâ²ã¸¸ÔªËØµÄidÖµ£¬ÒÔÅĞ¶ÏÊÇgridster[0]»¹ÊÇgridster[1]
+                //è·å–ç‚¹å‡»æŒ‰é’®çš„æœ€å¤–å±‚çˆ¶å…ƒç´ çš„idå€¼ï¼Œä»¥åˆ¤æ–­æ˜¯gridster[0]è¿˜æ˜¯gridster[1]
                 var j = $(this).parent().parent().parent().parent().attr('id');
                 if (j === "activity") {
                     let content = gridsters[0].serialize($(gridsters[0].$widgets[i]));
                     gridsters[0].add_widget('<li style="background:#aed9e9"><div>' +
-                        '                <button class="delete">x</button>' +
-                        '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
-                        '             </div></li>', 2, 3, content[0].col + 2, content[0].row);
+                    '                <button class="delete">x</button>' +
+                    '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
+                    '             </div></li>', 2, 3, content[0].col + 2, content[0].row);
                 }
                 if (j === "tasks") {
                     let content = gridsters[1].serialize($(gridsters[1].$widgets[i]));
                     gridsters[1].add_widget('<li style="background:#f4e459"><div>' +
-                        '                <button class="delete">x</button>' +
-                        '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
-                        '             </div></li>', 2, 3, content[0].col + 2, content[0].row);
+                    '                <button class="delete">x</button>' +
+                    '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
+                    '             </div></li>', 2, 3, content[0].col + 2, content[0].row);
                 }
                 if (j === "releases") {
                     let content = gridsters[2].serialize($(gridsters[2].$widgets[i]));
                     gridsters[2].add_widget('<li style="background:#ffffff"><div>' +
-                        '                <button class="delete">x</button>' +
-                        '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
-                        '             </div></li>', 2, 3, content[0].col + 2, content[0].row);
+                    '                <button class="delete">x</button>' +
+                    '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
+                    '             </div></li>', 2, 3, content[0].col + 2, content[0].row);
                 }
 
             });
 
             $(document).on('click', 'li .delete', function () {
-                //»ñÈ¡µã»÷°´Å¥µÄ×îÉÏ²ã¸¸ÔªËØ
+                //è·å–ç‚¹å‡»æŒ‰é’®çš„æœ€ä¸Šå±‚çˆ¶å…ƒç´ 
                 let i = $(this).parent().parent().index();
-                //»ñÈ¡µã»÷°´Å¥µÄ×îÍâ²ã¸¸ÔªËØµÄidÖµ£¬ÒÔÅĞ¶ÏÊÇgridster[0]»¹ÊÇgridster[1]
+                //è·å–ç‚¹å‡»æŒ‰é’®çš„æœ€å¤–å±‚çˆ¶å…ƒç´ çš„idå€¼ï¼Œä»¥åˆ¤æ–­æ˜¯gridster[0]è¿˜æ˜¯gridster[1]
                 let j = $(this).parent().parent().parent().parent().attr('id');
                 if (j === "activity") {
                     gridsters[0].remove_widget($('#activity li').eq(i));
@@ -234,13 +221,36 @@
                 }
             });
 
-            $(document).on('click', 'li .write', function () {
+            $(document).on('click', 'li .write', function(){
+                let pencil = this;
+                layer.prompt({
+                    formType: 2,
+                    shadeClose: true, //ç‚¹å‡»é®ç½©å…³é—­å±‚
+                    title: 'è¯·è¾“å…¥å†…å®¹',
+                    value:'',    // æ–‡æœ¬é»˜è®¤å€¼
+                    area: ['500px', '240px'],     // è®¾ç½®å¼¹å‡ºå±‚å¤§å°
+                    btn: ['ä¿å­˜', 'å–æ¶ˆ'],    // è‡ªå®šä¹‰è®¾ç½®å¤šä¸ªæŒ‰é’®
+                    btn1: function(index, elem){
+                        layer.close(index);
+                    },
+                    btnAlign: 'c',    // è®¾ç½®æŒ‰é’®ä½ç½®
+                }, function(value, index, elem){
+                    if (value) {
+                        let s = '<span class="card text">' + value + '</span>' + "<button class='delete'>x</button>" +
+                            "<button class='add' >+</button>" + "<Imagebutton class='write'></Imagebutton>";
+                        $(pencil.parentElement).html(s);
+                    }
+                    layer.close(index);
+                });
+            });
+
+            $(document).on('cllick', 'li .write', function () {
                 // if(gridster[0].draggable()){
                 //     $(this).blur();
                 // }
                 let item = $(this).index();
-                // console.log("ÏÂ±êË÷ÒıÖµÎª£º" +item);
-                let word = prompt("ÇëÊäÈëÒ»¶ÎÎÄ×Ö", "");
+                // console.log("ä¸‹æ ‡ç´¢å¼•å€¼ä¸ºï¼š" +item);
+                let word = prompt("è¯·è¾“å…¥ä¸€æ®µæ–‡å­—", "");
                 if (word) {
                     // console.log($(this).prop("tagName"));
                     // $(this).text(word);
@@ -256,3 +266,4 @@
 </body>
 
 </html>
+<!--Todo: é‡æ–°ç»„ç»‡å¡ç‰‡çš„cssæ ·å¼ï¼Œè®©å¡ç‰‡å†…å…ƒç´ ç»§æ‰¿å¡ç‰‡æ ·å¼ï¼Œä½¿æ–‡å­—ã€æŒ‰é’®å¸ƒå±€æ­£å¸¸-->

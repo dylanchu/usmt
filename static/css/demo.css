@@ -35,21 +35,10 @@ table {
 .content {
   color: white;
 }
-.gridster .gs-w {
-  /*background: #aed9e9;*/
-  cursor: pointer;
-  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
 .gridster .player {
   -webkit-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
   background: #BBB;
-}
-.gridster .gs-w.try {
-  background-image: url(../img/sprite.png);
-  background-repeat: no-repeat;
-  background-position: 37px -169px;
 }
 .gridster .preview-holder {
   border: none !important;
@@ -62,6 +51,17 @@ table {
   font-weight: bold;
   /*text-align: center;*/
   line-height: 100%;
+}
+.gridster .gs-w {
+  /*background: #aed9e9;*/
+  cursor: pointer;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+.gridster .gs-w.try {
+  background-image: url(../img/sprite.png);
+  background-repeat: no-repeat;
+  background-position: 37px -169px;
 }
 /*.gridster ul {*/
   /*width: auto !important;*/
@@ -96,4 +96,13 @@ li {
   margin-bottom: 20px;
   margin-left: 20px;
   margin-top: 20px;
+}
+.card {
+}
+.card.text {
+  width: 160px;
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow: hidden;  /*not works*/
+  padding: 20px;  /*not working well*/
 }
