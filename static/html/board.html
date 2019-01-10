@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
     <title>Demo &raquo; Serialize &raquo; gridster.js</title>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
@@ -26,7 +27,7 @@
             height: 100px;
         }
 
-        .delete{
+        .delete {
             position: absolute;
             top: 0;
             left: 175px;
@@ -41,198 +42,217 @@
             border: none;
         }
 
-        .delete:hover{
+        .delete:hover {
             background: #888;
             opacity: 0.8;
         }
-        li:hover .add{
-                display: block;
+
+        li:hover .add {
+            display: block;
         }
-        .add{
+
+        .add {
             background: #ffffff;
             opacity: 0.4;
             width: 45px;
             height: 30px;
-            position:absolute;
+            position: absolute;
             top: 145px;
             left: 160px;
             color: #000000;
-            border:none;
+            border: none;
             font-size: 2em;
             text-align: center;
             align-content: center;
-            display:none;
+            display: none;
         }
-        .write{
+
+        .write {
             border: none;
-            width:30px;
+            width: 30px;
             height: 30px;
-            position:absolute;
+            position: absolute;
             background-image: url("../img/write.png");
             opacity: 0.4;
             left: 175px;
-            top:75px;
+            top: 75px;
         }
     </style>
 </head>
 
 <body>
+    <div class="controls">
+        <button class="js-seralize">序列化坐标和内部文本</button>
+        <button class="js-reload-from-array">从序列化数据加载</button>
+    </div>
 
-<h1>Serialize positions</h1>
+    <textarea id="log"></textarea>
 
-<p>Use <code>serialize</code> method to get widget positions. It returns a Array of objects that can be used as a JSON object.</p>
+    <div id="activity" class="gridster">
+        <ul>
+            <li data-row="1" data-col="1" data-sizex="2" data-sizey="3" style="background:#aed9e9">
+                <div>
+                    <button class="delete">x</button>
+                    <button class="add">+</button>
+                    <Imagebutton class="write"></Imagebutton>
+                </div>
+            </li>
+        </ul>
+    </div>
 
-<div class="controls">
-    <button class="js-seralize">Serialize</button>
-</div>
+    <div id="tasks" class="gridster">
+        <ul>
+            <li data-row="1" data-col="1" data-sizex="2" data-sizey="3" style="background:#f4e459">
+                <div>
+                    <button class="delete">x</button>
+                    <button class="add">+</button>
+                    <Imagebutton class="write"></Imagebutton>
+                </div>
+            </li>
+        </ul>
+    </div>
 
-<textarea id="log"></textarea>
+    <div id="releases" class="gridster">
+        <ul>
+            <li data-row="1" data-col="1" data-sizex="2" data-sizey="3" style="background:#ffffff">
+                <div>
+                    <button class="delete">x</button>
+                    <button class="add">+</button>
+                    <Imagebutton class="write"></Imagebutton>
+                </div>
+            </li>
+        </ul>
+    </div>
 
-<div id="activity" class="gridster" >
-    <ul>
-        <li  data-row="1" data-col="1" data-sizex="2" data-sizey="3" style="background:#aed9e9">
-            <div>
-                <button class="delete">x</button>
-                <button class="add" >+</button>
-                <Imagebutton class="write"></Imagebutton>
-             </div>
-        </li>
-    </ul>
-</div>
+    <script type="text/javascript">
+        var gridsters = [];
 
-<div id="tasks" class="gridster">
-<ul>
-    <li  data-row="1" data-col="1" data-sizex="2" data-sizey="3"  style="background:#f4e459">
-        <div>
-            <button class="delete">x</button>
-            <button class="add" >+</button>
-            <Imagebutton class="write"></Imagebutton>
-        </div>
-    </li>
-</ul>
-</div>
+        $(function () {
 
-<div id="releases" class="gridster">
-    <ul>
-        <li  data-row="1" data-col="1" data-sizex="2" data-sizey="3"  style="background:#ffffff">
-            <div>
-                <button class="delete">x</button>
-                <button class="add" >+</button>
-                <Imagebutton class="write"></Imagebutton>
-            </div>
-        </li>
-    </ul>
-</div>
+            gridsters[0] = $("#activity ul").gridster({
+                widget_base_dimensions: [100, 55],
+                widget_margins: [5, 5],
+                shift_widgets_up: false,
+                shift_larger_widgets_down: false,
+                collision: {
+                    wait_for_mouseup: true
+                }
+            }).data('gridster');
 
-<script type="text/javascript">
-    var gridster = [];
+            gridsters[1] = $("#tasks ul").gridster({
+                widget_base_dimensions: [100, 55],
+                widget_margins: [10, 10],
+                shift_widgets_up: false,
+                shift_larger_widgets_down: false,
+                collision: {
+                    wait_for_mouseup: true
+                }
+            }).data('gridster');
 
-    $(function () {
+            gridsters[2] = $("#releases ul").gridster({
+                widget_base_dimensions: [200, 110],
+                widget_margins: [15, 15],
+                shift_widgets_up: false,
+                shift_larger_widgets_down: false,
+                collision: {
+                    wait_for_mouseup: true
+                }
+            }).data('gridster');
 
-        gridster[0] = $("#activity ul").gridster({
-            widget_base_dimensions: [100, 55],
-            widget_margins: [5, 5],
-            shift_widgets_up: false,
-            shift_larger_widgets_down: false,
-            collision: {
-                wait_for_mouseup: true
-            }
-        }).data('gridster');
+            $('.js-seralize').on('click', function () {
+                let s = [];
+                gridsters[0].$widgets.each(function (i) { // map格式存储，i只是index
+                    let w = gridsters[0].$widgets[i];
+                    let arr = gridsters[0].serialize($(w));
+                    arr[0].text = w.textContent;
+                    s = s.concat(arr)
+                });
+                $('#log').val(JSON.stringify(s));
+            });
 
-        gridster[1] = $("#tasks ul").gridster({
-            widget_base_dimensions: [100, 55],
-            widget_margins: [10, 10],
-            shift_widgets_up: false,
-            shift_larger_widgets_down: false,
-            collision: {
-                wait_for_mouseup: true
-            }
-        }).data('gridster');
+            // reload button
+            $('.js-reload-from-array').on('click', function () {
+                // same object that generated with gridster.serialize() method
+                var serialization = [
+                    { col: 1, row: 1, size_x: 2, size_y: 2 },
+                    { col: 3, row: 1, size_x: 2, size_y: 2 },
+                    { col: 5, row: 2, size_x: 1, size_y: 1 }
+                ];
+                // sort serialization
+                serialization = Gridster.sort_by_row_and_col_asc(serialization);
+                gridsters[0].remove_all_widgets();
+                $.each(serialization, function () {
+                    gridsters[0].add_widget('<li style="background:#aed9e9"><div>' +
+                    '                <button class="delete">x</button>' +
+                    '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
+                    '             </div></li>', this.size_x, this.size_y, this.col, this.row);
+                });
+            });
 
-        gridster[2] = $("#releases ul").gridster({
-            widget_base_dimensions: [200, 110],
-            widget_margins: [15, 15],
-            shift_widgets_up: false,
-            shift_larger_widgets_down: false,
-            collision: {
-                wait_for_mouseup: true
-            }
-        }).data('gridster');
+            $(document).on('click', 'li .add', function () {
+                //获取点击按钮的最上层父元素
+                var i = $(this).parent().parent().index();
+                //获取点击按钮的最外层父元素的id值，以判断是gridster[0]还是gridster[1]
+                var j = $(this).parent().parent().parent().parent().attr('id');
+                if (j === "activity") {
+                    let content = gridsters[0].serialize($(gridsters[0].$widgets[i]));
+                    gridsters[0].add_widget('<li style="background:#aed9e9"><div>' +
+                        '                <button class="delete">x</button>' +
+                        '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
+                        '             </div></li>', 2, 3, content[0].col + 2, content[0].row);
+                }
+                if (j === "tasks") {
+                    let content = gridsters[1].serialize($(gridsters[1].$widgets[i]));
+                    gridsters[1].add_widget('<li style="background:#f4e459"><div>' +
+                        '                <button class="delete">x</button>' +
+                        '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
+                        '             </div></li>', 2, 3, content[0].col + 2, content[0].row);
+                }
+                if (j === "releases") {
+                    let content = gridsters[2].serialize($(gridsters[2].$widgets[i]));
+                    gridsters[2].add_widget('<li style="background:#ffffff"><div>' +
+                        '                <button class="delete">x</button>' +
+                        '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
+                        '             </div></li>', 2, 3, content[0].col + 2, content[0].row);
+                }
 
-        $('.js-seralize').on('click', function () {
-            s = []
-            gridster[0].$widgets.each(function (i) { // map格式存储，i只是index
-                let w = gridster[0].$widgets[i]
-                let arr = gridster[0].serialize($(w))
-                arr[0].text = w.textContent
-                s = s.concat(arr)
+            });
+
+            $(document).on('click', 'li .delete', function () {
+                //获取点击按钮的最上层父元素
+                let i = $(this).parent().parent().index();
+                //获取点击按钮的最外层父元素的id值，以判断是gridster[0]还是gridster[1]
+                let j = $(this).parent().parent().parent().parent().attr('id');
+                if (j === "activity") {
+                    gridsters[0].remove_widget($('#activity li').eq(i));
+                }
+                if (j === "tasks") {
+                    gridsters[1].remove_widget($('#tasks li').eq(i));
+                }
+                if (j === "releases") {
+                    gridsters[2].remove_widget($('#releases li').eq(i));
+                }
+            });
+
+            $(document).on('click', 'li .write', function () {
+                // if(gridster[0].draggable()){
+                //     $(this).blur();
+                // }
+                let item = $(this).index();
+                // console.log("下标索引值为：" +item);
+                let word = prompt("请输入一段文字", "");
+                if (word) {
+                    // console.log($(this).prop("tagName"));
+                    // $(this).text(word);
+                    let string = word + "<button class='delete'>x</button>" +
+                        "<button class='add' >+</button>" + "<Imagebutton class='write'></Imagebutton>";
+                    $(this).html(string);
+                }
+                // $("#refuse_word").val(refuse_word);
+                // gridster[0].$widgets[item].innerText=word;
             })
-            $('#log').val(JSON.stringify(s));
-        })
-
-        $(document).on('click','li .add',function () {
-            //获取点击按钮的最上层父元素
-            var i=$(this).parent().parent().index();
-            //获取点击按钮的最外层父元素的id值，以判断是gridster[0]还是gridster[1]
-            var j=$(this).parent().parent().parent().parent().attr('id');
-            if(j=="activity"){
-                var content=gridster[0].serialize($(gridster[0].$widgets[i]));
-                gridster[0].add_widget('<li style="background:#aed9e9"><div>' +
-                    '                <button class="delete">x</button>' +
-                    '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
-                    '             </div></li>',2,3,content[0].col+2,content[0].row);
-            }
-            if(j=="tasks"){
-                var content=gridster[1].serialize($(gridster[1].$widgets[i]));
-                gridster[1].add_widget('<li style="background:#f4e459"><div>' +
-                    '                <button class="delete">x</button>' +
-                    '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
-                    '             </div></li>',2,3,content[0].col+2,content[0].row);
-            }
-            if(j=="releases"){
-                var content=gridster[2].serialize($(gridster[2].$widgets[i]));
-                gridster[2].add_widget('<li style="background:#ffffff"><div>' +
-                    '                <button class="delete">x</button>' +
-                    '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
-                    '             </div></li>',2,3,content[0].col+2,content[0].row);
-            }
-
-        })
-
-        $(document).on('click','li .delete',function(){
-            //获取点击按钮的最上层父元素
-            var i=$(this).parent().parent().index();
-            //获取点击按钮的最外层父元素的id值，以判断是gridster[0]还是gridster[1]
-            var j=$(this).parent().parent().parent().parent().attr('id');
-            if(j=="activity"){
-                gridster[0].remove_widget($('#activity li').eq(i));
-            }
-            if(j=="tasks"){
-                gridster[1].remove_widget($('#tasks li').eq(i));
-            }
-            if(j=="releases"){
-                gridster[2].remove_widget($('#releases li').eq(i));
-            }
-        })
-
-        $(document).on('click','li .write',function () {
-            // if(gridster[0].draggable()){
-            //     $(this).blur();
-            // }
-            var item=$(this).index();
-            // console.log("下标索引值为：" +item);
-            var word = prompt("请输入一段文字","");
-            if(word){
-                // console.log($(this).prop("tagName"));
-                // $(this).text(word);
-                var string=word+"<button class='delete'>x</button>" +
-                    "<button class='add' >+</button>"+"<Imagebutton class='write'></Imagebutton>";
-                $(this).html(string);
-            }
-            // $("#refuse_word").val(refuse_word);
-            // gridster[0].$widgets[item].innerText=word;
-        })
-    });
-</script>
+        });
+    </script>
 </body>
+
 </html>

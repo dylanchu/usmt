@@ -2,10 +2,10 @@
 * https://dsmorse.github.io/gridster.js/
 * Copyright (c) 2015 ducksboard; Licensed MIT */
 body {
-  background: #26941f;
+  background: #CCC;
   font-size: 16px;
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  color: #ffffff;
+  color: #000;
   margin: 0;
 }
 h1,
@@ -56,15 +56,26 @@ table {
   border-radius: 0 !important;
   background: red !important;
 }
-.gridster{
-  background-color: #EFEFEF;
-}
-.gridster{
+.gridster {
+  background-color: #DFDFDF;
   font-size: 1em;
   font-weight: bold;
   /*text-align: center;*/
   line-height: 100%;
 }
+/*.gridster ul {*/
+  /*width: auto !important;*/
+  /*background-color: rgb(165,195,140);*/
+  /*border-top: gray dashed 1px;*/
+  /*padding-top: 10px;*/
+  /*padding-right: 200px;*/
+/*}*/
+/*.gridster li {*/
+  /*font-size: 1em;*/
+  /*font-weight: bold;*/
+  /*text-align: center;*/
+  /*line-height: 100%;*/
+/*}*/
 ul {
   list-style-type: none;
 }
@@ -83,4 +94,6 @@ li {
 }
 .controls {
   margin-bottom: 20px;
+  margin-left: 20px;
+  margin-top: 20px;
 }
