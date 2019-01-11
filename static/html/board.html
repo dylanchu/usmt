@@ -60,11 +60,10 @@
             background: #ffffff;
             opacity: 0.4;
             position: absolute;
-            top: 145px;
+            top: 130px;
             left: 160px;
             color: #000000;
             border: none;
-            font-size: 2em;
             align-content: center;
             display: none;
         }
@@ -80,6 +79,23 @@
         }
         .write:hover {
             opacity: 0.8;
+        }
+
+        li:hover .add_below{
+            display: block;
+        }
+
+        .add_below{
+            background: #fff;
+            opacity: 0.4;
+            position: absolute;
+            top: 130px;
+            left:80px;
+            color: #000000;
+            border: none;
+            text-align: center;
+            align-content: center;
+            display: none;
         }
     </style>
 </head>
@@ -127,9 +143,9 @@
 
             $('.js-seralize').on('click', function () {
                 let s = [];
-                gridsters[0].$widgets.each(function (i) { // map格式存储，i只是index
-                    let w = gridsters[0].$widgets[i];
-                    let arr = gridsters[0].serialize($(w));
+                gridsters[2].$widgets.each(function (i) { // map格式存储，i只是index
+                    let w = gridsters[2].$widgets[i];
+                    let arr = gridsters[2].serialize($(w));
                     arr[0].text = w.textContent;
                     s = s.concat(arr)
                 });
@@ -163,6 +179,7 @@
                 return '<span class="card card-text">' + text + '</span>' +
                     '<i class="delete fa fa-window-close fa-2x"></i>' +
                     '<i class="add fa fa-chevron-circle-right fa-lg"></i>' +
+                    '<i class="add_below fa fa-chevron-circle-down fa-lg"></i>' +
                     '<i class="write fa fa-pencil-square-o fa-lg"></i>';
             }
             function card_html(bg, text='') {
@@ -227,6 +244,13 @@
                 });
             });
 
+            $(document).on('click', 'li .add_below', function () {
+                //获取点击按钮的最上层父元素
+                var i = $(this).parent().parent().index();
+                let content = gridsters[2].serialize($(gridsters[2].$widgets[i]));
+                gridsters[2].add_widget(card_html('#fff'), 2, 3, content[0].col + 2, content[0].row);
+
+            });
         });
     </script>
 </body>
