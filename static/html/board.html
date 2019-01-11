@@ -58,7 +58,7 @@
             width: 45px;
             height: 30px;
             position: absolute;
-            top: 145px;
+            top: 130px;
             left: 160px;
             color: #000000;
             border: none;
@@ -77,6 +77,26 @@
             opacity: 0.4;
             left: 175px;
             top: 75px;
+        }
+
+        li:hover .add_below{
+            display: block;
+        }
+
+        .add_below{
+            background: #888;
+            opacity: 0.4;
+            width: 45px;
+            height: 30px;
+            position: absolute;
+            top: 130px;
+            left:80px;
+            color: #000000;
+            border: none;
+            font-size: 2em;
+            text-align: center;
+            align-content: center;
+            display: none;
         }
     </style>
 </head>
@@ -121,6 +141,7 @@
                     <button class="delete">x</button>
                     <button class="add">+</button>
                     <Imagebutton class="write"></Imagebutton>
+                    <button class="add_below">+</button>
                 </div>
             </li>
         </ul>
@@ -145,9 +166,9 @@
 
             $('.js-seralize').on('click', function () {
                 let s = [];
-                gridsters[0].$widgets.each(function (i) { // map格式存储，i只是index
-                    let w = gridsters[0].$widgets[i];
-                    let arr = gridsters[0].serialize($(w));
+                gridsters[2].$widgets.each(function (i) { // map格式存储，i只是index
+                    let w = gridsters[2].$widgets[i];
+                    let arr = gridsters[2].serialize($(w));
                     arr[0].text = w.textContent;
                     s = s.concat(arr)
                 });
@@ -199,7 +220,7 @@
                     let content = gridsters[2].serialize($(gridsters[2].$widgets[i]));
                     gridsters[2].add_widget('<li style="background:#ffffff"><div>' +
                     '                <button class="delete">x</button>' +
-                    '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
+                    '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton><button class="add_below">+</button>' +
                     '             </div></li>', 2, 3, content[0].col + 2, content[0].row);
                 }
 
@@ -244,23 +265,16 @@
                 });
             });
 
-            $(document).on('cllick', 'li .write', function () {
-                // if(gridster[0].draggable()){
-                //     $(this).blur();
-                // }
-                let item = $(this).index();
-                // console.log("下标索引值为：" +item);
-                let word = prompt("请输入一段文字", "");
-                if (word) {
-                    // console.log($(this).prop("tagName"));
-                    // $(this).text(word);
-                    let string = word + "<button class='delete'>x</button>" +
-                        "<button class='add' >+</button>" + "<Imagebutton class='write'></Imagebutton>";
-                    $(this).html(string);
-                }
-                // $("#refuse_word").val(refuse_word);
-                // gridster[0].$widgets[item].innerText=word;
-            })
+            $(document).on('click', 'li .add_below', function () {
+                //获取点击按钮的最上层父元素
+                var i = $(this).parent().parent().index();
+                let content = gridsters[2].serialize($(gridsters[2].$widgets[i]));
+                gridsters[2].add_widget('<li style="background:#ffffff"><div>' +
+                        '                <button class="delete">x</button>' +
+                        '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton><button class="add_below">+</button>' +
+                        '             </div></li>', 2, 3,content[0].col,content[0].row+3);
+
+            });
         });
     </script>
 </body>
