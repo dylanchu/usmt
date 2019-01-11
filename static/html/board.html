@@ -9,6 +9,15 @@
     <script src="../libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="../libs/gridster/jquery.gridster.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libs/layer/layer.js"></script>
+    <link href="../libs/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
 
     <style type="text/css">
         #log {
@@ -32,11 +41,7 @@
             position: absolute;
             top: 0;
             left: 175px;
-            display: block;
-            width: 30px;
-            height: 20px;
             color: #FFF;
-            background: #888;
             opacity: 0.4;
             text-align: center;
             text-decoration: none;
@@ -44,7 +49,6 @@
         }
 
         .delete:hover {
-            background: #888;
             opacity: 0.8;
         }
 
@@ -55,15 +59,12 @@
         .add {
             background: #ffffff;
             opacity: 0.4;
-            width: 45px;
-            height: 30px;
             position: absolute;
             top: 145px;
             left: 160px;
             color: #000000;
             border: none;
             font-size: 2em;
-            text-align: center;
             align-content: center;
             display: none;
         }
@@ -73,10 +74,12 @@
             width: 30px;
             height: 30px;
             position: absolute;
-            background-image: url("../img/write.png");
             opacity: 0.4;
             left: 175px;
             top: 75px;
+        }
+        .write:hover {
+            opacity: 0.8;
         }
     </style>
 </head>
@@ -92,37 +95,16 @@
 
     <div id="activity" class="gridster card">
         <ul>
-            <li data-row="1" data-col="1" data-sizex="2" data-sizey="3" style="background:#aed9e9">
-                <div>
-                    <button class="delete">x</button>
-                    <button class="add">+</button>
-                    <Imagebutton class="write"></Imagebutton>
-                </div>
-            </li>
         </ul>
     </div>
 
     <div id="tasks" class="gridster card">
         <ul>
-            <li data-row="1" data-col="1" data-sizex="2" data-sizey="3" style="background:#f4e459">
-                <div>
-                    <button class="delete">x</button>
-                    <button class="add">+</button>
-                    <Imagebutton class="write"></Imagebutton>
-                </div>
-            </li>
         </ul>
     </div>
 
     <div id="releases" class="gridster card">
         <ul>
-            <li data-row="1" data-col="1" data-sizex="2" data-sizey="3" style="background:#ffffff">
-                <div>
-                    <button class="delete">x</button>
-                    <button class="add">+</button>
-                    <Imagebutton class="write"></Imagebutton>
-                </div>
-            </li>
         </ul>
     </div>
 
@@ -158,49 +140,50 @@
             $('.js-reload-from-array').on('click', function () {
                 // same object that generated with gridster.serialize() method
                 var serialization = [
-                    {col: 1, row: 1, size_x: 2, size_y: 2},
-                    {col: 3, row: 1, size_x: 2, size_y: 2},
-                    {col: 5, row: 2, size_x: 1, size_y: 1}
+                    {col: 1, row: 1, size_x: 2, size_y: 3},
+                    {col: 3, row: 1, size_x: 2, size_y: 3}
                 ];
                 // sort serialization
                 serialization = Gridster.sort_by_row_and_col_asc(serialization);
                 gridsters[0].remove_all_widgets();
                 $.each(serialization, function () {
-                    gridsters[0].add_widget('<li style="background:#aed9e9"><div>' +
-                    '                <button class="delete">x</button>' +
-                    '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
-                    '             </div></li>', this.size_x, this.size_y, this.col, this.row);
+                    gridsters[0].add_widget(card_html('#aed9e9'), this.size_x, this.size_y, this.col, this.row);
+                });
+                gridsters[1].remove_all_widgets();
+                $.each(serialization, function () {
+                    gridsters[1].add_widget(card_html('#aed9e9'), this.size_x, this.size_y, this.col, this.row);
+                });
+                gridsters[2].remove_all_widgets();
+                $.each(serialization, function () {
+                    gridsters[2].add_widget(card_html('#aed9e9'), this.size_x, this.size_y, this.col, this.row);
                 });
             });
 
+            function card_innerEl(text='') {
+                return '<span class="card card-text">' + text + '</span>' +
+                    '<i class="delete fa fa-window-close fa-2x"></i>' +
+                    '<i class="add fa fa-chevron-circle-right fa-lg"></i>' +
+                    '<i class="write fa fa-pencil-square-o fa-lg"></i>';
+            }
+            function card_html(bg, text='') {
+                return '<li style="background:' + bg + '"><div>' + card_innerEl(text) + '</div></li>';
+            }
             $(document).on('click', 'li .add', function () {
-
-                //TODO: 把大串定义卡片的html字符提取出来
-
                 //获取点击按钮的最上层父元素
                 var i = $(this).parent().parent().index();
                 //获取点击按钮的最外层父元素的id值，以判断是gridster[0]还是gridster[1]
                 var j = $(this).parent().parent().parent().parent().attr('id');
                 if (j === "activity") {
                     let content = gridsters[0].serialize($(gridsters[0].$widgets[i]));
-                    gridsters[0].add_widget('<li style="background:#aed9e9"><div>' +
-                    '                <button class="delete">x</button>' +
-                    '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
-                    '             </div></li>', 2, 3, content[0].col + 2, content[0].row);
+                    gridsters[0].add_widget(card_html('#aed9e9'), 2, 3, content[0].col + 2, content[0].row);
                 }
                 if (j === "tasks") {
                     let content = gridsters[1].serialize($(gridsters[1].$widgets[i]));
-                    gridsters[1].add_widget('<li style="background:#f4e459"><div>' +
-                    '                <button class="delete">x</button>' +
-                    '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
-                    '             </div></li>', 2, 3, content[0].col + 2, content[0].row);
+                    gridsters[1].add_widget(card_html('#f4e459'), 2, 3, content[0].col + 2, content[0].row);
                 }
                 if (j === "releases") {
                     let content = gridsters[2].serialize($(gridsters[2].$widgets[i]));
-                    gridsters[2].add_widget('<li style="background:#ffffff"><div>' +
-                    '                <button class="delete">x</button>' +
-                    '                <button class="add" >+</button><Imagebutton class="write"></Imagebutton>' +
-                    '             </div></li>', 2, 3, content[0].col + 2, content[0].row);
+                    gridsters[2].add_widget(card_html('#fff'), 2, 3, content[0].col + 2, content[0].row);
                 }
 
             });
@@ -236,34 +219,17 @@
                     btnAlign: 'c',    // 设置按钮位置
                 }, function(value, index, elem){
                     if (value) {
-                        let s = '<span class="card text">' + value + '</span>' + "<button class='delete'>x</button>" +
-                            "<button class='add' >+</button>" + "<Imagebutton class='write'></Imagebutton>";
+                        // parent.$('.card-text').text(value);  // this will change all cards
+                        let s = card_innerEl(value);
                         $(pencil.parentElement).html(s);
                     }
                     layer.close(index);
                 });
             });
 
-            $(document).on('cllick', 'li .write', function () {
-                // if(gridster[0].draggable()){
-                //     $(this).blur();
-                // }
-                let item = $(this).index();
-                // console.log("下标索引值为：" +item);
-                let word = prompt("请输入一段文字", "");
-                if (word) {
-                    // console.log($(this).prop("tagName"));
-                    // $(this).text(word);
-                    let string = word + "<button class='delete'>x</button>" +
-                        "<button class='add' >+</button>" + "<Imagebutton class='write'></Imagebutton>";
-                    $(this).html(string);
-                }
-                // $("#refuse_word").val(refuse_word);
-                // gridster[0].$widgets[item].innerText=word;
-            })
         });
     </script>
 </body>
 
 </html>
-<!--Todo: 重新组织卡片的css样式，让卡片内元素继承卡片样式，使文字、按钮布局正常-->
+<!--Todo: 重新组织卡片的css样式，让卡片内元素继承卡片样式，使用margin和padding定位，使文字、按钮布局正常-->
