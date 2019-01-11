@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>Vue Grid Layout Example 3 - Multiple grids</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!--<link rel="stylesheet" href="../dist/vue-grid-layout.css">-->
+    <link rel="stylesheet" href="css/app.css">
+    <script src="libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="libs/layer/layer.js"></script>
+    <link href="libs/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="libs/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<span id="variables" style="display: none"></span>
+
+<div id="app1" v-bind:style="{width: variables.widthData}">
+    <h4>Grid 1</h4>
+    <div>
+        <div class="layoutJSON">
+            Displayed as <code>[x, y, w, h]</code>:
+            <div class="columns">
+                <div class="layoutItem" v-for="item in layout">
+                    <b>{{item.i}}</b>: [{{item.x}}, {{item.y}}, {{item.w}}, {{item.h}}]
+                </div>
+            </div>
+        </div>
+    </div>
+    <grid-layout :layout="layout"
+                    :col-num="variables.colNum"
+                    :row-height="140"
+                    :is-draggable="true"
+                    :is-resizable="false"
+                    :vertical-compact="true"
+                    :use-css-transforms="true"
+    >
+        <grid-item v-for="item in layout"
+                    :x="item.x"
+                    :y="item.y"
+                    :w="item.w"
+                    :h="item.h"
+                    :i="item.i"
+                    class="card-activities"
+        >
+            <span class="text">{{item.i}}</span>
+            <span name="card-controls"></span>
+        </grid-item>
+    </grid-layout>
+</div>
+
+<div id="app2" v-bind:style="{width: variables.widthData}">
+    <h4>Grid 2</h4>
+    <div>
+        <div class="layoutJSON">
+            Displayed as <code>[x, y, w, h]</code>:
+            <div class="columns">
+                <div class="layoutItem" v-for="item in layout">
+                    <b>{{item.i}}</b>: [{{item.x}}, {{item.y}}, {{item.w}}, {{item.h}}]
+                </div>
+            </div>
+        </div>
+    </div>
+    <grid-layout :layout="layout"
+                    :col-num="variables.colNum"
+                    :row-height="140"
+                    :is-draggable="true"
+                    :is-resizable="false"
+                    :vertical-compact="true"
+                    :use-css-transforms="true"
+    >
+        <grid-item v-for="item in layout"
+                    :x="item.x"
+                    :y="item.y"
+                    :w="item.w"
+                    :h="item.h"
+                    :i="item.i"
+                    class="card-tasks"
+        >
+            <span class="text">{{item.i}}</span>
+            <span name="card-controls"></span>
+        </grid-item>
+    </grid-layout>
+</div>
+
+<div id="app3" v-bind:style="{width: variables.widthData}">
+    <h4>Grid 3</h4>
+    <div>
+        <div class="layoutJSON">
+            Displayed as <code>[x, y, w, h]</code>:
+            <div class="columns">
+                <div class="layoutItem" v-for="item in layout">
+                    <b>{{item.i}}</b>: [{{item.x}}, {{item.y}}, {{item.w}}, {{item.h}}]
+                </div>
+            </div>
+        </div>
+    </div>
+    <grid-layout :layout="layout"
+                    :col-num="variables.colNum"
+                    :row-height="140"
+                    :is-draggable="true"
+                    :is-resizable="false"
+                    :vertical-compact="true"
+                    :use-css-transforms="true"
+    >
+        <grid-item v-for="item in layout"
+                    :x="item.x"
+                    :y="item.y"
+                    :w="item.w"
+                    :h="item.h"
+                    :i="item.i"
+                    class="card-releases"
+        >
+            <span class="text card-text">{{item.i}}</span>
+            <span name="card-controls"></span>
+        </grid-item>
+    </grid-layout>
+</div>
+
+<div class="placeholder horizontal"></div>
+<script src="libs/vue/vue.min.js"></script>
+<script src="libs/vue-grid-layout/vue-grid-layout.umd.min.js"></script>
+<script src="03-multiple-grids.js"></script>
+</body>
+</html>
