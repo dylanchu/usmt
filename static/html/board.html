@@ -143,10 +143,10 @@
 
             $('.js-seralize').on('click', function () {
                 let s = [];
-                gridsters[2].$widgets.each(function (i) { // map格式存储，i只是index
-                    let w = gridsters[2].$widgets[i];
-                    let arr = gridsters[2].serialize($(w));
-                    arr[0].text = w.textContent;
+                gridsters[0].$widgets.each(function (i) { // map格式存储，i只是index
+                    let w = gridsters[0].$widgets[i];
+                    let arr = gridsters[0].serialize($(w));
+                    arr[0].text = $(w).find($('span'))[0].textContent;
                     s = s.concat(arr)
                 });
                 $('#log').val(JSON.stringify(s));
