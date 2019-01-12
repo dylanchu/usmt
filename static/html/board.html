@@ -255,7 +255,6 @@
                         temp[n].col+=2;
                     }
                 }
-                console.log("修改后的s:"+temp);
                 let k=index;
                 for(k in s){
                     if(j=="activity"){
@@ -291,7 +290,6 @@
                     let s=getSerializeData(j);
                     s=JSON.parse(JSON.stringify(s));
                     s=Gridster.sort_by_row_and_col_asc(s);
-                    console.log("原来的s:"+s);
                     let content = gridsters[0].serialize($(gridsters[0].$widgets[i]));
                     let index=returnIndex(s,content[0].row,content[0].col);
                     if(index!=0){
