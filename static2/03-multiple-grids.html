@@ -53,11 +53,12 @@
                     :class="'card level'+(index+1)"
         >
             <span class="text">{{item.i}}</span>
+            <span class='x_y' style="visibility: hidden;">{{item.x}}_{{item.y}}</span>
             <span name="card-controls">
-                <i class="card-delete fa fa-window-close fa-lg pull-right"></i>
-                <i class="card-add-right fa fa-chevron-circle-right fa-lg"></i>
-                <i class="card-add-bottom fa fa-chevron-circle-down fa-lg"></i>
-                <i class="card-edit fa fa-pencil-square-o fa-2x"></i>
+                <i @click.stop="remove" class="card-delete fa fa-window-close fa-lg pull-right"></i>
+                <i @click.stop="addRight" class="card-add-right fa fa-chevron-circle-right fa-lg"></i>
+                <i @click.stop="addBottom" class="card-add-bottom fa fa-chevron-circle-down fa-lg"></i>
+                <i @click.stop="editText" class="card-edit fa fa-pencil-square-o fa-2x"></i>
             </span>
         </grid-item>
     </grid-layout>

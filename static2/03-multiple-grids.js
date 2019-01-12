@@ -39,12 +39,41 @@ vm1 = new Vue({
     },
 
     methods: {
-        removeItem: function(item) {
-            this.layout.splice(this.layout.indexOf(item), 1);
+        remove: function(event) {  // 'delete' wont work, maybe conflicts
+            alert('Delete');
+            // this.layout.splice(this.layout.indexOf(item), 1);
         },
-        addItem: function(item) {
-            var item = {"x":2,"y":0,"w":1,"h":1,"i":"wow"};
-            this.layout.push(item);
+        addRight: function(event) {
+            alert('Add Right');
+            // var item = {"x":2,"y":0,"w":1,"h":1,"i":"wow"};
+            // this.layout.push(item);
+        },
+        addBottom: function(event) {
+            // coor = this.coordinates(event);
+            // alert(coor.level + ' ' + coor.x + ' ' + coor.y)
+            // var item = {"x":2,"y":0,"w":1,"h":1,"i":"wow"};
+            // this.layout.push(item);
+        },
+        editText: (event) => {
+            // alert('Edit');
+            let card = event.target.parentElement.parentElement;
+            layer.prompt({
+                formType: 2,
+                shadeClose: true,  // 点击遮罩关闭层
+                title: '请输入内容',
+                value: $(card).find('.text')[0].textContent,  // 文本默认值
+                area: ['500px', '220px'],  // 弹出层大小
+                btn: ['保存', '取消'],
+                btn1: function(index, elem){
+                    layer.close(index);
+                },
+                btnAlign: 'c',
+                }, (value, index, elem) => {
+                    if (value) {
+                        $(card).find('.text')[0].textContent = value;
+                    }
+                    layer.close(index);
+            });
         }
     }
 });
@@ -54,38 +83,3 @@ function parseDom(arg) {
     objE.innerHTML = arg;
     return objE.childNodes;
 };
-
-for (x of document.getElementsByClassName('card-delete')) {
-    x.onclick = function(){alert('Delete');};
-}
-for (x of document.getElementsByClassName('card-add-right')) {
-    x.onclick = function(){alert('Add Right');};
-}
-for (x of document.getElementsByClassName('card-add-bottom')) {
-    let card = x.parentElement.parentElement;
-    x.onclick = function(){
-        alert('Add Bottom');
-    };
-}
-for (x of document.getElementsByClassName('card-edit')) {
-    let card = x.parentElement.parentElement;  // x >> card-controls >> card
-    x.onclick = function(){
-        layer.prompt({
-        formType: 2,
-        shadeClose: true,  // 点击遮罩关闭层
-        title: '请输入内容',
-        value: $(card).find('.text')[0].textContent,  // 文本默认值
-        area: ['500px', '220px'],  // 弹出层大小
-        btn: ['保存', '取消'],
-        btn1: function(index, elem){
-            layer.close(index);
-        },
-        btnAlign: 'c',
-        }, function(value, index, elem){
-            if (value) {
-                $(card).find('.text')[0].textContent = value;
-            }
-            layer.close(index);
-        });
-    };
-}
