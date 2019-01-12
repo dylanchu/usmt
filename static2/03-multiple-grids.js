@@ -1,14 +1,21 @@
-let initial_colNum = Math.floor(screen.width/200)
+document.title = 'story map';
+const cardWidth = 200;
 variables = new Vue({
     el: '#variables',
     data: {
-        colNum: 6,
-        widthData: 200*initial_colNum + 'px',
+        prjName: '',
+        colNum: screen.width/cardWidth,
+        widthData: screen.width + 'px',
         cardColors: {'app1': '#aed9e9', 'app2':'#f4e459', 'app3':'#f0f0f0'},
+        cardMargin: [6, 6],  // default is 10
+        layoutHeight: 140,
     },
     watch: {
-        colNum: function(newValue){
-            this.widthData = 200*newValue + 'px'
+        colNum: function(newValue){  // 保证卡片宽度视觉上不变
+            this.widthData = cardWidth*newValue + 'px';
+        },
+        prjName: (newValue) => {  // 设置title
+            document.title = newValue + ' story map';
         }
     },
 })

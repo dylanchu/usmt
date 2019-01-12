@@ -2,7 +2,7 @@
 <html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
-    <title>Vue Grid Layout Example 3 - Multiple grids</title>
+    <title>Story Map</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
     <!--<link rel="stylesheet" href="../dist/vue-grid-layout.css">-->
     <link rel="stylesheet" href="css/app.css">
@@ -22,21 +22,21 @@
 
 <span id="variables" style="display: none"></span>
 
+<h3 style="color: #777; margin: 10px;">Story Map</h3>
 <div id="app1" v-bind:style="{width: variables.widthData}">
-    <h4>Grid 1</h4>
-    <div>
-        <div class="layoutJSON">
-            Displayed as <code>[x, y, w, h]</code>:
-            <div class="columns">
-                <div class="layoutItem" v-for="item in layout">
-                    <b>{{item.i}}</b>: [{{item.x}}, {{item.y}}, {{item.w}}, {{item.h}}]
-                </div>
+    <div class="layoutJSON">
+        Displayed as <code>[x, y, w, h]</code><br><br>
+        <div class="columns">
+            Grid 1:
+            <div class="layoutItem" v-for="item in layout">
+                [{{item.x}}, {{item.y}}, {{item.w}}, {{item.h}}]
             </div>
         </div>
     </div>
     <grid-layout :layout="layout"
                     :col-num="variables.colNum"
-                    :row-height="140"
+                    :row-height="variables.layoutHeight"
+                    :margin="variables.cardMargin"
                     :is-draggable="true"
                     :is-resizable="false"
                     :vertical-compact="true"
@@ -57,20 +57,18 @@
 </div>
 
 <div id="app2" v-bind:style="{width: variables.widthData}">
-    <h4>Grid 2</h4>
-    <div>
-        <div class="layoutJSON">
-            Displayed as <code>[x, y, w, h]</code>:
-            <div class="columns">
-                <div class="layoutItem" v-for="item in layout">
-                    <b>{{item.i}}</b>: [{{item.x}}, {{item.y}}, {{item.w}}, {{item.h}}]
-                </div>
+    <div class="layoutJSON">
+        <div class="columns">
+            Grid 2:
+            <div class="layoutItem" v-for="item in layout">
+                [{{item.x}}, {{item.y}}, {{item.w}}, {{item.h}}]
             </div>
         </div>
     </div>
     <grid-layout :layout="layout"
                     :col-num="variables.colNum"
-                    :row-height="140"
+                    :row-height="variables.layoutHeight"
+                    :margin="variables.cardMargin"
                     :is-draggable="true"
                     :is-resizable="false"
                     :vertical-compact="true"
@@ -91,20 +89,18 @@
 </div>
 
 <div id="app3" v-bind:style="{width: variables.widthData}">
-    <h4>Grid 3</h4>
-    <div>
-        <div class="layoutJSON">
-            Displayed as <code>[x, y, w, h]</code>:
-            <div class="columns">
-                <div class="layoutItem" v-for="item in layout">
-                    <b>{{item.i}}</b>: [{{item.x}}, {{item.y}}, {{item.w}}, {{item.h}}]
-                </div>
+    <div class="layoutJSON">
+        <div class="columns">
+            Grid 3:
+            <div class="layoutItem" v-for="item in layout">
+                [{{item.x}}, {{item.y}}, {{item.w}}, {{item.h}}]
             </div>
         </div>
     </div>
     <grid-layout :layout="layout"
                     :col-num="variables.colNum"
-                    :row-height="140"
+                    :row-height="variables.layoutHeight"
+                    :margin="variables.cardMargin"
                     :is-draggable="true"
                     :is-resizable="false"
                     :vertical-compact="true"
@@ -127,6 +123,7 @@
 <div class="placeholder horizontal"></div>
 <script src="libs/vue/vue.min.js"></script>
 <script src="libs/vue-grid-layout/vue-grid-layout.umd.min.js"></script>
+<!-- <script src="libs/vue-grid-layout/vue-grid-layout.common.js"></script> -->
 <script src="03-multiple-grids.js"></script>
 </body>
 </html>
