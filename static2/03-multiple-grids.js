@@ -6,7 +6,6 @@ variables = new Vue({
         prjName: '',
         colNum: screen.width/cardWidth,
         widthData: screen.width + 'px',
-        cardColors: {'app1': '#aed9e9', 'app2':'#f4e459', 'app3':'#f0f0f0'},
         cardMargin: [6, 6],  // default is 10
         layoutHeight: 140,
     },
@@ -23,61 +22,30 @@ variables = new Vue({
 vm1 = new Vue({
     el: '#app1',
     data: {
-        layout: [
-            {"x":0,"y":0,"w":1,"h":1,"i":"0"},
-            {"x":1,"y":0,"w":1,"h":1,"i":"得劲不老哥"},
-        ],
-        index: 0,
+        layouts: [
+            [
+                {"x":0,"y":0,"w":1,"h":1,"i":"0"},
+                {"x":1,"y":0,"w":1,"h":1,"i":"得劲不老哥"},
+            ],
+            [
+                {"x":0,"y":0,"w":1,"h":1,"i":"0"},
+                {"x":2,"y":0,"w":1,"h":1,"i":"1"},
+                {"x":3,"y":0,"w":1,"h":1,"i":"2"},
+            ],
+            [
+                {"x":0,"y":0,"w":1,"h":1,"i":"0"},
+            ],
+        ]
     },
 
-    mounted: function () {
-        this.index = this.layout.length;
-    },
     methods: {
-        increaseWidth: function(item) {
-            var width = document.getElementById("content").offsetWidth;
-            width += 20;
-            document.getElementById("content").style.width = width+"px";
-        },
-        decreaseWidth: function(item) {
-
-            var width = document.getElementById("content").offsetWidth;
-            width -= 20;
-            document.getElementById("content").style.width = width+"px";
-        },
         removeItem: function(item) {
-            //console.log("### REMOVE " + item.i);
             this.layout.splice(this.layout.indexOf(item), 1);
         },
-        addItem: function() {
-            var self = this;
-            //console.log("### LENGTH: " + this.layout.length);
-            var item = {"x":2,"y":0,"w":2,"h":2,"i":this.index+"", whatever: "bbb"};
-            this.index++;
+        addItem: function(item) {
+            var item = {"x":2,"y":0,"w":1,"h":1,"i":"wow"};
             this.layout.push(item);
         }
-    }
-});
-
-vm2 = new Vue({
-    el: '#app2',
-    data: {
-        layout: [
-            {"x":0,"y":0,"w":1,"h":1,"i":"0"},
-            {"x":2,"y":0,"w":1,"h":1,"i":"1"},
-            {"x":3,"y":0,"w":1,"h":1,"i":"2"},
-        ],
-        index: 0,
-    }
-});
-
-vm3 = new Vue({
-    el: '#app3',
-    data: {
-        layout: [
-            {"x":0,"y":0,"w":1,"h":1,"i":"0"},
-        ],
-        index: 0,
     }
 });
 
@@ -114,7 +82,10 @@ for (x of document.getElementsByClassName('card-add-right')) {
     x.onclick = function(){alert('Add Right');};
 }
 for (x of document.getElementsByClassName('card-add-bottom')) {
-    x.onclick = function(){alert('Add Bottom');};
+    let card = x.parentElement.parentElement;
+    x.onclick = function(){
+        alert('Add Bottom');
+    };
 }
 for (x of document.getElementsByClassName('card-edit')) {
     let pencil = x;

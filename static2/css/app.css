@@ -51,19 +51,23 @@ div {margin:0;border:0;padding:0;}
     cursor: pointer;
 }
 
-.card-activities {
+.card {  /* releases */
+    background: #d0e0d0 !important;
+}
+.card.level1 {  /* activities */
     background: #aed9e9 !important;
 }
-.card-tasks {
+.card.level2 {  /* tasks */
     background: #f4e459 !important;
-}
-.card-releases {
-    background: #d0e0d0 !important;
 }
 
 .vue-grid-layout {
     background: #eee;
+    border-top: dashed #ccc 1px;
     cursor: default;
+}
+.vue-grid-layout.level1 {
+    border-top: none;
 }
 
 .layoutJSON {
