@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -144,9 +144,9 @@
 
             $('.js-seralize').on('click', function () {
                 let s = [];
-                gridsters[0].$widgets.each(function (i) { // map格式存储，i只是index
-                    let w = gridsters[0].$widgets[i];
-                    let arr = gridsters[0].serialize($(w));
+                gridsters[1].$widgets.each(function (i) { // map格式存储，i只是index
+                    let w = gridsters[1].$widgets[i];
+                    let arr = gridsters[1].serialize($(w));
                     arr[0].text = $(w).find($('span'))[0].textContent;
                     s = s.concat(arr)
                 });
@@ -202,6 +202,7 @@
                         row: s[l].row,
                         size_x: 2,
                         size_y: 3,
+                        text:s[l].text,
                     };
                     temp.push(obj);
                 }
@@ -219,12 +220,42 @@
                 return index;
             }
 
+            function getSerializeData(j){
+                let s = [];
+                if(j=="activity"){
+                    gridsters[0].$widgets.each(function (i) { // map格式存储，i只是index
+                        let w = gridsters[0].$widgets[i];
+                        let arr = gridsters[0].serialize($(w));
+                        arr[0].text = $(w).find($('span'))[0].textContent;
+                        s = s.concat(arr)
+                    });
+                }
+                if(j=="tasks"){
+                    gridsters[1].$widgets.each(function (i) { // map格式存储，i只是index
+                        let w = gridsters[1].$widgets[i];
+                        let arr = gridsters[1].serialize($(w));
+                        arr[0].text = $(w).find($('span'))[0].textContent;
+                        s = s.concat(arr)
+                    });
+                }
+                if(j=="releases"){
+                    gridsters[2].$widgets.each(function (i) { // map格式存储，i只是index
+                        let w = gridsters[2].$widgets[i];
+                        let arr = gridsters[2].serialize($(w));
+                        arr[0].text = $(w).find($('span'))[0].textContent;
+                        s = s.concat(arr)
+                    });
+                }
+                return s;
+            }
+
             function process(temp,index,row,s,j){
                 for(let n in temp){
                     if(temp[n].row ==row  && n>=index){
                         temp[n].col+=2;
                     }
                 }
+                console.log("修改后的s:"+temp);
                 let k=index;
                 for(k in s){
                     if(j=="activity"){
@@ -239,15 +270,14 @@
                 }
                 let t=index;
                 for(t in temp){
-                    //TODO: 把文字显示出来
                     if(j=="activity"){
-                        gridsters[0].add_widget(card_html('#aed9e9','',j), 2, 3, temp[t].col , temp[t].row);
+                        gridsters[0].add_widget(card_html('#aed9e9',temp[t].text,j), 2, 3, temp[t].col , temp[t].row);
                     }
                    if(j=="tasks"){
-                       gridsters[1].add_widget(card_html('#f4e459','',j), 2, 3, temp[t].col , temp[t].row);
+                       gridsters[1].add_widget(card_html('#f4e459',temp[t].text,j), 2, 3, temp[t].col , temp[t].row);
                    }
                    if(j=="releases"){
-                       gridsters[2].add_widget(card_html('#fff','',j), 2, 3, temp[t].col , temp[t].row);
+                       gridsters[2].add_widget(card_html('#fff',temp[t].text,j), 2, 3, temp[t].col , temp[t].row);
                    }
                 }
             }
@@ -258,9 +288,10 @@
                 //获取点击按钮的最外层父元素的id值，以判断是gridster[0]还是gridster[1]
                 var j = $(this).parent().parent().parent().parent().attr('id');
                 if (j === "activity") {
-                    let s =gridsters[0].serialize();
+                    let s=getSerializeData(j);
                     s=JSON.parse(JSON.stringify(s));
                     s=Gridster.sort_by_row_and_col_asc(s);
+                    console.log("原来的s:"+s);
                     let content = gridsters[0].serialize($(gridsters[0].$widgets[i]));
                     let index=returnIndex(s,content[0].row,content[0].col);
                     if(index!=0){
@@ -270,7 +301,7 @@
                     gridsters[0].add_widget(card_html('#aed9e9','',j), 2, 3, content[0].col + 2, content[0].row);
                 }
                 if (j === "tasks") {
-                    let s =gridsters[1].serialize();
+                    let s=getSerializeData(j);
                     s=JSON.parse(JSON.stringify(s));
                     s=Gridster.sort_by_row_and_col_asc(s);
                     let content = gridsters[1].serialize($(gridsters[1].$widgets[i]));
@@ -282,7 +313,7 @@
                     gridsters[1].add_widget(card_html('#f4e459','',j), 2, 3, content[0].col + 2, content[0].row);
                 }
                 if (j === "releases") {
-                    let s =gridsters[2].serialize();
+                    let s=getSerializeData(j);
                     s=JSON.parse(JSON.stringify(s));
                     s=Gridster.sort_by_row_and_col_asc(s);
                     let content = gridsters[2].serialize($(gridsters[2].$widgets[i]));
