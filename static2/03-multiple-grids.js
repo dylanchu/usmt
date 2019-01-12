@@ -55,26 +55,6 @@ function parseDom(arg) {
     return objE.childNodes;
 };
 
-function card_html(bg, text='') {
-    return '<li style="background:' + bg + '"><div>' + card_innerEl(text) + '</div></li>';
-};
-function setCardControls(x) {
-    x.style.background = '#ccc';
-    s = '<i class="card-delete fa fa-window-close fa-lg pull-right"></i>' +
-    '<i class="card-add-right fa fa-chevron-circle-right fa-lg"></i>' +
-    '<i class="card-add-bottom fa fa-chevron-circle-down fa-lg"></i>' +
-    '<i class="card-edit fa fa-pencil-square-o fa-2x"></i>';
-    x.innerHTML = s;
-};
-function setAllCardsControls() {
-    let a = document.getElementsByName('card-controls');
-    a.forEach(function(x){
-        setCardControls(x);
-    })
-};
-
-setAllCardsControls();
-
 for (x of document.getElementsByClassName('card-delete')) {
     x.onclick = function(){alert('Delete');};
 }
