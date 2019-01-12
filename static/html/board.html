@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -41,11 +41,12 @@
             position: absolute;
             top: 0;
             left: 175px;
-            color: #FFF;
+            color: #000000;
             opacity: 0.4;
             text-align: center;
             text-decoration: none;
             border: none;
+            outline: none;
         }
 
         .delete:hover {
@@ -143,9 +144,9 @@
 
             $('.js-seralize').on('click', function () {
                 let s = [];
-                gridsters[0].$widgets.each(function (i) { // map格式存储，i只是index
-                    let w = gridsters[0].$widgets[i];
-                    let arr = gridsters[0].serialize($(w));
+                gridsters[1].$widgets.each(function (i) { // map格式存储，i只是index
+                    let w = gridsters[1].$widgets[i];
+                    let arr = gridsters[1].serialize($(w));
                     arr[0].text = $(w).find($('span'))[0].textContent;
                     s = s.concat(arr)
                 });
@@ -163,44 +164,163 @@
                 serialization = Gridster.sort_by_row_and_col_asc(serialization);
                 gridsters[0].remove_all_widgets();
                 $.each(serialization, function () {
-                    gridsters[0].add_widget(card_html('#aed9e9'), this.size_x, this.size_y, this.col, this.row);
+                    gridsters[0].add_widget(card_html('#aed9e9','',"activity"), this.size_x, this.size_y, this.col, this.row);
                 });
                 gridsters[1].remove_all_widgets();
                 $.each(serialization, function () {
-                    gridsters[1].add_widget(card_html('#aed9e9'), this.size_x, this.size_y, this.col, this.row);
+                    gridsters[1].add_widget(card_html('#f4e459','',"tasks"), this.size_x, this.size_y, this.col, this.row);
                 });
                 gridsters[2].remove_all_widgets();
                 $.each(serialization, function () {
-                    gridsters[2].add_widget(card_html('#aed9e9'), this.size_x, this.size_y, this.col, this.row);
+                    gridsters[2].add_widget(card_html('#ffffff','',"releases"), this.size_x, this.size_y, this.col, this.row);
                 });
             });
 
-            function card_innerEl(text='') {
-                return '<span class="card card-text">' + text + '</span>' +
-                    '<i class="delete fa fa-window-close fa-2x"></i>' +
-                    '<i class="add fa fa-chevron-circle-right fa-lg"></i>' +
-                    '<i class="add_below fa fa-chevron-circle-down fa-lg"></i>' +
-                    '<i class="write fa fa-pencil-square-o fa-lg"></i>';
+            function card_innerEl(text='',part) {
+                let string= '<span class="card card-text">' + text + '</span>' +
+                '<i class="delete fa fa-window-close fa-2x"></i>' +
+                '<i class="add fa fa-chevron-circle-right fa-lg"></i>' +
+                '<i class="write fa fa-pencil-square-o fa-lg"></i>';
+
+                if(part=="activity" || part=="tasks"){
+                    return string;
+                }else{
+                    return string+ '<i class="add_below fa fa-chevron-circle-down fa-lg"></i>';
+                }
             }
-            function card_html(bg, text='') {
-                return '<li style="background:' + bg + '"><div>' + card_innerEl(text) + '</div></li>';
+
+            function card_html(bg, text='',part) {
+                return '<li style="background:' + bg + '"><div>' + card_innerEl(text,part) + '</div></li>';
             }
+
+            //s复制后的对象数组，必须以此种方式复制，否则可能每次temp的改变都会影响s的改变
+            function returnTemp(s){
+                let temp=[];
+                for(let l in s){
+                    let obj={
+                        col: s[l].col,
+                        row: s[l].row,
+                        size_x: 2,
+                        size_y: 3,
+                        text:s[l].text,
+                    };
+                    temp.push(obj);
+                }
+                return temp;
+            }
+
+            //找到触发点击事件的li右边是否存在li
+            function returnIndex(s,a,b){
+                let index=0;
+                for(let m in s){
+                    if(s[m].row==a && s[m].col==b+2){
+                        index=m;
+                    }
+                }
+                return index;
+            }
+
+            function getSerializeData(j){
+                let s = [];
+                if(j=="activity"){
+                    gridsters[0].$widgets.each(function (i) { // map格式存储，i只是index
+                        let w = gridsters[0].$widgets[i];
+                        let arr = gridsters[0].serialize($(w));
+                        arr[0].text = $(w).find($('span'))[0].textContent;
+                        s = s.concat(arr)
+                    });
+                }
+                if(j=="tasks"){
+                    gridsters[1].$widgets.each(function (i) { // map格式存储，i只是index
+                        let w = gridsters[1].$widgets[i];
+                        let arr = gridsters[1].serialize($(w));
+                        arr[0].text = $(w).find($('span'))[0].textContent;
+                        s = s.concat(arr)
+                    });
+                }
+                if(j=="releases"){
+                    gridsters[2].$widgets.each(function (i) { // map格式存储，i只是index
+                        let w = gridsters[2].$widgets[i];
+                        let arr = gridsters[2].serialize($(w));
+                        arr[0].text = $(w).find($('span'))[0].textContent;
+                        s = s.concat(arr)
+                    });
+                }
+                return s;
+            }
+
+            function process(temp,index,row,s,j){
+                for(let n in temp){
+                    if(temp[n].row ==row  && n>=index){
+                        temp[n].col+=2;
+                    }
+                }
+                let k=index;
+                for(k in s){
+                    if(j=="activity"){
+                        gridsters[0].remove_widget($('#activity li').eq(k));
+                    }
+                   if(j=="tasks"){
+                       gridsters[1].remove_widget($('#tasks li').eq(k));
+                   }
+                   if(j=="releases"){
+                       gridsters[2].remove_widget($('#releases li').eq(k));
+                   }
+                }
+                let t=index;
+                for(t in temp){
+                    if(j=="activity"){
+                        gridsters[0].add_widget(card_html('#aed9e9',temp[t].text,j), 2, 3, temp[t].col , temp[t].row);
+                    }
+                   if(j=="tasks"){
+                       gridsters[1].add_widget(card_html('#f4e459',temp[t].text,j), 2, 3, temp[t].col , temp[t].row);
+                   }
+                   if(j=="releases"){
+                       gridsters[2].add_widget(card_html('#fff',temp[t].text,j), 2, 3, temp[t].col , temp[t].row);
+                   }
+                }
+            }
+
             $(document).on('click', 'li .add', function () {
                 //获取点击按钮的最上层父元素
                 var i = $(this).parent().parent().index();
                 //获取点击按钮的最外层父元素的id值，以判断是gridster[0]还是gridster[1]
                 var j = $(this).parent().parent().parent().parent().attr('id');
                 if (j === "activity") {
+                    let s=getSerializeData(j);
+                    s=JSON.parse(JSON.stringify(s));
+                    s=Gridster.sort_by_row_and_col_asc(s);
                     let content = gridsters[0].serialize($(gridsters[0].$widgets[i]));
-                    gridsters[0].add_widget(card_html('#aed9e9'), 2, 3, content[0].col + 2, content[0].row);
+                    let index=returnIndex(s,content[0].row,content[0].col);
+                    if(index!=0){
+                        let temp=returnTemp(s);
+                        process(temp,index,content[0].row,s,j);
+                    }
+                    gridsters[0].add_widget(card_html('#aed9e9','',j), 2, 3, content[0].col + 2, content[0].row);
                 }
                 if (j === "tasks") {
+                    let s=getSerializeData(j);
+                    s=JSON.parse(JSON.stringify(s));
+                    s=Gridster.sort_by_row_and_col_asc(s);
                     let content = gridsters[1].serialize($(gridsters[1].$widgets[i]));
-                    gridsters[1].add_widget(card_html('#f4e459'), 2, 3, content[0].col + 2, content[0].row);
+                    let index=returnIndex(s,content[0].row,content[0].col);
+                    if(index!=0){
+                        let temp=returnTemp(s);
+                        process(temp,index,content[0].row,s,j);
+                    }
+                    gridsters[1].add_widget(card_html('#f4e459','',j), 2, 3, content[0].col + 2, content[0].row);
                 }
                 if (j === "releases") {
+                    let s=getSerializeData(j);
+                    s=JSON.parse(JSON.stringify(s));
+                    s=Gridster.sort_by_row_and_col_asc(s);
                     let content = gridsters[2].serialize($(gridsters[2].$widgets[i]));
-                    gridsters[2].add_widget(card_html('#fff'), 2, 3, content[0].col + 2, content[0].row);
+                    let index=returnIndex(s,content[0].row,content[0].col);
+                    if(index!=0){
+                        let temp=returnTemp(s);
+                        process(temp,index,content[0].row,s,j);
+                    }
+                    gridsters[2].add_widget(card_html('#fff','',j), 2, 3, content[0].col + 2, content[0].row);
                 }
 
             });
@@ -248,7 +368,7 @@
                 //获取点击按钮的最上层父元素
                 var i = $(this).parent().parent().index();
                 let content = gridsters[2].serialize($(gridsters[2].$widgets[i]));
-                gridsters[2].add_widget(card_html('#fff'), 2, 3, content[0].col + 2, content[0].row);
+                gridsters[2].add_widget(card_html('#fff','',"releases"), 2, 3, content[0].col, content[0].row+3);
 
             });
         });

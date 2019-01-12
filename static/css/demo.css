@@ -39,6 +39,7 @@ table {
   -webkit-box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
   background: #BBB;
+  background-repeat: repeat-x;
 }
 .gridster .preview-holder {
   border: none !important;
@@ -47,6 +48,7 @@ table {
 }
 .gridster {
   background-color: #DFDFDF;
+  background-repeat: repeat-x;
   font-size: 1em;
   font-weight: bold;
   /*text-align: center;*/
@@ -59,8 +61,7 @@ table {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 .gridster .gs-w.try {
-  background-image: url(../img/sprite.png);
-  background-repeat: no-repeat;
+  /*background-repeat: no-repeat;*/
   background-position: 37px -169px;
 }
 /*.gridster ul {*/
