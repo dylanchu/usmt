@@ -88,23 +88,22 @@ for (x of document.getElementsByClassName('card-add-bottom')) {
     };
 }
 for (x of document.getElementsByClassName('card-edit')) {
-    let pencil = x;
+    let card = x.parentElement.parentElement;  // x >> card-controls >> card
     x.onclick = function(){
         layer.prompt({
         formType: 2,
-        shadeClose: true, //点击遮罩关闭层
+        shadeClose: true,  // 点击遮罩关闭层
         title: '请输入内容',
-        value:'',    // 文本默认值
-        area: ['500px', '220px'],     // 设置弹出层大小
-        btn: ['保存', '取消'],    // 自定义设置多个按钮
+        value: $(card).find('.text')[0].textContent,  // 文本默认值
+        area: ['500px', '220px'],  // 弹出层大小
+        btn: ['保存', '取消'],
         btn1: function(index, elem){
             layer.close(index);
         },
         btnAlign: 'c',
         }, function(value, index, elem){
             if (value) {
-                // pencil >> card-controls >> card
-                $(pencil.parentElement.parentElement).find('.text')[0].textContent = value;
+                $(card).find('.text')[0].textContent = value;
             }
             layer.close(index);
         });
