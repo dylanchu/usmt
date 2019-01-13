@@ -40,12 +40,11 @@ vm1 = new Vue({
 
     methods: {
         coordinates: (event) => {
-            /* 返回被点击卡片的：level, x, y */
-            /* level:从1开始; x,y:从0开始 */
+            /* 返回被点击卡片的: layout_i, x, y; 均从0开始 */
             let card = event.target.parentElement.parentElement;
             let cardLevel = card.className.match(/.*level(\d+)/)[1];
             let x_y = card.getElementsByClassName('x_y')[0].textContent.split('_');
-            return {level: cardLevel, x: x_y[0], y:x_y[1]};
+            return {"layout_i": parseInt(cardLevel)-1, "x": parseInt(x_y[0]), "y": parseInt(x_y[1])};
         },
         remove: function(event) {  // 'delete' wont work, maybe conflicts
             alert('Delete');
@@ -56,11 +55,16 @@ vm1 = new Vue({
             // var item = {"x":2,"y":0,"w":1,"h":1,"i":"wow"};
             // this.layout.push(item);
         },
-        addBottom: function(event) {
+        addBottom: function(event) {  // 移动时有bug..
             coor = this.coordinates(event);
-            alert(coor.level + ' ' + coor.x + ' ' + coor.y)
-            // var item = {"x":2,"y":0,"w":1,"h":1,"i":"wow"};
-            // this.layout.push(item);
+            // alert(coor.level + ' ' + coor.x + ' ' + coor.y)
+            // var item = {"x":coor.x,"y":coor.y+1,"w":1,"h":1,"i":"ww"};
+            // for (let c of this.layouts[coor.layout_i]) {
+            //     if (c.x === item.x){
+            //         if (c.y >= item.y) { c.y++ }
+            //     }
+            // }
+            this.layouts[coor.layout_i].push({"x":coor.x,"y":coor.y+1,"w":1,"h":1,"i":""});
         },
         editText: (event) => {
             // alert('Edit');
