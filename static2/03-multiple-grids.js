@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
 document.title = 'story map';
 const cardWidth = 200;
 variables = new Vue({
@@ -35,17 +36,17 @@ vm1 = new Vue({
         // 需要引用this的时候不要用lambda函数，否则this会是调用者window！！
         addCard: function(layout_index, card) {  // pass in: co.i, card
             // console.log(card)
-            _item = new Object();
+            _item = {};
             // 强制设置卡片宽高为1,1;并分配unique_id:
                 // 成员"i"是item的唯一标识，相同值会导致拖拽有bug.
             Object.assign(_item, card, {"w":1,"h":1,"i":this.unique_id++});
             while (this.layouts.length < Number(layout_index) + 1) {
                 // console.log(this.layouts.length, Number(layout_index) + 1)
-                this.layouts.push([])
+                this.layouts.push([]);
             }
             this.layouts[layout_index].push(_item);
             if (this.colNum < _item.x) {
-                this.colNum = _item.x + 1
+                this.colNum = _item.x + 1;
             }
         },
         coordinates: (card) => {
@@ -67,9 +68,9 @@ vm1 = new Vue({
                 for (let o of this.layouts[i]) {
                     if (o.x > x) {
                         o.x += delta;
-                    };
-                };
-            };
+                    }
+                }
+            }
             this.colNum = Math.floor(this.colNum + delta);
         },
         sortLayoutBy: function(layout, priority) {
@@ -80,12 +81,12 @@ vm1 = new Vue({
             // console.log('x,y,i');
             // for (l of layout) {console.log(l.x + ' ' + l.y + ' ' + l.i)};
             if (priority == 'xy') {
-                layout.sort((m1, m2) => {return m1.y - m2.y});
-                layout.sort((m1, m2) => {return m1.x - m2.x});
+                layout.sort((m1, m2) => {return m1.y - m2.y;});
+                layout.sort((m1, m2) => {return m1.x - m2.x;});
             } else if (priority == 'yx') {
-                layout.sort((m1, m2) => {return m1.x - m2.x});
-                layout.sort((m1, m2) => {return m1.y - m2.y});
-            };
+                layout.sort((m1, m2) => {return m1.x - m2.x;});
+                layout.sort((m1, m2) => {return m1.y - m2.y;});
+            }
             // console.log('\nafter sort');
             // console.log('x,y,i');
             // for (l of layout) {console.log(l.x + ' ' + l.y + ' ' + l.i)};
@@ -96,8 +97,8 @@ vm1 = new Vue({
                 for (let item of yourLayouts[i]) {
                     // console.log(item);
                     this.addCard(i, item);
-                };
-            };
+                }
+            }
         },
         remove: function(event) {  // name 'delete' wont work, maybe conflicts
             alert('Delete');
@@ -125,7 +126,7 @@ vm1 = new Vue({
                 }
             }
             if (co.i == 1) {  // 点击了第2层卡片，直接添加到层3行1
-                target = 2
+                target = 2;
                 item.y = 0;
             }
             this.addCard(target, item);
@@ -144,7 +145,7 @@ vm1 = new Vue({
                     layer.close(index);
                 },
                 btnAlign: 'c',
-                }, (value, index, elem) => {
+                }, (value, index) => {
                     if (value) {
                         $(card).find('.text')[0].textContent = value;
                     }
@@ -158,7 +159,7 @@ function parseDom(arg) {
     let objE = document.createElement("div");
     objE.innerHTML = arg;
     return objE.childNodes;
-};
+}
 
 mylayouts = [
     [
