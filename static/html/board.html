@@ -195,7 +195,7 @@
                 });
             });
 
-            function card_innerEl(text='',part) {
+            function card_innerEl(text,part) {
                 let string= '<span class="card card-text">' + text + '</span>' +
                 '<i class="delete fa fa-window-close fa-2x"></i>' +
                 '<i class="add fa fa-chevron-circle-right fa-lg"></i>' +
@@ -208,7 +208,7 @@
                 }
             }
 
-            function card_html(bg, text='',part) {
+            function card_html(bg, text,part) {
                 return '<li style="background:' + bg + '"><div>' + card_innerEl(text,part) + '</div></li>';
             }
 
@@ -395,7 +395,7 @@
                     formType: 2,
                     shadeClose: true, //点击遮罩关闭层
                     title: '请输入内容',
-                    value:'',    // 文本默认值
+                    value:$(pencil.parentElement).find($('span'))[0].textContent,    // 文本默认值
                     area: ['500px', '240px'],     // 设置弹出层大小
                     btn: ['保存', '取消'],    // 自定义设置多个按钮
                     btn1: function(index, elem){
@@ -419,11 +419,11 @@
                 let j = $(this).parent().parent().parent().parent().attr('id');
                 if(j=="releases1"){
                     let content = gridsters[2].serialize($(gridsters[2].$widgets[i]));
-                    gridsters[2].add_widget(card_html('#fff','',"releases"), 2, 3, content[0].col, content[0].row+3);
+                    gridsters[2].add_widget(card_html('#fff','',"releases1"), 2, 3, content[0].col, content[0].row+3);
                 }
                 if(j=="releases2"){
                     let content = gridsters[3].serialize($(gridsters[3].$widgets[i]));
-                    gridsters[3].add_widget(card_html('#fff','',"releases"), 2, 3, content[0].col, content[0].row+3);
+                    gridsters[3].add_widget(card_html('#fff','',"releases2"), 2, 3, content[0].col, content[0].row+3);
                 }
             });
         });
