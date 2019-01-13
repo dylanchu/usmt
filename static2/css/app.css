@@ -52,13 +52,13 @@ div {margin:0;border:0;padding:0;}
 }
 
 .card {  /* releases */
-    background: #d0e0d0 !important;
+    background: #a0e0b0 !important;
 }
 .card.level1 {  /* activities */
     background: #aed9e9 !important;
 }
 .card.level2 {  /* tasks */
-    background: #f4e459 !important;
+    background: #f4e466 !important;
 }
 
 .vue-grid-layout {

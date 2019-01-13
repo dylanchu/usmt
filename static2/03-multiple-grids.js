@@ -17,76 +17,73 @@ variables = new Vue({
             document.title = newValue + ' story map';
         }
     },
-})
+});
 
 vm1 = new Vue({
     el: '#app1',
     data: {
+        // 若要在methods中访问，不可以_开头？
         layouts: [
-            [
-                {"x":0,"y":0,"w":1,"h":1,"i":"0"},
-                {"x":1,"y":0,"w":1,"h":1,"i":"得劲不老哥"},
-            ],
-            [
-                {"x":0,"y":0,"w":1,"h":1,"i":"0"},
-                {"x":2,"y":0,"w":1,"h":1,"i":"1"},
-                {"x":3,"y":0,"w":1,"h":1,"i":"2"},
-            ],
-            [
-                {"x":0,"y":0,"w":1,"h":1,"i":"0"},
-            ],
+           // don't put any code here
+           // use addCard() if you want to add your layout
         ],
-        index: 0,
+        unique_id: 0,  // 不要随意手动设置它
     },
 
     methods: {
-        sortLayoutByXY: (layout) => {
-            if (!Array.isArray(layout)){
-                console.error('layout to sort must be array');
+        // 需要引用this的时候不要用lambda函数，否则this会是调用者window！！
+        addCard: function(layout_index, card) {  // pass in: co.i, card
+            console.log(card)
+            _item = new Object();
+            // 强制设置卡片宽高为1,1;并分配unique_id:
+                // 成员"i"是item的唯一标识，相同值会导致拖拽有bug.
+            Object.assign(_item, card, {"w":1,"h":1,"i":this.unique_id++});
+            while (this.layouts.length < Number(layout_index) + 1) {
+                // console.log(this.layouts.length, Number(layout_index) + 1)
+                this.layouts.push([])
             }
-            console.log('before sort')
-            console.log('x,y,i')
-            for (l of layout) {console.log(l.x + ' ' + l.y + ' ' + l.i)}
-            layout.sort((m1, m2) => {return m1.y - m2.y})
-            layout.sort((m1, m2) => {return m1.x - m2.x})
-            console.log('\nafter sort')
-            console.log('x,y,i')
-            for (l of layout) {console.log(l.x + ' ' + l.y + ' ' + l.i)}
+            this.layouts[layout_index].push(_item);
         },
         coordinates: (card) => {
-            /* card为原生dom对象，返回卡片的: layout_i, x, y, 均从0开始 */
+            /* card为原生dom对象，返回卡片的: i(layouts index), x, y, 均从0开始 */
             let cardLevel = card.className.match(/.*level(\d+)/)[1];
             let x_y = card.getElementsByClassName('x_y')[0].textContent.split('_');
-            return {"layout_i": parseInt(cardLevel)-1, "x": parseInt(x_y[0]), "y": parseInt(x_y[1])};
+            return {"i": parseInt(cardLevel)-1, "x": parseInt(x_y[0]), "y": parseInt(x_y[1])};
         },
-        remove: function(event) {  // 'delete' wont work, maybe conflicts
+        hasCard: function(i, x, y) {
+            if (i < this.layouts.length) {
+                for (let c of this.layouts[i]) {
+                    if (c.x == x && c.y == y) return true;
+                }
+            }
+            return false;
+        },
+        remove: function(event) {  // name 'delete' wont work, maybe conflicts
             alert('Delete');
             // this.layout.splice(this.layout.indexOf(item), 1);
         },
         addRight: function(event) {
             alert('Add Right');
-            // var item = {"x":2,"y":0,"w":1,"h":1,"i":"wow"};
-            // this.layout.push(item);
         },
-        addBottom: function(event) {  // 移动时有bug..
+        addBottom: function(event) {
             let card = event.target.parentElement.parentElement;
-            coor = this.coordinates(card);
-            // alert(coor.level + ' ' + coor.x + ' ' + coor.y)
-            // var item = {"x":coor.x,"y":coor.y+1,"w":1,"h":1,"i":"ww"};
-            // for (let c of this.layouts[coor.layout_i]) {
-            //     if (c.x === item.x){
-            //         if (c.y >= item.y) { c.y++ }
-            //     }
-            // }
-            this.layouts[coor.layout_i].push({"x":coor.x,"y":coor.y+1,"w":1,"h":1,"i":""});
-            // this.layouts[coor.layout_i].push({"x":1,"y":1,"w":1,"h":1,"i":""});
-        },
-        addItem: function() {
-            var self = this;
-            //console.log("### LENGTH: " + this.layout.length);
-            var item = {"x":0,"y":0,"w":1,"h":1,"i":this.index+"", whatever: "bbb"};
-            this.index++;
-            this.layouts[1].push(item);
+            let co = this.coordinates(card);
+            let target = co.i;
+            let item = {"x":co.x,"y":co.y+1,"text":""};
+            if (co.i == 0) {  // 点击了第1层卡片
+                console.log('第二层有卡片? ' + this.hasCard(co.i+1,co.x,co.y))
+                item.y = 0;  // 添加到第1行
+                if (this.hasCard(1, co.x, co.y)) {  // 添加到层3
+                    target = 2;
+                } else {  // 添加到2层
+                    target = 1;
+                }
+            }
+            if (co.i == 1) {  // 点击了第2层卡片，直接添加到层3行1
+                target = 2
+                item.y = 0;
+            }
+            this.addCard(target, item);
         },
         editText: (event) => {
             // alert('Edit');
@@ -113,7 +110,47 @@ vm1 = new Vue({
 });
 
 function parseDom(arg) {
-    var objE = document.createElement("div");
+    let objE = document.createElement("div");
     objE.innerHTML = arg;
     return objE.childNodes;
 };
+
+mylayouts = [
+    [
+        {"x":0,"y":0,"w":1,"h":1, "text": "你好"},
+        {"x":1,"y":0,"w":1,"h":1, "text": "我很抱歉我的朋友"},
+    ],
+    [
+        {"x":0,"y":0,"w":2,"h":2},
+        {"x":2,"y":0,"w":2,"h":2},
+        {"x":3,"y":0,"w":1,"h":1},
+    ],
+    [
+        {"x":0,"y":0,"w":1,"h":1},
+    ],
+];
+
+function load(mylayouts) {
+    for (let i in mylayouts) {
+        for (let item of mylayouts[i]) {
+            console.log(item);
+            vm1.addCard(i, item);
+        }
+    }
+};
+
+load(mylayouts);
+
+function sortLayoutByXY(layout) {
+    if (!Array.isArray(layout)){
+        console.error('layout to sort must be array');
+    }
+    console.log('before sort');
+    console.log('x,y,i');
+    for (l of layout) {console.log(l.x + ' ' + l.y + ' ' + l.i)};
+    layout.sort((m1, m2) => {return m1.y - m2.y});
+    layout.sort((m1, m2) => {return m1.x - m2.x});
+    console.log('\nafter sort');
+    console.log('x,y,i');
+    for (l of layout) {console.log(l.x + ' ' + l.y + ' ' + l.i)};
+}

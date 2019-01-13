@@ -51,6 +51,7 @@
                     :h="item.h"
                     :i="item.i"
                     :class="'card level'+(index+1)"
+                    :key="index+''+item.id"
         >
             <span class="text">{{item.i}}</span>
             <span class='x_y' style="visibility: hidden;">{{item.x}}_{{item.y}}</span>
