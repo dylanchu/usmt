@@ -4,15 +4,10 @@ variables = new Vue({
     el: '#variables',
     data: {
         prjName: '',
-        colNum: screen.width/cardWidth,
-        widthData: screen.width + 'px',
         cardMargin: [6, 6],  // default is 10
         layoutHeight: 140,
     },
     watch: {
-        colNum: function(newValue){  // 保证卡片宽度视觉上不变
-            this.widthData = cardWidth*newValue + 'px';
-        },
         prjName: (newValue) => {  // 设置title
             document.title = newValue + ' story map';
         }
@@ -28,8 +23,14 @@ vm1 = new Vue({
            // use addCard() if you want to add your layout
         ],
         unique_id: 0,  // 不要随意手动设置它
+        colNum: screen.width/cardWidth,
+        widthData: screen.width + 'px',
     },
-
+    watch: {
+        colNum: function(newValue){  // 保证卡片宽度视觉上不变
+            this.widthData = cardWidth*newValue + 'px';
+        },
+    },
     methods: {
         // 需要引用this的时候不要用lambda函数，否则this会是调用者window！！
         addCard: function(layout_index, card) {  // pass in: co.i, card
@@ -58,12 +59,26 @@ vm1 = new Vue({
             }
             return false;
         },
+        shiftCardsOnRight: function(x, delta) {
+            for (let i in this.layouts) {
+                for (let o of this.layouts[i]) {
+                    if (o.x > x) {
+                        o.x += delta;
+                    };
+                };
+            };
+            this.colNum = Math.floor(this.colNum + delta);
+        },
         remove: function(event) {  // name 'delete' wont work, maybe conflicts
             alert('Delete');
             // this.layout.splice(this.layout.indexOf(item), 1);
         },
         addRight: function(event) {
-            alert('Add Right');
+            let card = event.target.parentElement.parentElement;
+            let co = this.coordinates(card);
+            this.shiftCardsOnRight(co.x, 1);
+            let item = {"x":co.x+1,"y":co.y,"text":""};
+            this.addCard(co.i, item);
         },
         addBottom: function(event) {
             let card = event.target.parentElement.parentElement;

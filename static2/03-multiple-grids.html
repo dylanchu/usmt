@@ -23,7 +23,7 @@
 <span id="variables" style="display: none"></span>
 
 <h3 style="color: #777; margin: 10px;">Story Map</h3>
-<div id="app1" v-bind:style="{width: variables.widthData}">
+<div id="app1" v-bind:style="{width: widthData}">
     <!-- <div class="layoutJSON">
         Displayed as <code>[x, y, w, h]</code><br><br>
         <div class="columns">
@@ -35,7 +35,7 @@
     </div> -->
     <grid-layout v-for="(layout,index) in layouts"
                     :layout="layout"
-                    :col-num="variables.colNum"
+                    :col-num="colNum"
                     :row-height="variables.layoutHeight"
                     :margin="variables.cardMargin"
                     :is-draggable="true"
@@ -51,7 +51,6 @@
                     :h="item.h"
                     :i="item.i"
                     :class="'card level'+(index+1)"
-                    :key="index+''+item.id"
         >
             <span class="text">{{item.i}}</span>
             <span class='x_y' style="visibility: hidden;">{{item.x}}_{{item.y}}</span>
