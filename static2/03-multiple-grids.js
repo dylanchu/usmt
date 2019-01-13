@@ -35,10 +35,24 @@ vm1 = new Vue({
             [
                 {"x":0,"y":0,"w":1,"h":1,"i":"0"},
             ],
-        ]
+        ],
+        index: 0,
     },
 
     methods: {
+        sortLayoutByXY: (layout) => {
+            if (!Array.isArray(layout)){
+                console.error('layout to sort must be array');
+            }
+            console.log('before sort')
+            console.log('x,y,i')
+            for (l of layout) {console.log(l.x + ' ' + l.y + ' ' + l.i)}
+            layout.sort((m1, m2) => {return m1.y - m2.y})
+            layout.sort((m1, m2) => {return m1.x - m2.x})
+            console.log('\nafter sort')
+            console.log('x,y,i')
+            for (l of layout) {console.log(l.x + ' ' + l.y + ' ' + l.i)}
+        },
         coordinates: (card) => {
             /* card为原生dom对象，返回卡片的: layout_i, x, y, 均从0开始 */
             let cardLevel = card.className.match(/.*level(\d+)/)[1];
@@ -67,13 +81,13 @@ vm1 = new Vue({
             this.layouts[coor.layout_i].push({"x":coor.x,"y":coor.y+1,"w":1,"h":1,"i":""});
             // this.layouts[coor.layout_i].push({"x":1,"y":1,"w":1,"h":1,"i":""});
         },
-        // addItem: function() {
-        //     var self = this;
-        //     //console.log("### LENGTH: " + this.layout.length);
-        //     var item = {"x":0,"y":0,"w":2,"h":2,"i":this.index+"", whatever: "bbb"};
-        //     this.index++;
-        //     this.layout.push(item);
-        // },
+        addItem: function() {
+            var self = this;
+            //console.log("### LENGTH: " + this.layout.length);
+            var item = {"x":0,"y":0,"w":1,"h":1,"i":this.index+"", whatever: "bbb"};
+            this.index++;
+            this.layouts[1].push(item);
+        },
         editText: (event) => {
             // alert('Edit');
             let card = event.target.parentElement.parentElement;
