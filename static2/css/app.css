@@ -1,3 +1,5 @@
+div {margin:0;border:0;padding:0;}
+
 #content {
     /*width: 100%;*/
     width: auto;
@@ -29,7 +31,8 @@
     color: #000;
     opacity: 0.1;
     text-decoration: none;
-    padding-right: 1%;
+    padding-top: 1%;
+    padding-right: 0.5%;
     border: none;
 }
 .card-delete:hover {
@@ -48,26 +51,28 @@
     cursor: pointer;
 }
 
-.card-activities {
+.card {  /* releases */
+    background: #d0e0d0 !important;
+}
+.card.level1 {  /* activities */
     background: #aed9e9 !important;
 }
-.card-tasks {
+.card.level2 {  /* tasks */
     background: #f4e459 !important;
-}
-.card-releases {
-    background: #d0e0d0 !important;
 }
 
 .vue-grid-layout {
     background: #eee;
+    border-top: dashed #ccc 1px;
     cursor: default;
+}
+.vue-grid-layout.level1 {
+    border-top: none;
 }
 
 .layoutJSON {
     background: #ddd;
-    border: 1px solid black;
-    margin-top: 10px;
-    padding: 10px;
+    padding-left: 10px;
 }
 
 .eventsJSON {
@@ -80,9 +85,9 @@
 }
 
 .columns {
-    -moz-columns: 120px;
-    -webkit-columns: 120px;
-    columns: 120px;
+    -moz-columns: 80px;
+    -webkit-columns: 80px;
+    columns: 80px;
 }
 
 .placeholder.horizontal {
@@ -110,6 +115,7 @@
 .vue-grid-item:not(.vue-grid-placeholder) {
     background: #ccc;
     /* border: 1px solid rgb(235, 160, 160); */
+    box-shadow: 1px 1px 4px #aaa;
 }
 
 .vue-grid-item.resizing {
