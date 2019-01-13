@@ -95,6 +95,23 @@ div {margin:0;border:0;padding:0;}
     padding-bottom: 50px;
 }
 
+.title {
+    height: 50px;
+    align-items:Center;
+    /* display: flex; */
+}
+.title .col-num-1 {
+    float: left;
+    color: #777;
+    margin-left: 12px;
+}
+.title .col-reload {
+    float: left;
+    margin: 25px;
+    color: #ddd;
+    cursor: pointer;
+    /* justify-content:center; */
+}
 
 /*.vue-resizable-handle {
     z-index: 5000;

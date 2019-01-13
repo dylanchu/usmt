@@ -100,6 +100,10 @@ vm1 = new Vue({
                 }
             }
         },
+        reloadLayouts: function(yourLayouts) {
+            this.layouts = [];
+            this.loadLayouts(yourLayouts);
+        },
         remove: function(event) {  // name 'delete' wont work, maybe conflicts
             alert('Delete');
             // this.layout.splice(this.layout.indexOf(item), 1);
@@ -155,26 +159,36 @@ vm1 = new Vue({
     }
 });
 
+title_app = new Vue({
+    el: '#title',
+    data: {
+        mylayouts: [
+            [
+                {"x":0,"y":0,"w":1,"h":1, "text": "你好"},
+                {"x":1,"y":0,"w":1,"h":1, "text": "我很抱歉我的朋友"},
+            ],
+            [
+                {"x":0,"y":0,"w":2,"h":2},
+                {"x":2,"y":0,"w":2,"h":2},
+                {"x":3,"y":0,"w":1,"h":1},
+                {"x":9,"y":0,"w":1,"h":1},
+            ],
+            [
+                {"x":0,"y":0,"w":1,"h":1},
+            ],
+        ],
+    },
+    methods: {
+        reload: function() {
+            vm1.reloadLayouts(this.mylayouts);
+        },
+    }
+});
+
 function parseDom(arg) {
     let objE = document.createElement("div");
     objE.innerHTML = arg;
     return objE.childNodes;
 }
 
-mylayouts = [
-    [
-        {"x":0,"y":0,"w":1,"h":1, "text": "你好"},
-        {"x":1,"y":0,"w":1,"h":1, "text": "我很抱歉我的朋友"},
-    ],
-    [
-        {"x":0,"y":0,"w":2,"h":2},
-        {"x":2,"y":0,"w":2,"h":2},
-        {"x":3,"y":0,"w":1,"h":1},
-        {"x":9,"y":0,"w":1,"h":1},
-    ],
-    [
-        {"x":0,"y":0,"w":1,"h":1},
-    ],
-];
-
-vm1.loadLayouts(mylayouts);
+vm1.loadLayouts(title_app.mylayouts);

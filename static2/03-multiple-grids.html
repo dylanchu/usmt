@@ -21,7 +21,10 @@
 
 <span id="variables" style="display: none"></span>
 
-<h3 style="color: #777; margin: 10px;">Story Map</h3>
+<div id="title" class="title">
+    <h3 class="col-num-1">Story Map</h3>
+    <i class="col-reload fa fa-refresh" @click="reload"></i>
+</div>
 <div id="app1" v-bind:style="{width: widthData}">
     <!-- <div class="layoutJSON">
         Displayed as <code>[x, y, w, h]</code><br><br>
