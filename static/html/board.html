@@ -98,6 +98,13 @@
             align-content: center;
             display: none;
         }
+
+        p {
+            margin: 6px;
+            color:#61A9CF;
+            font-family: "Times New Roman";
+            font-weight: 700;
+        }
     </style>
 </head>
 
@@ -120,7 +127,14 @@
         </ul>
     </div>
 
-    <div id="releases" class="gridster card">
+    <p>- Release1</p>
+    <div id="releases1" class="gridster card">
+        <ul>
+        </ul>
+    </div>
+
+    <p>- Release2</p>
+    <div id="releases2" class="gridster card">
         <ul>
         </ul>
     </div>
@@ -140,7 +154,8 @@
         $(function () {
             gridsters[0] = $("#activity ul").gridster(gridster_style).data('gridster');
             gridsters[1] = $("#tasks ul").gridster(gridster_style).data('gridster');
-            gridsters[2] = $("#releases ul").gridster(gridster_style).data('gridster');
+            gridsters[2] = $("#releases1 ul").gridster(gridster_style).data('gridster');
+            gridsters[3] = $("#releases2 ul").gridster(gridster_style).data('gridster');
 
             $('.js-seralize').on('click', function () {
                 let s = [];
@@ -172,7 +187,11 @@
                 });
                 gridsters[2].remove_all_widgets();
                 $.each(serialization, function () {
-                    gridsters[2].add_widget(card_html('#ffffff','',"releases"), this.size_x, this.size_y, this.col, this.row);
+                    gridsters[2].add_widget(card_html('#ffffff','',"releases1"), this.size_x, this.size_y, this.col, this.row);
+                });
+                gridsters[3].remove_all_widgets();
+                $.each(serialization, function () {
+                    gridsters[3].add_widget(card_html('#ffffff','',"releases2"), this.size_x, this.size_y, this.col, this.row);
                 });
             });
 
@@ -238,10 +257,18 @@
                         s = s.concat(arr)
                     });
                 }
-                if(j=="releases"){
+                if(j=="releases1"){
                     gridsters[2].$widgets.each(function (i) { // map格式存储，i只是index
                         let w = gridsters[2].$widgets[i];
                         let arr = gridsters[2].serialize($(w));
+                        arr[0].text = $(w).find($('span'))[0].textContent;
+                        s = s.concat(arr)
+                    });
+                }
+                if(j=="releases2"){
+                    gridsters[3].$widgets.each(function (i) { // map格式存储，i只是index
+                        let w = gridsters[3].$widgets[i];
+                        let arr = gridsters[3].serialize($(w));
                         arr[0].text = $(w).find($('span'))[0].textContent;
                         s = s.concat(arr)
                     });
@@ -263,9 +290,12 @@
                    if(j=="tasks"){
                        gridsters[1].remove_widget($('#tasks li').eq(k));
                    }
-                   if(j=="releases"){
-                       gridsters[2].remove_widget($('#releases li').eq(k));
+                   if(j=="releases1"){
+                       gridsters[2].remove_widget($('#releases1 li').eq(k));
                    }
+                    if(j=="releases2"){
+                        gridsters[3].remove_widget($('#releases2 li').eq(k));
+                    }
                 }
                 let t=index;
                 for(t in temp){
@@ -275,9 +305,12 @@
                    if(j=="tasks"){
                        gridsters[1].add_widget(card_html('#f4e459',temp[t].text,j), 2, 3, temp[t].col , temp[t].row);
                    }
-                   if(j=="releases"){
+                   if(j=="releases1"){
                        gridsters[2].add_widget(card_html('#fff',temp[t].text,j), 2, 3, temp[t].col , temp[t].row);
                    }
+                    if(j=="releases2"){
+                        gridsters[3].add_widget(card_html('#fff',temp[t].text,j), 2, 3, temp[t].col , temp[t].row);
+                    }
                 }
             }
 
@@ -310,7 +343,8 @@
                     }
                     gridsters[1].add_widget(card_html('#f4e459','',j), 2, 3, content[0].col + 2, content[0].row);
                 }
-                if (j === "releases") {
+                //通过j.substring(j.length-1)获取release后面的数字，从而确定gridster[x]中x代表的值
+                if (j === "releases1") {
                     let s=getSerializeData(j);
                     s=JSON.parse(JSON.stringify(s));
                     s=Gridster.sort_by_row_and_col_asc(s);
@@ -322,7 +356,18 @@
                     }
                     gridsters[2].add_widget(card_html('#fff','',j), 2, 3, content[0].col + 2, content[0].row);
                 }
-
+                if (j === "releases2") {
+                    let s=getSerializeData(j);
+                    s=JSON.parse(JSON.stringify(s));
+                    s=Gridster.sort_by_row_and_col_asc(s);
+                    let content = gridsters[3].serialize($(gridsters[3].$widgets[i]));
+                    let index=returnIndex(s,content[0].row,content[0].col);
+                    if(index!=0){
+                        let temp=returnTemp(s);
+                        process(temp,index,content[0].row,s,j);
+                    }
+                    gridsters[3].add_widget(card_html('#fff','',j), 2, 3, content[0].col + 2, content[0].row);
+                }
             });
 
             $(document).on('click', 'li .delete', function () {
@@ -336,8 +381,11 @@
                 if (j === "tasks") {
                     gridsters[1].remove_widget($('#tasks li').eq(i));
                 }
-                if (j === "releases") {
-                    gridsters[2].remove_widget($('#releases li').eq(i));
+                if (j === "releases1") {
+                    gridsters[2].remove_widget($('#releases1 li').eq(i));
+                }
+                if (j === "releases2") {
+                    gridsters[3].remove_widget($('#releases2 li').eq(i));
                 }
             });
 
@@ -366,10 +414,17 @@
 
             $(document).on('click', 'li .add_below', function () {
                 //获取点击按钮的最上层父元素
-                var i = $(this).parent().parent().index();
-                let content = gridsters[2].serialize($(gridsters[2].$widgets[i]));
-                gridsters[2].add_widget(card_html('#fff','',"releases"), 2, 3, content[0].col, content[0].row+3);
-
+                let i = $(this).parent().parent().index();
+                //获取点击按钮的最外层父元素的id值，以判断是gridster[0]还是gridster[1]
+                let j = $(this).parent().parent().parent().parent().attr('id');
+                if(j=="releases1"){
+                    let content = gridsters[2].serialize($(gridsters[2].$widgets[i]));
+                    gridsters[2].add_widget(card_html('#fff','',"releases"), 2, 3, content[0].col, content[0].row+3);
+                }
+                if(j=="releases2"){
+                    let content = gridsters[3].serialize($(gridsters[3].$widgets[i]));
+                    gridsters[3].add_widget(card_html('#fff','',"releases"), 2, 3, content[0].col, content[0].row+3);
+                }
             });
         });
     </script>
