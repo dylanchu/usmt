@@ -34,7 +34,7 @@ vm1 = new Vue({
     methods: {
         // 需要引用this的时候不要用lambda函数，否则this会是调用者window！！
         addCard: function(layout_index, card) {  // pass in: co.i, card
-            console.log(card)
+            // console.log(card)
             _item = new Object();
             // 强制设置卡片宽高为1,1;并分配unique_id:
                 // 成员"i"是item的唯一标识，相同值会导致拖拽有bug.
@@ -44,6 +44,9 @@ vm1 = new Vue({
                 this.layouts.push([])
             }
             this.layouts[layout_index].push(_item);
+            if (this.colNum < _item.x) {
+                this.colNum = _item.x + 1
+            }
         },
         coordinates: (card) => {
             /* card为原生dom对象，返回卡片的: i(layouts index), x, y, 均从0开始 */
@@ -69,6 +72,33 @@ vm1 = new Vue({
             };
             this.colNum = Math.floor(this.colNum + delta);
         },
+        sortLayoutBy: function(layout, priority) {
+            if (!Array.isArray(layout)){
+                console.error('layout to sort must be array');
+            }
+            // console.log('before sort');
+            // console.log('x,y,i');
+            // for (l of layout) {console.log(l.x + ' ' + l.y + ' ' + l.i)};
+            if (priority == 'xy') {
+                layout.sort((m1, m2) => {return m1.y - m2.y});
+                layout.sort((m1, m2) => {return m1.x - m2.x});
+            } else if (priority == 'yx') {
+                layout.sort((m1, m2) => {return m1.x - m2.x});
+                layout.sort((m1, m2) => {return m1.y - m2.y});
+            };
+            // console.log('\nafter sort');
+            // console.log('x,y,i');
+            // for (l of layout) {console.log(l.x + ' ' + l.y + ' ' + l.i)};
+        },
+        loadLayouts: function(yourLayouts) {
+            for (let i in yourLayouts) {
+                // this.sortLayoutBy(yourLayouts[i], 'yx');
+                for (let item of yourLayouts[i]) {
+                    // console.log(item);
+                    this.addCard(i, item);
+                };
+            };
+        },
         remove: function(event) {  // name 'delete' wont work, maybe conflicts
             alert('Delete');
             // this.layout.splice(this.layout.indexOf(item), 1);
@@ -86,7 +116,7 @@ vm1 = new Vue({
             let target = co.i;
             let item = {"x":co.x,"y":co.y+1,"text":""};
             if (co.i == 0) {  // 点击了第1层卡片
-                console.log('第二层有卡片? ' + this.hasCard(co.i+1,co.x,co.y))
+                // console.log('第二层有卡片? ' + this.hasCard(co.i+1,co.x,co.y));
                 item.y = 0;  // 添加到第1行
                 if (this.hasCard(1, co.x, co.y)) {  // 添加到层3
                     target = 2;
@@ -139,33 +169,11 @@ mylayouts = [
         {"x":0,"y":0,"w":2,"h":2},
         {"x":2,"y":0,"w":2,"h":2},
         {"x":3,"y":0,"w":1,"h":1},
+        {"x":9,"y":0,"w":1,"h":1},
     ],
     [
         {"x":0,"y":0,"w":1,"h":1},
     ],
 ];
 
-function load(mylayouts) {
-    for (let i in mylayouts) {
-        for (let item of mylayouts[i]) {
-            console.log(item);
-            vm1.addCard(i, item);
-        }
-    }
-};
-
-load(mylayouts);
-
-function sortLayoutByXY(layout) {
-    if (!Array.isArray(layout)){
-        console.error('layout to sort must be array');
-    }
-    console.log('before sort');
-    console.log('x,y,i');
-    for (l of layout) {console.log(l.x + ' ' + l.y + ' ' + l.i)};
-    layout.sort((m1, m2) => {return m1.y - m2.y});
-    layout.sort((m1, m2) => {return m1.x - m2.x});
-    console.log('\nafter sort');
-    console.log('x,y,i');
-    for (l of layout) {console.log(l.x + ' ' + l.y + ' ' + l.i)};
-}
+vm1.loadLayouts(mylayouts);
