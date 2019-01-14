@@ -104,9 +104,23 @@ vm1 = new Vue({
             this.layouts = [];
             this.loadLayouts(yourLayouts);
         },
+        getIndex:function (arr,card) {
+            var len = arr.length;
+            let co = this.coordinates(card);
+            for(var i = 0; i < len; i++)
+            {
+                if (arr[i].x == co.x && arr[i].y == co.y)
+                {
+                    return parseInt(i);
+                }
+            }
+            return -1;
+        },
         remove: function(event) {  // name 'delete' wont work, maybe conflicts
-            alert('Delete');
-            // this.layout.splice(this.layout.indexOf(item), 1);
+            let card = event.target.parentElement.parentElement;
+            let co = this.coordinates(card);
+            let index=this.getIndex(this.layouts[co.i],card);
+            this.layouts[co.i].splice(index, 1);
         },
         addRight: function(event) {
             let card = event.target.parentElement.parentElement;
