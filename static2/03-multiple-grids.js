@@ -179,6 +179,10 @@ vm1 = new Vue({
                     }
                     layer.close(index);
             });
+        },
+        addReleases:function(event){
+            let item = {"x":0,"y":0,"text":""};
+            this.addCard(this.layouts.length, item);
         }
     }
 });
