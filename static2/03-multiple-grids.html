@@ -23,7 +23,7 @@
 
 <div id="title" class="title">
     <h3 class="col-num-1">Story Map</h3>
-    <i class="col-reload fa fa-refresh" @click="reload"></i>
+    <i :class="'col-reload fa fa-refresh'+isRotating" @click="reload"></i>
 </div>
 <div id="app1" v-bind:style="{width: widthData}">
     <!-- <div class="layoutJSON">

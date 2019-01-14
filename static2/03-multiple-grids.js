@@ -49,6 +49,76 @@ vm1 = new Vue({
                 this.colNum = _item.x + 1;
             }
         },
+        compactColumns: function() {
+            /** method1, the best way **/
+            let maxX = 0;
+            let toRemove = new Array(Math.floor(this.colNum)).fill(true);
+            for (let l of this.layouts) {
+                for (let c of l) {
+                    toRemove[c.x] = false;
+                    if (c.x>maxX) {maxX=c.x;}
+                }
+            }
+            // console.log(toRemove);
+            for (let i=0; i<toRemove.length; i++) {
+                while (toRemove[i] != true && i<toRemove.length) {i++;}
+                if (i>=toRemove.length) {break;}
+                // console.log('i = '+i);
+                let j = i+1;
+                while (toRemove[j] != false && j<toRemove.length) {j++;}
+                if (j>=toRemove.length) {break;}
+                // console.log('j = '+j);
+                this.shiftCardsOnRight(i, i-j);
+                toRemove.splice(i, j-i);
+                // console.log('shift cards right of '+i);
+                // console.log('shift distance '+ (i-j));
+            }
+            maxX -= toRemove.length;
+            let minCol = Math.ceil(screen.width/cardWidth);
+            this.colNum = maxX>minCol?maxX:minCol;
+
+            /** method2 **/
+            // let maxX = 0;
+            // colsToRemove = [];
+            // for (let i=0; i<toRemove.length; i++) {
+            //     if (toRemove[i]) {
+            //         colsToRemove.push(i);
+            //     }
+            // }
+            // colsToRemove.reverse();
+            // for (let i of colsToRemove) {  // shift
+            //     for (let l of this.layouts) {
+            //         for (let c of l) {
+            //             if (c.x > i) {c.x--;}
+            //         }
+            //     }
+            // }
+            // maxX -= colsToRemove.length;
+            // let minCol = Math.ceil(screen.width/cardWidth);
+            // this.colNum = maxX>minCol?maxX:minCol;
+
+            /** method3 **/
+            // let maxX = 0;
+            // let minCol = Math.ceil(screen.width/cardWidth);
+            // for (let i=0; i<this.colNum; i++){
+            //     let remove = true;
+            //     for (let l of this.layouts) {
+            //         for (let c of l) {
+            //             if (c.x == i) {remove=false;}
+            //         }
+            //     }
+            //     if (remove === true) {
+            //         for (let l of this.layouts) {
+            //             for (let c of l) {
+            //                 if (c.x > i) {c.x--;}
+            //             }
+            //         }
+            //         this.colNum--;
+            //         i--;  // keep i unchanged in next round
+            //     }
+            // }
+            // if (this.colNum<minCol) {this.colNum=minCol;}
+        },
         coordinates: (card) => {
             /* card为原生dom对象，返回卡片的: i(layouts index), x, y, 均从0开始 */
             let cardLevel = card.className.match(/.*level(\d+)/)[1];
@@ -177,10 +247,13 @@ title_app = new Vue({
                 {"x":0,"y":0,"w":1,"h":1},
             ],
         ],
+        isRotating: "",
     },
     methods: {
         reload: function() {
+            this.isRotating = " fa-spin";
             vm1.reloadLayouts(this.mylayouts);
+            setTimeout(()=>{this.isRotating = "";}, 300);
         },
     }
 });
