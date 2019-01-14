@@ -50,7 +50,20 @@ div {margin:0;border:0;padding:0;}
     opacity: 0.8;
     cursor: pointer;
 }
-
+.releases-add{
+    color:#aed9e9;
+    margin-left: 10px;
+    opacity: 0.5;
+}
+.releases-add:hover{
+    opacity: 0.8;
+    cursor: pointer;
+}
+.display{
+    display:inline-block;
+    text-align: center;
+    vertical-align: center;
+}
 .card {  /* releases */
     background: #a0e0b0 !important;
 }

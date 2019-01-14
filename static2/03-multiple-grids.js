@@ -174,18 +174,42 @@ vm1 = new Vue({
             this.layouts = [];
             this.loadLayouts(yourLayouts);
         },
-        remove: function(event) {  // name 'delete' wont work, maybe conflicts
-            alert('Delete');
-            // this.layout.splice(this.layout.indexOf(item), 1);
+        getIndex:function (arr,card) {
+            let len = arr.length;
+            let co = this.coordinates(card);
+            for(let i = 0; i < len; i++)
+            {
+                if (arr[i].x == co.x && arr[i].y == co.y)
+                {
+                    return parseInt(i);
+                }
+            }
+            return -1;
         },
-        addRight: function(event) {
+        shiftCardsOnLeft:function(i,x,y,index, delta){
+                for (let o of this.layouts[i]) {
+                    if (o.x > x && o.y==y) {
+                         o.x -= delta;
+                    }
+                }
+                //不能用下面的，否则最后的会跑到第一个的位置
+                // this.colNum = Math.floor(this.colNum - delta);
+        },
+        removeCard: function(event) {  // name 'delete' wont work, maybe conflicts
+            let card = event.target.parentElement.parentElement;
+            let co = this.coordinates(card);
+            let index=this.getIndex(this.layouts[co.i],card);
+            this.layouts[co.i].splice(index, 1);
+            this.shiftCardsOnLeft(co.i,co.x, co.y,index,1);
+        },
+        addCardRight: function(event) {
             let card = event.target.parentElement.parentElement;
             let co = this.coordinates(card);
             this.shiftCardsOnRight(co.x, 1);
             let item = {"x":co.x+1,"y":co.y,"text":""};
             this.addCard(co.i, item);
         },
-        addBottom: function(event) {
+        addCardBottom: function(event) {
             let card = event.target.parentElement.parentElement;
             let co = this.coordinates(card);
             let target = co.i;
@@ -225,6 +249,10 @@ vm1 = new Vue({
                     }
                     layer.close(index);
             });
+        },
+        addReleases:function(event){
+            let item = {"x":0,"y":0,"text":""};
+            this.addCard(this.layouts.length, item);
         }
     }
 });
