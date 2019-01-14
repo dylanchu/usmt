@@ -141,7 +141,7 @@ vm1 = new Vue({
                     }
                 }
             }
-            this.colNum = Math.floor(this.colNum + delta);
+            this.colNum = Math.ceil(this.colNum + delta);
         },
         sortLayoutBy: function(layout, priority) {
             if (!Array.isArray(layout)){
@@ -174,33 +174,17 @@ vm1 = new Vue({
             this.layouts = [];
             this.loadLayouts(yourLayouts);
         },
-        getIndex:function (arr,card) {
-            let len = arr.length;
-            let co = this.coordinates(card);
-            for(let i = 0; i < len; i++)
-            {
-                if (arr[i].x == co.x && arr[i].y == co.y)
-                {
-                    return parseInt(i);
-                }
-            }
-            return -1;
-        },
-        shiftCardsOnLeft:function(i,x,y,index, delta){
-                for (let o of this.layouts[i]) {
-                    if (o.x > x && o.y==y) {
-                         o.x -= delta;
-                    }
-                }
-                //不能用下面的，否则最后的会跑到第一个的位置
-                // this.colNum = Math.floor(this.colNum - delta);
-        },
         removeCard: function(event) {  // name 'delete' wont work, maybe conflicts
             let card = event.target.parentElement.parentElement;
             let co = this.coordinates(card);
-            let index=this.getIndex(this.layouts[co.i],card);
-            this.layouts[co.i].splice(index, 1);
-            this.shiftCardsOnLeft(co.i,co.x, co.y,index,1);
+            for (let c of this.layouts[co.i]) {
+                if (c.x == co.x && c.y == co.y) {
+                    this.layouts[co.i].splice(this.layouts[co.i].indexOf(c), 1);  // grid库渲染可能有bug，不能直接这样操作
+                                                                            // 暂时如此，后面尝试先序列化然后reload数据
+                    break;
+                }
+            }
+            this.compactColumns();
         },
         addCardRight: function(event) {
             let card = event.target.parentElement.parentElement;
