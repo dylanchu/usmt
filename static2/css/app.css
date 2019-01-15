@@ -157,10 +157,10 @@ div {margin:0;border:0;padding:0;}
     color: #FFFFFF;
     text-align: center;
 }
-/*.state-release:hover ul{*/
+/*.state-release:hover .select-state{*/
     /*display: block;*/
 /*}*/
-/*ul{*/
+/*.select-state{*/
     /*display:none;*/
     /*top:85%;*/
 /*}*/

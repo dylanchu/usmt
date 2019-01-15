@@ -256,6 +256,7 @@ vm1 = new Vue({
         addReleases:function(event){
             let item = {"x":0,"y":0,"text":""};
             this.addCard(this.layouts.length, item);
+            this.cardMoved();
         },
         dividerHeight: function(level) {
             let a=document.getElementsByClassName('layout-level'+(level))[0];
