@@ -26,6 +26,9 @@ vm1 = new Vue({
         unique_id: 0,  // 不要随意手动设置它
         colNum: screen.width/cardWidth,
         widthData: screen.width + 'px',
+        activityDividers: [
+            // {"x":224, "y":0},
+        ],
     },
     watch: {
         colNum: function(newValue){  // 保证卡片宽度视觉上不变
@@ -91,6 +94,7 @@ vm1 = new Vue({
             maxX -= toRemove.length;
             let minCol = Math.ceil(screen.width/cardWidth);
             this.colNum = maxX>minCol?maxX:minCol;
+            this.cardMoved();
 
             /** method2 **/
             // let maxX = 0;
@@ -136,7 +140,7 @@ vm1 = new Vue({
         },
         coordinates: (card) => {
             /* card为原生dom对象，返回卡片的: i(layouts index), x, y, 均从0开始 */
-            let cardLevel = card.className.match(/.*level(\d+)/)[1];
+            let cardLevel = card.className.match(/.*card-level(\d+)/)[1];
             let x_y = card.getElementsByClassName('x_y')[0].textContent.split('_');
             return {"i": parseInt(cardLevel)-1, "x": parseInt(x_y[0]), "y": parseInt(x_y[1])};
         },
@@ -207,6 +211,7 @@ vm1 = new Vue({
             this.shiftCardsOnRight(co.x, 1);
             let item = {"x":co.x+1,"y":co.y,"text":""};
             this.addCard(co.i, item);
+            this.cardMoved();
         },
         addCardBottom: function(event) {
             let card = event.target.parentElement.parentElement;
@@ -229,7 +234,6 @@ vm1 = new Vue({
             this.addCard(target, item);
         },
         editText: (event) => {
-            // alert('Edit');
             let card = event.target.parentElement.parentElement;
             layer.prompt({
                 formType: 2,
@@ -252,6 +256,29 @@ vm1 = new Vue({
         addReleases:function(event){
             let item = {"x":0,"y":0,"text":""};
             this.addCard(this.layouts.length, item);
+        },
+        dividerHeight: function(level) {
+            let a=document.getElementsByClassName('layout-level'+(level))[0];
+            // console.log(a);
+            if (a) {
+                // console.log(a.clientHeight);
+                return a.clientHeight;
+            } else {
+                return 0;
+            }
+        },
+        updateDividers: function() {
+            // console.log('gonna update the lines');
+            dividers = [];
+            let cards=document.getElementsByClassName('card-level1');
+            for (let c of cards) {
+                let x = c.style.transform.match(/translate3d\(([0-9]+)px,/)[1];
+                dividers.push({"x":Math.ceil(x-variables.cardMargin[0]/2),"y":0});
+            }
+            this.activityDividers = dividers;
+        },
+        cardMoved: function() {
+            setTimeout(this.updateDividers, 100);  //延时等待页面渲染完成
         }
     }
 });
@@ -261,17 +288,17 @@ title_app = new Vue({
     data: {
         mylayouts: [
             [
-                {"x":0,"y":0,"w":1,"h":1, "text": "你好"},
-                {"x":1,"y":0,"w":1,"h":1, "text": "我很抱歉我的朋友"},
+                {"x":0,"y":0, "text": "你好"},
+                {"x":2,"y":0, "text": "我很抱歉我的朋友"},
             ],
             [
-                {"x":0,"y":0,"w":2,"h":2},
-                {"x":2,"y":0,"w":2,"h":2},
-                {"x":3,"y":0,"w":1,"h":1},
-                {"x":9,"y":0,"w":1,"h":1},
+                {"x":0,"y":0},
+                {"x":1,"y":0},
+                {"x":3,"y":0},
+                {"x":9,"y":0},
             ],
             [
-                {"x":0,"y":0,"w":1,"h":1},
+                {"x":0,"y":0},
             ],
         ],
         isRotating: "",
@@ -292,3 +319,7 @@ function parseDom(arg) {
 }
 
 vm1.loadLayouts(title_app.mylayouts);
+
+window.onload = () => {
+    vm1.updateDividers();
+};

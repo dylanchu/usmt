@@ -50,31 +50,33 @@ div {margin:0;border:0;padding:0;}
     opacity: 0.8;
     cursor: pointer;
 }
-.releases-add{
-    color:#61A9CF;
-    margin-left: 10px;
-    opacity: 0.5;
-    margin-top: 20px;
+.new-releases {
+    color:rgb(65, 143, 231);
+    opacity: 0.7;
 }
-.releases-add:hover{
-    opacity: 0.8;
+.new-releases:hover {
+    opacity: 0.9;
     cursor: pointer;
 }
-.display-add{
+.new-releases .new-releases-logo {
+    margin-left: 10px;
+    margin-top: 20px;
+}
+.new-releases .new-releases-text {
     display:inline-block;
     text-align: center;
     vertical-align: middle;
-    height:40px;
-    color:#61A9CF;
+    font-family: "Times New Roman";
+    height:19px;
     font-weight: bold;
 }
 .card {  /* releases */
     background: #a0e0b0 !important;
 }
-.card.level1 {  /* activities */
+.card.card-level1 {  /* activities */
     background: #aed9e9 !important;
 }
-.card.level2 {  /* tasks */
+.card.card-level2 {  /* tasks */
     background: #f4e466 !important;
 }
 
@@ -83,7 +85,7 @@ div {margin:0;border:0;padding:0;}
     border-top: dashed #ccc 1px;
     cursor: default;
 }
-.vue-grid-layout.level1 {
+.vue-grid-layout.layout-level1 {
     border-top: none;
 }
 
@@ -112,28 +114,40 @@ div {margin:0;border:0;padding:0;}
     padding-bottom: 50px;
 }
 
+.svg-activities-divider {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* transform: translate3d(0, -100%, 0); */
+}
+
 .title {
-    height: 50px;
+    height: 40px;
     align-items:Center;
     /* display: flex; */
 }
 .title .col-num-1 {
     float: left;
     color: #777;
+    text-align: center;
     margin-left: 12px;
+    margin-top: 10px;
+    padding: 0% !important;
 }
 .title .col-reload {
-    float: left;
-    margin: 25px;
+    display: inline-block;
+    margin: 18px;
     color: #ddd;
     cursor: pointer;
     /* justify-content:center; */
 }
 .denote-release{
-    margin: 10px;
+    margin-left: 10px;
     color:#61A9CF;
     font-family: "Times New Roman";
     font-weight: 700;
+    float: left;
 }
 .state-release{
     background:#8D8D8D;
