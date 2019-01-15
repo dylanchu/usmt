@@ -35,6 +35,7 @@
             </div>
         </div>
     </div> -->
+    <!---->
     <grid-layout v-for="(layout,index) in layouts"
                     :layout="layout"
                     :col-num="colNum"
@@ -46,6 +47,8 @@
                     :use-css-transforms="true"
                     :class="'level'+(index+1)"
     >
+         <span :class="index<=1? 'denote-normal':'denote-release'">{{displayDenote(index)}}
+        </span>
         <grid-item v-for="item in layout"
                     :x="item.x"
                     :y="item.y"
@@ -65,8 +68,8 @@
         </grid-item>
     </grid-layout>
     <div>
-        <i @click.stop="addReleases" class="releases-add fa fa-plus-square" style="font-size: 36px"></i>
-        <span class="display">添加release</span>
+        <span><i @click.stop="addReleases" class="releases-add fa fa-plus-square" style="font-size: 36px"></i></span>
+        <span class="display-add" >添加release</span>
     </div>
 </div>
 
