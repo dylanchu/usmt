@@ -38,6 +38,13 @@ vm1 = new Vue({
                 let index=Number(value)-Number(1);
                 return value>1 ? "-Release"+index:"";
             }
+        },
+        displayCardState(){
+            return function(value){
+                if(Number(value)>1){
+                   return "Todo";
+                }
+            }
         }
     },
     methods: {
