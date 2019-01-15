@@ -75,8 +75,10 @@
         </grid-item>
     </grid-layout>
     <div>
-        <span><i @click.stop="addReleases" class="releases-add fa fa-plus-square" style="font-size: 36px"></i></span>
-        <span class="display-add" >添加release</span>
+        <span class="new-releases">
+            <i @click.stop="addReleases" class="new-releases-logo fa fa-plus-square fa-lg"></i>
+            <span @click.stop="addReleases" class="new-releases-text">添加release</span>
+        </span>
     </div>
 </div>
 
