@@ -44,15 +44,23 @@
                     :is-resizable="false"
                     :vertical-compact="true"
                     :use-css-transforms="true"
-                    :class="'level'+(index+1)"
+                    :class="'layout-level'+(index+1)"
     >
+        <svg class="svg-activities-divider"
+            :height="dividerHeight(index+1)"
+            :width="widthData" xmlns="http://www.w3.org/2000/svg">
+                <g v-for="path in activityDividers" fill="none" stroke="#000" stroke-width="1">
+                    <path stroke-dasharray="1,10" :d="'M'+path.x+' '+path.y+' V'+dividerHeight(index+1)" />
+                </g>
+        </svg>
         <grid-item v-for="item in layout"
                     :x="item.x"
                     :y="item.y"
                     :w="item.w"
                     :h="item.h"
                     :i="item.i"
-                    :class="'card level'+(index+1)"
+                    :class="'card card-level'+(index+1)"
+                    @moved="cardMoved"
         >
             <span class="text">{{item.i}}</span>
             <span class='x_y' style="visibility: hidden;">{{item.x}}_{{item.y}}</span>

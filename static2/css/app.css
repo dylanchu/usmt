@@ -67,10 +67,10 @@ div {margin:0;border:0;padding:0;}
 .card {  /* releases */
     background: #a0e0b0 !important;
 }
-.card.level1 {  /* activities */
+.card.card-level1 {  /* activities */
     background: #aed9e9 !important;
 }
-.card.level2 {  /* tasks */
+.card.card-level2 {  /* tasks */
     background: #f4e466 !important;
 }
 
@@ -79,7 +79,7 @@ div {margin:0;border:0;padding:0;}
     border-top: dashed #ccc 1px;
     cursor: default;
 }
-.vue-grid-layout.level1 {
+.vue-grid-layout.layout-level1 {
     border-top: none;
 }
 
@@ -106,6 +106,15 @@ div {margin:0;border:0;padding:0;}
 .placeholder.horizontal {
     padding-top: 50px;
     padding-bottom: 50px;
+}
+
+.svg-activities-divider {
+    pointer-events: none;
+    position: absolute;
+    /* float: left; */
+    top: 0;
+    left: 0;
+    /* transform: translate3d(0, -100%, 0); */
 }
 
 .title {
