@@ -51,18 +51,22 @@ div {margin:0;border:0;padding:0;}
     cursor: pointer;
 }
 .releases-add{
-    color:#aed9e9;
+    color:#61A9CF;
     margin-left: 10px;
     opacity: 0.5;
+    margin-top: 20px;
 }
 .releases-add:hover{
     opacity: 0.8;
     cursor: pointer;
 }
-.display{
+.display-add{
     display:inline-block;
     text-align: center;
-    vertical-align: center;
+    vertical-align: middle;
+    height:40px;
+    color:#61A9CF;
+    font-weight: bold;
 }
 .card {  /* releases */
     background: #a0e0b0 !important;
@@ -134,7 +138,12 @@ div {margin:0;border:0;padding:0;}
     cursor: pointer;
     /* justify-content:center; */
 }
-
+.denote-release{
+    margin: 10px;
+    color:#61A9CF;
+    font-family: "Times New Roman";
+    font-weight: 700;
+}
 /*.vue-resizable-handle {
     z-index: 5000;
     position: absolute;
@@ -150,7 +159,6 @@ div {margin:0;border:0;padding:0;}
     box-sizing: border-box;
     cursor: se-resize;
 }*/
-
 .vue-grid-item:not(.vue-grid-placeholder) {
     background: #ccc;
     /* border: 1px solid rgb(235, 160, 160); */

@@ -5,7 +5,7 @@ variables = new Vue({
     el: '#variables',
     data: {
         prjName: '',
-        cardMargin: [6, 6],  // default is 10
+        cardMargin: [22, 22],  // default is 10
         layoutHeight: 140,
     },
     watch: {
@@ -35,10 +35,18 @@ vm1 = new Vue({
             this.widthData = cardWidth*newValue + 'px';
         },
     },
+    computed:{
+        displayDenote(){
+            return function(value){
+                let index=Number(value)-Number(1);
+                return value>1 ? "-Release"+index:"";
+            }
+        }
+    },
     methods: {
         // 需要引用this的时候不要用lambda函数，否则this会是调用者window！！
         addCard: function(layout_index, card) {  // pass in: co.i, card
-            // console.log(card)
+            // console.log(card);
             _item = {};
             // 强制设置卡片宽高为1,1;并分配unique_id:
                 // 成员"i"是item的唯一标识，相同值会导致拖拽有bug.
@@ -62,7 +70,7 @@ vm1 = new Vue({
                     if (c.x>maxX) {maxX=c.x;}
                 }
             }
-            // console.log(toRemove);
+            console.log("toRemoce:"+toRemove);
             for (let i=0; i<toRemove.length; i++) {
                 while (toRemove[i] != true && i<toRemove.length) {i++;}
                 if (i>=toRemove.length) {break;}
