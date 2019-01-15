@@ -87,6 +87,7 @@ vm1 = new Vue({
             maxX -= toRemove.length;
             let minCol = Math.ceil(screen.width/cardWidth);
             this.colNum = maxX>minCol?maxX:minCol;
+            this.cardMoved();
 
             /** method2 **/
             // let maxX = 0;
@@ -226,7 +227,6 @@ vm1 = new Vue({
             this.addCard(target, item);
         },
         editText: (event) => {
-            // alert('Edit');
             let card = event.target.parentElement.parentElement;
             layer.prompt({
                 formType: 2,
@@ -251,17 +251,6 @@ vm1 = new Vue({
             this.addCard(this.layouts.length, item);
         },
         dividerHeight: function(level) {
-            // for (let l of this.activityDividers) {
-            //     let a=document.getElementsByClassName('layout-level'+(l.level))[0];
-            //     console.log(a);
-            //     if (a) {
-            //         console.log(a.clientHeight);
-            //         l.d = a.clientHeight;
-            //     } else {
-            //         l.d = 0;
-            //     }
-            //     console.log(l.x+' '+l.y+' '+l.level+' '+l.d);
-            // }
             let a=document.getElementsByClassName('layout-level'+(level))[0];
             // console.log(a);
             if (a) {
