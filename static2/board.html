@@ -72,13 +72,10 @@
                 <i @click.stop="addCardRight" class="card-add-right fa fa-chevron-circle-right fa-lg"></i>
                 <i @click.stop="addCardBottom" class="card-add-bottom fa fa-chevron-circle-down fa-lg"></i>
                 <i @click.stop="editText" class="card-edit fa fa-pencil-square-o fa-2x"></i>
-                <i @click.stop="select-state" :class="index<=1? 'state-normal':'state-release'" style="width:40px">{{displayCardState(index)}}</i>
-                <!--<ul class="select-state">-->
-                     <!--<li>Todo</li>-->
-                     <!--<li>Ready</li>-->
-                     <!--<li>Doing</li>-->
-                     <!--<li>Done</li>-->
-                <!--</ul>-->
+                <i @click.stop="selectCardState" :class="index<=1? 'state-normal':'state-release'" style="width:40px">{{displayCardState(index)}}</i>
+                <ul class="selectState-menu">
+                    <li v-for="(item,index) in selections" @click.stop="chooseSelection" v-click-outside="clickOutSide">{{item.value}}</li>
+                </ul>
             </span>
         </grid-item>
     </grid-layout>
