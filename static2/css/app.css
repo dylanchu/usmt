@@ -53,6 +53,7 @@ div {margin:0;border:0;padding:0;}
 .new-releases {
     color:#0077B5;
     opacity: 0.7;
+    user-select: none;
 }
 .new-releases:hover {
     opacity: 0.9;
@@ -149,6 +150,7 @@ div {margin:0;border:0;padding:0;}
     font-family: "Times New Roman";
     font-weight: 600;
     float: left;
+    user-select: none;
 }
 .state-release{
     background:#8D8D8D;
@@ -157,31 +159,41 @@ div {margin:0;border:0;padding:0;}
     left: 5%;
     color: #FFFFFF;
     text-align: center;
+    user-select: none;
 }
-.selectState-menu{
+.state-selection-menu{
     list-style-type: none;
     display:none;
     position: absolute;
     margin: 0;
-    padding:0;
+    padding: 5px;
     bottom:24%;
-    left:9%;
-    width:40px;
+    left:4%;
+    width:50px;
+    background-color: rgba(0, 0, 0, 0.1);
+    user-select: none;
 }
-.selectState-menu.open{
+.state-selection-menu.open{
+    animation: slide-down .5s ease-in;
     -webkit-animation: slide-down .5s ease-in;
     transition: all 0.3s ease-out;
     transform-origin: 50% 0;
 }
-.selectState-menu li{
-    float:left;
+.state-selection-menu li{
+    /* float:left; */
     text-align: center;
     line-height:20px;
-    display: inline-block;
     margin: 0;
     padding:0;
 }
 /*为下拉框展开时添加名称为slide-down的关键帧动画*/
+@keyframes slide-down{
+    0%{transform: scale(1,0);}
+    25%{transform: scale(1,1.2);}
+    50%{transform: scale(1,0.85);}
+    75%{transform: scale(1,1.05);}
+    100%{transform: scale(1,1);}
+}
 @-webkit-keyframes slide-down{
     0%{transform: scale(1,0);}
     25%{transform: scale(1,1.2);}

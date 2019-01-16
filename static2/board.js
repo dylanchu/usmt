@@ -12,21 +12,21 @@ variables = new Vue({
         }
     },
 });
-Vue.directive('click-outside', {
+Vue.directive('click-outside', {  // 貌似有时会报error
     bind: function (el, binding, vnode) {
         el.clickOutsideEvent = function (event) {
             // here I check that click was outside the el and his childrens
             if (!(el == event.target || el.contains(event.target))) {
                 // and if it did, call method provided in attribute value
-                vnode.context[binding.expression](event)
+                vnode.context[binding.expression](event);
             }
-        }
-        document.body.addEventListener('click', el.clickOutsideEvent)
+        };
+        document.body.addEventListener('click', el.clickOutsideEvent);
     },
     unbind: function (el) {
-        document.body.removeEventListener('click', el.clickOutsideEvent)
+        document.body.removeEventListener('click', el.clickOutsideEvent);
     }
-})
+});
 vm1 = new Vue({
     el: '#app1',
     data: {
@@ -35,12 +35,7 @@ vm1 = new Vue({
            // don't put any code here
            // use addCard() if you want to add your layout
         ],
-        selections:[
-            { key:0,value:"Todo"},
-            { key:1,value:"Ready"},
-            { key:2,value:"Doing"},
-            { key:3,value:"Done"}
-        ],
+        stateList:["Todo", "Ready", "Doing", "Done"],
         unique_id: 0,  // 不要随意手动设置它
         colNum: screen.width/cardWidth,
         widthData: screen.width + 'px',
@@ -311,23 +306,26 @@ vm1 = new Vue({
         selectCardState:function(event) {
             let card = event.target.parentElement.parentElement;
             let el=card.getElementsByClassName('state-release')[0];
-            let dropdown=card.getElementsByClassName('selectState-menu');
-            dropdown[0].style.display="block";
-            let liarr=dropdown[0].getElementsByTagName("li");
-            for(let i=0;i<liarr.length;i++){
-               if(liarr[i].innerText==el.innerText){
-                   liarr[i].style.color="#8D8D8D";
-               }
-               else{
-                   liarr[i].style.color="#ffffff";
-               }
+            let dropdown=card.getElementsByClassName('state-selection-menu')[0];
+            if (dropdown.style.display != "block") {
+                dropdown.style.display="block";
+                let liarr=dropdown.getElementsByTagName("li");
+                for(let i=0;i<liarr.length;i++){
+                    if(liarr[i].innerText==el.innerText){
+                        liarr[i].style.color="#8D8D8D";
+                    } else {
+                        liarr[i].style.color="#ffffff";
+                    }
+                }
+            } else {
+                dropdown.style.display="none";
             }
         },
         chooseSelection:function(event){
             let state=event.target.innerText;
             let card=event.target.parentElement.parentElement;
             let el=card.getElementsByClassName('state-release')[0];
-            let dropdown=card.getElementsByClassName('selectState-menu');
+            let dropdown=card.getElementsByClassName('state-selection-menu');
             dropdown[0].style.display='none';
             switch (state) {
                 case "Todo":
@@ -350,7 +348,7 @@ vm1 = new Vue({
         },
         clickOutSide:function(event){
             let card=event.target.parentElement.parentElement;
-            let dropdown=card.getElementsByClassName('selectState-menu');
+            let dropdown=card.getElementsByClassName('state-selection-menu');
             dropdown[0].style.display='none';
         }
     }
