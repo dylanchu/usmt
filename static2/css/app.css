@@ -102,17 +102,16 @@ div {margin:0;border:0;padding:0;}
     user-select: none;
 }
 
-.placeholder.horizontal {
-    padding-top: 50px;
-    padding-bottom: 50px;
-}
-
-.svg-activities-divider {
+.layout-activities-divider {
     pointer-events: none;
     position: absolute;
     top: 0;
-    left: 0;
-    /* transform: translate3d(0, -100%, 0); */
+    border-right: dashed #ccc 1px;
+}
+
+.placeholder.horizontal {
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
 
 .state-release{

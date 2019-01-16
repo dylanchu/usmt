@@ -40,7 +40,7 @@ vm1 = new Vue({
         colNum: screen.width/cardWidth,
         widthData: screen.width + 'px',
         cardHeight: 110,
-        cardMarginBasic: [18, 6],  // default is 10
+        cardMarginBasic: [10, 6],  // default is 10
         denoteTextHeightRelease: 10,
         activityDividers: [],
         temp_cards_state_list_opened: [],
@@ -51,11 +51,15 @@ vm1 = new Vue({
         },
     },
     computed:{
-        cardMarginRelease() {return [18, this.denoteTextHeightRelease*2];},  // y: 2*(height of denote text)
+        cardMarginRelease() {
+            return [this.cardMarginBasic[0], this.denoteTextHeightRelease*2];
+        },  // y: 2*(height of denote text)
         layoutDenoteHeightBasic() {return 0;},
         layoutDenoteHeightRelease() {return this.cardMarginBasic[1];},
         layoutHeightBasic() {return this.cardHeight;},
-        layoutHeightRelease() {return this.cardHeight+this.layoutDenoteHeightRelease-this.cardMarginRelease[1];},
+        layoutHeightRelease() {
+            return this.cardHeight+this.layoutDenoteHeightRelease-this.cardMarginRelease[1];
+        },
         displayDenote(){
             return function(value){
                 let index=Number(value)-Number(1);

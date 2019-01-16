@@ -38,13 +38,9 @@
                     :class="'layout-level'+(index+1)"
     >
         <span :class="index<=1? 'denote-normal':'denote-release'">{{displayDenote(index)}}</span>
-        <svg class="svg-activities-divider"
-            :height="dividerHeight(index+1)"
-            :width="widthData" xmlns="http://www.w3.org/2000/svg">
-                <g v-for="path in activityDividers" fill="none" stroke="#777" stroke-width="1">
-                    <path stroke-dasharray="1,10" stroke-dashoffset='7' :d="'M'+path.x+' '+path.y+' V'+dividerHeight(index+1)" />
-                </g>
-        </svg>
+        <div class="layout-activities-divider" v-for="path in activityDividers">
+            <div :style="'height:'+dividerHeight(index+1)+'px;margin-left:'+path.x+'px;'"></div>
+        </div>
         <grid-item v-for="item in layout"
                     :x="item.x"
                     :y="item.y"
