@@ -1,12 +1,10 @@
 /* jshint esversion: 6 */
 document.title = 'story map';
-const cardWidth = 200;
+const cardWidth = 180;
 variables = new Vue({
     el: '#variables',
     data: {
         prjName: '',
-        cardMargin: [22, 22],  // default is 10
-        layoutHeight: 140,
     },
     watch: {
         prjName: (newValue) => {  // 设置title
@@ -46,6 +44,9 @@ vm1 = new Vue({
         unique_id: 0,  // 不要随意手动设置它
         colNum: screen.width/cardWidth,
         widthData: screen.width + 'px',
+        cardHeight: 110,
+        cardMarginBasic: [18, 16],  // default is 10
+        denoteTextHeightRelease: 14,
         activityDividers: [
             // {"x":224, "y":0},
         ],
@@ -57,18 +58,23 @@ vm1 = new Vue({
         },
     },
     computed:{
+        cardMarginRelease() {return [18, this.denoteTextHeightRelease*2];},  // y: 2*(height of denote text)
+        layoutDenoteHeightBasic() {return 0;},
+        layoutDenoteHeightRelease() {return this.cardMarginBasic[1];},
+        layoutHeightBasic() {return this.cardHeight;},
+        layoutHeightRelease() {return this.cardHeight+this.layoutDenoteHeightRelease-this.cardMarginRelease[1];},
         displayDenote(){
             return function(value){
                 let index=Number(value)-Number(1);
-                return value>1 ? "-Release"+index:"";
-            }
+                return value>1 ? "- Release"+index:"";
+            };
         },
         displayCardState(){
             return function(value){
                 if(Number(value)>1){
                    return "Todo";
                 }
-            }
+            };
         }
     },
     methods: {
@@ -295,7 +301,7 @@ vm1 = new Vue({
             let cards=document.getElementsByClassName('card-level1');
             for (let c of cards) {
                 let x = c.style.transform.match(/translate3d\(([0-9]+)px,/)[1];
-                dividers.push({"x":Math.ceil(x-variables.cardMargin[0]/2),"y":0});
+                dividers.push({"x":Math.ceil(x-this.cardMarginBasic[0]/2),"y":0});
             }
             this.activityDividers = dividers;
         },
