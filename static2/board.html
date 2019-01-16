@@ -65,7 +65,7 @@
                     :style="'height:'+cardHeight+'px !important;'"
                     @moved="cardMoved"
         >
-            <span class="text">{{item.i}}</span>
+            <span class="text">{{item.text}}</span>
             <span class='x_y' style="visibility: hidden;">{{item.x}}_{{item.y}}</span>
             <span name="card-controls">
                 <i @click.stop="removeCard" class="card-delete fa fa-window-close fa-lg pull-right"></i>

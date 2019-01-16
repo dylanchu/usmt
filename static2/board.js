@@ -255,8 +255,9 @@ vm1 = new Vue({
             }
             this.addCard(target, item);
         },
-        editText: (event) => {
+        editText: function(event) {
             let card = event.target.parentElement.parentElement;
+            let co = this.coordinates(card);
             layer.prompt({
                 formType: 2,
                 shadeClose: true,  // 点击遮罩关闭层
@@ -270,7 +271,12 @@ vm1 = new Vue({
                 btnAlign: 'c',
                 }, (value, index) => {
                     if (value) {
-                        $(card).find('.text')[0].textContent = value;
+                        for (let c of this.layouts[co.i]) {
+                            if (c.x===co.x&&c.y===co.y) {
+                                c.text = value;
+                                break;
+                            }
+                        }
                     }
                     layer.close(index);
             });
