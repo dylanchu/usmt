@@ -35,7 +35,7 @@ vm1 = new Vue({
            // don't put any code here
            // use addCard() if you want to add your layout
         ],
-        statesList:["Todo", "Ready", "Doing", "Done"],
+        statesMenu:["Todo", "Ready", "Doing", "Done"],
         unique_id: 0,  // 不要随意手动设置它
         colNum: screen.width/cardWidth,
         widthData: screen.width + 'px',
