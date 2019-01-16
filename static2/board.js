@@ -97,7 +97,7 @@ vm1 = new Vue({
                     if (c.x>maxX) {maxX=c.x;}
                 }
             }
-            console.log("toRemoce:"+toRemove);
+            console.log("toRemove:"+toRemove);
             for (let i=0; i<toRemove.length; i++) {
                 while (toRemove[i] != true && i<toRemove.length) {i++;}
                 if (i>=toRemove.length) {break;}
@@ -111,7 +111,7 @@ vm1 = new Vue({
                 // console.log('shift cards right of '+i);
                 // console.log('shift distance '+ (i-j));
             }
-            maxX -= toRemove.length;
+            maxX = toRemove.length;  // 剩余不用移除的列数
             let minCol = Math.ceil(screen.width/cardWidth);
             this.colNum = maxX>minCol?maxX:minCol;
             this.cardMoved();
