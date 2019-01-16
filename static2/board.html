@@ -72,9 +72,9 @@
                 <i @click.stop="addCardRight" class="card-add-right fa fa-chevron-circle-right fa-lg"></i>
                 <i @click.stop="addCardBottom" class="card-add-bottom fa fa-chevron-circle-down fa-lg"></i>
                 <i @click.stop="editText" class="card-edit fa fa-pencil-square-o fa-2x"></i>
-                <i @click.stop="selectCardState" :class="index<=1? 'state-normal':'state-release'" style="width:40px">{{displayCardState(index)}}</i>
+                <i @click.stop="toggleCardStatesMenu" :class="index<=1? 'state-normal':'state-release'" style="width:40px">{{displayCardState(index)}}</i>
                 <ul class="state-selection-menu">
-                    <li v-for="state in stateList" @click.stop="chooseSelection" v-click-outside="clickOutSide">{{state}}</li>
+                    <li v-for="state in statesList" @click.stop="selectCardState" v-click-outside.stop="closeCardStatesMenu">{{state}}</li>
                 </ul>
             </span>
         </grid-item>

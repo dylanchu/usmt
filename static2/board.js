@@ -12,7 +12,7 @@ variables = new Vue({
         }
     },
 });
-Vue.directive('click-outside', {  // 貌似有时会报error
+Vue.directive('click-outside', {
     bind: function (el, binding, vnode) {
         el.clickOutsideEvent = function (event) {
             // here I check that click was outside the el and his childrens
@@ -35,17 +35,15 @@ vm1 = new Vue({
            // don't put any code here
            // use addCard() if you want to add your layout
         ],
-        stateList:["Todo", "Ready", "Doing", "Done"],
+        statesList:["Todo", "Ready", "Doing", "Done"],
         unique_id: 0,  // 不要随意手动设置它
         colNum: screen.width/cardWidth,
         widthData: screen.width + 'px',
         cardHeight: 110,
-        cardMarginBasic: [18, 16],  // default is 10
-        denoteTextHeightRelease: 14,
-        activityDividers: [
-            // {"x":224, "y":0},
-        ],
-
+        cardMarginBasic: [18, 6],  // default is 10
+        denoteTextHeightRelease: 10,
+        activityDividers: [],
+        temp_cards_state_list_opened: [],
     },
     watch: {
         colNum: function(newValue){  // 保证卡片宽度视觉上不变
@@ -309,7 +307,7 @@ vm1 = new Vue({
         cardMoved: function() {
             setTimeout(this.updateDividers, 100);  //延时等待页面渲染完成
         },
-        selectCardState:function(event) {
+        toggleCardStatesMenu:function(event) {
             let card = event.target.parentElement.parentElement;
             let el=card.getElementsByClassName('state-release')[0];
             let dropdown=card.getElementsByClassName('state-selection-menu')[0];
@@ -323,11 +321,13 @@ vm1 = new Vue({
                         liarr[i].style.color="#ffffff";
                     }
                 }
+                this.temp_cards_state_list_opened.push(card);
             } else {
                 dropdown.style.display="none";
+                this.temp_cards_state_list_opened.splice(this.temp_cards_state_list_opened.indexOf(card),1);
             }
         },
-        chooseSelection:function(event){
+        selectCardState:function(event){
             let state=event.target.innerText;
             let card=event.target.parentElement.parentElement;
             let el=card.getElementsByClassName('state-release')[0];
@@ -352,10 +352,15 @@ vm1 = new Vue({
                     break;
             }
         },
-        clickOutSide:function(event){
-            let card=event.target.parentElement.parentElement;
-            let dropdown=card.getElementsByClassName('state-selection-menu');
-            dropdown[0].style.display='none';
+        closeCardStatesMenu:function(event){
+            // console.log(this.temp_cards_state_list_opened);  // 点击一次有多次输出？
+            while (this.temp_cards_state_list_opened.length) {
+                let card = this.temp_cards_state_list_opened.pop();
+                let dropdown=card.getElementsByClassName('state-selection-menu')[0];
+                if (dropdown) {
+                    dropdown.style.display='none';
+                }
+            }
         }
     }
 });
@@ -365,17 +370,19 @@ title_app = new Vue({
     data: {
         mylayouts: [
             [
-                {"x":0,"y":0, "text": "你好"},
-                {"x":2,"y":0, "text": "我很抱歉我的朋友"},
+                {"x":0,"y":0,"text":"访问网站"},
+                {"x":2,"y":0,"text":"搜索商品"},
             ],
             [
-                {"x":0,"y":0},
-                {"x":1,"y":0},
-                {"x":3,"y":0},
-                {"x":9,"y":0},
+                {"x":0,"y":0,"text":"查看主页"},
+                {"x":1,"y":0,"text":"查看推荐内容"},
+                {"x":3,"y":0,"text":"浏览分类"},
+                {"x":4,"y":0,"text":"直接搜索"},
+                {"x":9,"y":0,"text":"我很抱歉我的朋友"},
             ],
             [
-                {"x":0,"y":0},
+                {"x":0,"y":0,"text":"先搞个小目标"},
+                {"x":0,"y":1,"text":"假装赚了一个亿"},
             ],
         ],
         isRotating: "",
