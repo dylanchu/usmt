@@ -23,12 +23,19 @@ vm1 = new Vue({
            // don't put any code here
            // use addCard() if you want to add your layout
         ],
+        selections:[
+            { key:0,value:"Todo"},
+            { key:1,value:"Ready"},
+            { key:2,value:"Doing"},
+            { key:3,value:"Done"}
+        ],
         unique_id: 0,  // 不要随意手动设置它
         colNum: screen.width/cardWidth,
         widthData: screen.width + 'px',
         activityDividers: [
             // {"x":224, "y":0},
         ],
+
     },
     watch: {
         colNum: function(newValue){  // 保证卡片宽度视觉上不变
@@ -280,6 +287,34 @@ vm1 = new Vue({
         },
         cardMoved: function() {
             setTimeout(this.updateDividers, 100);  //延时等待页面渲染完成
+        },
+        selectCardState:function(event) {
+            let card = event.target.parentElement.parentElement;
+            $(card).find('.selectState-menu')[0].style.display='block';
+        },
+        chooseSelection:function(event){
+            let state=event.target.innerText;
+            let card=event.target.parentElement.parentElement;
+            let el=$(card).find('.state-release')[0];
+            $(card).find('.selectState-menu')[0].style.display='none';
+            switch (state) {
+                case "Todo":
+                    el.innerText="Todo";
+                    el.style.background="#8D8D8D";
+                    break;
+                case "Ready":
+                    el.innerText="Ready";
+                    el.style.background="#EE7766";
+                    break;
+                case "Doing":
+                    el.innerText="Doing";
+                    el.style.background="#4DAADD";
+                    break;
+                case "Done":
+                    el.innerText="Done";
+                    el.style.background="#58B74B";
+                    break;
+            }
         }
     }
 });

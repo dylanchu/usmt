@@ -152,18 +152,49 @@ div {margin:0;border:0;padding:0;}
 .state-release{
     background:#8D8D8D;
     position: absolute;
-    top: 84%;
+    bottom:1%;
     left: 5%;
     color: #FFFFFF;
     text-align: center;
 }
-/*.state-release:hover .select-state{*/
-    /*display: block;*/
+ul{
+    list-style-type: none;
+    display:none;
+    position: absolute;
+    margin: 0;
+    padding:0;
+    top:30%;
+    left:9%;
+    width:40px;
+}
+.selectState-menu.open{
+    -webkit-animation: slide-down .5s ease-in;
+    transition: all 0.3s ease-out;
+    transform-origin: 50% 0;
+}
+ul li{
+    float:left;
+    text-align: center;
+    line-height:20px;
+    display: inline-block;
+    margin: 0;
+    padding:0;
+    color:white;
+}
+/*为下拉框展开时添加名称为slide-down的关键帧动画*/
+@-webkit-keyframes slide-down{
+    0%{transform: scale(1,0);}
+    25%{transform: scale(1,1.2);}
+    50%{transform: scale(1,0.85);}
+    75%{transform: scale(1,1.05);}
+    100%{transform: scale(1,1);}
+}
+/*ul:after{*/
+    /*display: none;*/
+    /*max-height: 0;*/
+    /*transition: max-height.3s ease-out;*/
 /*}*/
-/*.select-state{*/
-    /*display:none;*/
-    /*top:85%;*/
-/*}*/
+
 /*.vue-resizable-handle {
     z-index: 5000;
     position: absolute;
