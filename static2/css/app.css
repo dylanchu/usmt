@@ -179,7 +179,6 @@ div {margin:0;border:0;padding:0;}
     display: inline-block;
     margin: 0;
     padding:0;
-    color:#ffffff;
 }
 /*为下拉框展开时添加名称为slide-down的关键帧动画*/
 @-webkit-keyframes slide-down{

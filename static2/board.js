@@ -304,13 +304,25 @@ vm1 = new Vue({
         },
         selectCardState:function(event) {
             let card = event.target.parentElement.parentElement;
-            $(card).find('.selectState-menu')[0].style.display='block';
+            let el=card.getElementsByClassName('state-release')[0];
+            let dropdown=card.getElementsByClassName('selectState-menu');
+            dropdown[0].style.display="block";
+            let liarr=dropdown[0].getElementsByTagName("li");
+            for(let i=0;i<liarr.length;i++){
+               if(liarr[i].innerText==el.innerText){
+                   liarr[i].style.color="#8D8D8D";
+               }
+               else{
+                   liarr[i].style.color="#ffffff";
+               }
+            }
         },
         chooseSelection:function(event){
             let state=event.target.innerText;
             let card=event.target.parentElement.parentElement;
-            let el=$(card).find('.state-release')[0];
-            $(card).find('.selectState-menu')[0].style.display='none';
+            let el=card.getElementsByClassName('state-release')[0];
+            let dropdown=card.getElementsByClassName('selectState-menu');
+            dropdown[0].style.display='none';
             switch (state) {
                 case "Todo":
                     el.innerText="Todo";
@@ -332,14 +344,9 @@ vm1 = new Vue({
         },
         clickOutSide:function(event){
             let card=event.target.parentElement.parentElement;
-            $(card).find('.selectState-menu')[0].style.display='none';
-        },
-        // displaySelector:function(event,value){
-        //     let card=event.target.parentElement.parentElement;
-        //     let actual=$(card).find('.state-release')[0].textContent;
-        //     console.log("actual=",actual);
-        //     console.log("real=",value);
-        // }
+            let dropdown=card.getElementsByClassName('selectState-menu');
+            dropdown[0].style.display='none';
+        }
     }
 });
 
