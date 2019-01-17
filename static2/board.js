@@ -94,6 +94,7 @@ vm1 = new Vue({
             if (this.colNum < _item.x) {
                 this.colNum = _item.x + 1;
             }
+            setTimeout(this.validatePositions, 300);
         },
         compactColumns: function() {
             /** method1, the best way **/
@@ -123,49 +124,7 @@ vm1 = new Vue({
             maxX = toRemove.length;  // 剩余不用移除的列数
             let minCol = Math.ceil(screen.width/cardWidth);
             this.colNum = maxX>minCol?maxX:minCol;
-            this.updateDividers();
-
-            /** method2 **/
-            // let maxX = 0;
-            // colsToRemove = [];
-            // for (let i=0; i<toRemove.length; i++) {
-            //     if (toRemove[i]) {
-            //         colsToRemove.push(i);
-            //     }
-            // }
-            // colsToRemove.reverse();
-            // for (let i of colsToRemove) {  // shift
-            //     for (let l of this.layouts) {
-            //         for (let c of l) {
-            //             if (c.x > i) {c.x--;}
-            //         }
-            //     }
-            // }
-            // maxX -= colsToRemove.length;
-            // let minCol = Math.ceil(screen.width/cardWidth);
-            // this.colNum = maxX>minCol?maxX:minCol;
-
-            /** method3 **/
-            // let maxX = 0;
-            // let minCol = Math.ceil(screen.width/cardWidth);
-            // for (let i=0; i<this.colNum; i++){
-            //     let remove = true;
-            //     for (let l of this.layouts) {
-            //         for (let c of l) {
-            //             if (c.x == i) {remove=false;}
-            //         }
-            //     }
-            //     if (remove === true) {
-            //         for (let l of this.layouts) {
-            //             for (let c of l) {
-            //                 if (c.x > i) {c.x--;}
-            //             }
-            //         }
-            //         this.colNum--;
-            //         i--;  // keep i unchanged in next round
-            //     }
-            // }
-            // if (this.colNum<minCol) {this.colNum=minCol;}
+            setTimeout(this.updateDividers, 100);
         },
         coordinates: (card) => {
             /* card为原生dom对象，返回卡片的: i(layouts index), x, y, 均从0开始 */
@@ -196,7 +155,6 @@ vm1 = new Vue({
                 console.error('layout to sort must be array');
             }
             // console.log('before sort');
-            // console.log('x,y,i');
             // for (l of layout) {console.log(l.x + ' ' + l.y + ' ' + l.i)};
             if (priority == 'xy') {
                 layout.sort((m1, m2) => {return m1.y - m2.y;});
@@ -206,7 +164,6 @@ vm1 = new Vue({
                 layout.sort((m1, m2) => {return m1.y - m2.y;});
             }
             // console.log('\nafter sort');
-            // console.log('x,y,i');
             // for (l of layout) {console.log(l.x + ' ' + l.y + ' ' + l.i)};
         },
         loadLayouts: function(yourLayouts) {
@@ -233,6 +190,7 @@ vm1 = new Vue({
                 }
             }
             this.compactColumns();
+            setTimeout(this.validatePositions, 300);
         },
         addCardRight: function(event) {
             let card = event.target.parentElement.parentElement;
@@ -313,9 +271,32 @@ vm1 = new Vue({
             }
             this.activityDividers = dividers;
         },
+        validatePositions: function() {
+            let illegal = 'card-illegal';  // illegal class name
+            cards = document.getElementsByClassName('card');
+            let fathers = [];  // dont ask me why not called mothers
+            for (let c of cards) {
+                let co = this.coordinates(c);
+                if (co.i<2) {
+                    if (co.y > 0) {c.classList.add(illegal);}
+                    else if (c.classList.contains(illegal)) {
+                        c.classList.remove(illegal);
+                    }
+                    if (co.i === 1) {fathers.push(co.x);}
+                } else {
+                    if (fathers.indexOf(co.x) === -1) {
+                        c.classList.add(illegal);
+                    } else {
+                        c.classList.remove(illegal);
+                    }
+                }
+                console.log(c.className);
+            }
+        },
         cardMoved: function() {
             // setTimeout(this.updateDividers, 100);  //延时等待页面渲染完成
-            setTimeout(this.compactColumns, 100);  //延时等待页面渲染完成
+            setTimeout(this.compactColumns, 100);
+            setTimeout(this.validatePositions, 300);
         },
         toggleCardStatesMenu:function(event) {
             let card = event.target.parentElement.parentElement;
