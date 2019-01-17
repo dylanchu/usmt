@@ -253,6 +253,7 @@ div {margin:0;border:0;padding:0;}
     word-wrap: break-word;
     word-break: break-all;
     overflow: hidden;  /* works fine */
+    user-select: none;
 }
 .vue-grid-item .no-drag {
     height: 100%;

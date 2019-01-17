@@ -106,7 +106,7 @@ vm1 = new Vue({
                     if (c.x>maxX) {maxX=c.x;}
                 }
             }
-            console.log("toRemove:"+toRemove);
+            // console.log("toRemove:"+toRemove);
             for (let i=0; i<toRemove.length; i++) {
                 while (toRemove[i] != true && i<toRemove.length) {i++;}
                 if (i>=toRemove.length) {break;}
@@ -195,10 +195,29 @@ vm1 = new Vue({
         addCardRight: function(event) {
             let card = event.target.parentElement.parentElement;
             let co = this.coordinates(card);
-            this.shiftCardsOnRight(co.x, 1);
-            let item = {"x":co.x+1,"y":co.y,"text":""};
-            this.addCard(co.i, item);
-            this.cardMoved();
+            let item = "";
+            if (co.i === 1) {
+                this.shiftCardsOnRight(co.x, 1);
+            }
+            let allX = [];
+            for (let c of this.layouts[co.i]) {
+                if (c.y===co.y) {
+                    allX.push(c.x);
+                }
+            }
+            let aimX = 0;
+            for (let k=co.x+1; k<=this.colNum; k++) {
+                if (allX.indexOf(k)===-1) {
+                    aimX = k;
+                    break;
+                }
+            }
+            if (aimX) {
+                item = {"x":aimX,"y":co.y,"text":""};
+                this.addCard(co.i, item);
+                this.cardMoved();
+            }
+            // console.log(item.x, item.y);
         },
         addCardBottom: function(event) {
             let card = event.target.parentElement.parentElement;
@@ -290,7 +309,7 @@ vm1 = new Vue({
                         c.classList.remove(illegal);
                     }
                 }
-                console.log(c.className);
+                // console.log(c.className);
             }
         },
         cardMoved: function() {
@@ -326,9 +345,9 @@ vm1 = new Vue({
                 if (c.x===co.x&&c.y===co.y) {
                     c.state = stateSelectedEl.innerText;
                     let stateEl=cardControls.getElementsByClassName('state-basic')[0];
-                    console.log(stateEl.className);
+                    // console.log(stateEl.className);
                     stateEl.className='state-basic state-'+c.state;
-                    console.log(stateEl.className);
+                    // console.log(stateEl.className);
                     this.toggleCardStatesMenu(event);
                     break;
                 }
