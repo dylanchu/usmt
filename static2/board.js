@@ -112,9 +112,10 @@ vm1 = new Vue({
                 // console.log('i = '+i);
                 let j = i+1;
                 while (toRemove[j] != false && j<toRemove.length) {j++;}
-                if (j>=toRemove.length) {break;}
+                if (j<toRemove.length) {
+                    this.shiftCardsOnRight(i, i-j);
+                }
                 // console.log('j = '+j);
-                this.shiftCardsOnRight(i, i-j);
                 toRemove.splice(i, j-i);
                 // console.log('shift cards right of '+i);
                 // console.log('shift distance '+ (i-j));
