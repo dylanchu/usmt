@@ -123,7 +123,7 @@ vm1 = new Vue({
             maxX = toRemove.length;  // 剩余不用移除的列数
             let minCol = Math.ceil(screen.width/cardWidth);
             this.colNum = maxX>minCol?maxX:minCol;
-            this.cardMoved();
+            this.updateDividers();
 
             /** method2 **/
             // let maxX = 0;
@@ -314,7 +314,8 @@ vm1 = new Vue({
             this.activityDividers = dividers;
         },
         cardMoved: function() {
-            setTimeout(this.updateDividers, 100);  //延时等待页面渲染完成
+            // setTimeout(this.updateDividers, 100);  //延时等待页面渲染完成
+            setTimeout(this.compactColumns, 100);  //延时等待页面渲染完成
         },
         toggleCardStatesMenu:function(event) {
             let card = event.target.parentElement.parentElement;
