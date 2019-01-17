@@ -81,7 +81,11 @@ vm1 = new Vue({
             _item = {};
             // 强制设置卡片宽高为1,1;并分配unique_id:
                 // 成员"i"是item的唯一标识，相同值会导致拖拽有bug.
-            Object.assign(_item, card, {"w":1,"h":1,"i":this.unique_id++});
+            if (layout_index>1 && !(card.state)) {
+                Object.assign(_item, card, {"w":1,"h":1,"state":"Todo","i":this.unique_id++});
+            } else {
+                Object.assign(_item, card, {"w":1,"h":1,"i":this.unique_id++});
+            }
             while (this.layouts.length < Number(layout_index) + 1) {
                 // console.log(this.layouts.length, Number(layout_index) + 1)
                 this.layouts.push([]);
@@ -313,7 +317,7 @@ vm1 = new Vue({
         },
         toggleCardStatesMenu:function(event) {
             let card = event.target.parentElement.parentElement;
-            let el=card.getElementsByClassName('state-release')[0];
+            let el=card.getElementsByClassName('state-basic')[0];
             let dropdown=card.getElementsByClassName('state-selection-menu')[0];
             if (dropdown.style.display != "block") {
                 dropdown.style.display="block";
@@ -331,29 +335,20 @@ vm1 = new Vue({
                 this.temp_cards_state_list_opened.splice(this.temp_cards_state_list_opened.indexOf(card),1);
             }
         },
-        selectCardState:function(event){
-            let state=event.target.innerText;
-            let card=event.target.parentElement.parentElement;
-            let el=card.getElementsByClassName('state-release')[0];
-            let dropdown=card.getElementsByClassName('state-selection-menu');
-            dropdown[0].style.display='none';
-            switch (state) {
-                case "Todo":
-                    el.innerText="Todo";
-                    el.style.background="#8D8D8D";
+        selectCardState:function(event){  // event.target is li
+            let stateSelectedEl=event.target;
+            let cardControls = event.target.parentElement.parentElement;
+            let co = this.coordinates(cardControls.parentElement);
+            for (let c of this.layouts[co.i]) {
+                if (c.x===co.x&&c.y===co.y) {
+                    c.state = stateSelectedEl.innerText;
+                    let stateEl=cardControls.getElementsByClassName('state-basic')[0];
+                    console.log(stateEl.className);
+                    stateEl.className='state-basic state-'+c.state;
+                    console.log(stateEl.className);
+                    this.toggleCardStatesMenu(event);
                     break;
-                case "Ready":
-                    el.innerText="Ready";
-                    el.style.background="#EE7766";
-                    break;
-                case "Doing":
-                    el.innerText="Doing";
-                    el.style.background="#4DAADD";
-                    break;
-                case "Done":
-                    el.innerText="Done";
-                    el.style.background="#58B74B";
-                    break;
+                }
             }
         },
         closeCardStatesMenu:function(event){
@@ -374,19 +369,20 @@ title_app = new Vue({
     data: {
         mylayouts: [
             [
-                {"x":0,"y":0,"text":"访问网站"},
-                {"x":2,"y":0,"text":"搜索商品"},
+                {"x":0,"y":0,"state":"","text":"访问网站"},
+                {"x":2,"y":0,"state":"","text":"搜索商品"},
             ],
             [
-                {"x":0,"y":0,"text":"查看主页"},
-                {"x":1,"y":0,"text":"查看推荐内容"},
-                {"x":3,"y":0,"text":"浏览分类"},
-                {"x":4,"y":0,"text":"直接搜索"},
-                {"x":9,"y":0,"text":"我很抱歉我的朋友"},
+                {"x":0,"y":0,"state":"","text":"查看主页"},
+                {"x":1,"y":0,"state":"","text":"查看推荐内容"},
+                {"x":3,"y":0,"state":"","text":"浏览分类"},
+                {"x":4,"y":0,"state":"","text":"直接搜索"},
+                {"x":9,"y":0,"state":"","text":"我很抱歉我的朋友"},
             ],
             [
-                {"x":0,"y":0,"text":"先搞个小目标"},
-                {"x":0,"y":1,"text":"假装赚了一个亿"},
+                {"x":0,"y":0,"state":"Done","text":"先搞个小目标"},
+                {"x":0,"y":1,"state":"Doing","text":"假装赚了一个亿"},
+                {"x":1,"y":0,"state":"Todo","text":"做点小功能"},
             ],
         ],
         isRotating: "",

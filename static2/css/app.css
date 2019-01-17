@@ -114,14 +114,30 @@ div {margin:0;border:0;padding:0;}
     padding-bottom: 50px;
 }
 
-.state-release{
-    background:#8D8D8D;
+.state-basic {
+    display: none;
     position: absolute;
     bottom:1%;
     left: 5%;
     color: #FFFFFF;
     text-align: center;
     user-select: none;
+}
+.state-basic.state-Todo {
+    background:#8D8D8D;
+    display: block;
+}
+.state-basic.state-Ready {
+    background:#EE7766;
+    display: block;
+}
+.state-basic.state-Doing {
+    background:#4DAADD;
+    display: block;
+}
+.state-basic.state-Done {
+    background:#58B74B;
+    display: block;
 }
 .state-selection-menu{
     list-style-type: none;
