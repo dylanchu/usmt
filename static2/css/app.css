@@ -143,6 +143,21 @@ div {margin:0;border:0;padding:0;}
     background:#58B74B;
     display: block;
 }
+.state-text-current {
+    display: none !important;
+}
+.state-text-Todo {
+    color:#000;
+}
+.state-text-Ready {
+    color:red;
+}
+.state-text-Doing {
+    color: #0077B5;
+}
+.state-text-Done {
+    color:green;
+}
 .state-selection-menu{
     list-style-type: none;
     display:none;
@@ -153,7 +168,7 @@ div {margin:0;border:0;padding:0;}
     bottom:24%;
     left:4%;
     width:50px;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(240, 240, 240, 0.7);
     user-select: none;
 }
 .state-selection-menu.open{

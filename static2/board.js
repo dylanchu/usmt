@@ -325,10 +325,11 @@ vm1 = new Vue({
                 dropdown.style.display="block";
                 let liarr=dropdown.getElementsByTagName("li");
                 for(let i=0;i<liarr.length;i++){
+                    let selected = 'state-text-current';
                     if(liarr[i].innerText==el.innerText){
-                        liarr[i].style.color="#8D8D8D";
-                    } else {
-                        liarr[i].style.color="#ffffff";
+                        liarr[i].classList.add(selected);
+                    } else if (liarr[i].classList.contains(selected)) {
+                        liarr[i].classList.remove(selected);
                     }
                 }
                 this.temp_cards_state_list_opened.push(card);
@@ -379,7 +380,6 @@ title_app = new Vue({
                 {"x":1,"y":0,"state":"","text":"查看推荐内容"},
                 {"x":3,"y":0,"state":"","text":"浏览分类"},
                 {"x":4,"y":0,"state":"","text":"直接搜索"},
-                {"x":9,"y":0,"state":"","text":"我很抱歉我的朋友"},
             ],
             [
                 {"x":0,"y":0,"state":"Done","text":"先搞个小目标"},

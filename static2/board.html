@@ -61,6 +61,7 @@
                 <i @click.stop="toggleCardStatesMenu" :class="'state-basic state-'+item.state" style="width:40px">{{item.state}}</i>
                 <ul class="state-selection-menu">
                     <li v-for="state in statesMenu"
+                        :class="'state-text-'+state"
                         @click.stop="selectCardState"
                         v-click-outside.stop="closeCardStatesMenu"
                     >{{state}}</li>
