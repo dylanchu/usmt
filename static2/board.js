@@ -41,7 +41,7 @@ vm1 = new Vue({
         widthData: screen.width,
         cardHeight: 105,
         cardMarginBasic: [10, 4],  // default is 10
-        denoteTextHeightRelease: 10,
+        denoteTextHeightRelease: 12,
         activityDividers: [],
         temp_cards_state_list_opened: [],
     },
