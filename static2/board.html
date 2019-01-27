@@ -21,11 +21,11 @@
 
 <span id="variables" style="display: none"></span>
 
-<div id="title" class="title" :style="'width:'+vm1.widthData">
+<div id="title" class="title" :style="'width:'+vm1.widthData+'px'">
     <h3 class="col-num-1">Story Map</h3>
     <i :class="'col-reload fa fa-refresh'+isRotating" @click="reload"></i>
 </div>
-<div id="app1" v-bind:style="{width: widthData}">
+<div id="app1" v-bind:style="{width: widthData + 'px'}">
     <grid-layout v-for="(layout,index) in layouts"
                     :layout="layout"
                     :col-num="colNum"
@@ -53,7 +53,21 @@
         >
             <span class="text">{{item.text}}</span>
             <span class='x_y' style="visibility: hidden;">{{item.x}}_{{item.y}}</span>
-            <span name="card-controls">
+            <span v-if="index==1" name="card-controls">
+                <i @click.stop="removeCard" class="card-delete fa fa-window-close fa-lg pull-right"></i>
+                <i @click.stop="addCardRight" class="card-add-right fa fa-arrow-circle-right fa-lg"></i>
+                <i @click.stop="addCardBottom" class="card-add-bottom fa fa-chevron-circle-down fa-lg"></i>
+                <i @click.stop="editText" class="card-edit fa fa-pencil-square-o fa-2x"></i>
+                <i @click.stop="toggleCardStatesMenu" :class="'state-basic state-'+item.state" style="width:40px">{{item.state}}</i>
+                <ul class="state-selection-menu">
+                    <li v-for="state in statesMenu"
+                        :class="'state-text-'+state"
+                        @click.stop="selectCardState"
+                        v-click-outside.stop="closeCardStatesMenu"
+                    >{{state}}</li>
+                </ul>
+            </span>
+            <span v-else name="card-controls">
                 <i @click.stop="removeCard" class="card-delete fa fa-window-close fa-lg pull-right"></i>
                 <i @click.stop="addCardRight" class="card-add-right fa fa-chevron-circle-right fa-lg"></i>
                 <i @click.stop="addCardBottom" class="card-add-bottom fa fa-chevron-circle-down fa-lg"></i>

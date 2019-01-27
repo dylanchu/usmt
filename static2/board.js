@@ -1,6 +1,6 @@
 /* jshint esversion: 6 */
 document.title = 'story map';
-const cardWidth = 180;
+const cardWidth = 170;
 variables = new Vue({
     el: '#variables',
     data: {
@@ -38,16 +38,16 @@ vm1 = new Vue({
         statesMenu:["Todo", "Ready", "Doing", "Done"],
         unique_id: 0,  // 不要随意手动设置它
         colNum: screen.width/cardWidth,
-        widthData: screen.width + 'px',
-        cardHeight: 110,
-        cardMarginBasic: [10, 6],  // default is 10
+        widthData: screen.width,
+        cardHeight: 105,
+        cardMarginBasic: [10, 4],  // default is 10
         denoteTextHeightRelease: 10,
         activityDividers: [],
         temp_cards_state_list_opened: [],
     },
     watch: {
         colNum: function(newValue){  // 保证卡片宽度视觉上不变
-            this.widthData = cardWidth*newValue + 'px';
+            this.widthData = cardWidth*newValue;
         },
     },
     computed:{
@@ -182,6 +182,10 @@ vm1 = new Vue({
         removeCard: function(event) {  // name 'delete' wont work, maybe conflicts
             let card = event.target.parentElement.parentElement;
             let co = this.coordinates(card);
+            if (co.i <= 1 && this.layouts[co.i].length === 1) {
+                alert('activities和tasks的最后一张卡片不能删除');
+                return;
+            }
             for (let c of this.layouts[co.i]) {
                 if (c.x == co.x && c.y == co.y) {
                     this.layouts[co.i].splice(this.layouts[co.i].indexOf(c), 1);  // grid库渲染可能有bug，不能直接这样操作
@@ -191,6 +195,9 @@ vm1 = new Vue({
             }
             this.compactColumns();
             setTimeout(this.validatePositions, 300);
+            if (this.layouts[co.i].length === 0) {
+                this.layouts.splice(co.i, 1);
+            }
         },
         addCardRight: function(event) {
             let card = event.target.parentElement.parentElement;
@@ -372,20 +379,33 @@ title_app = new Vue({
     data: {
         mylayouts: [
             [
-                {"x":0,"y":0,"state":"","text":"访问网站"},
-                {"x":2,"y":0,"state":"","text":"搜索商品"},
+                {"x":0,"y":0,"state":"","text":"组织邮件","w":1,"h":1,"i":0,"moved":false},
+                {"x":4,"y":0,"state":"","text":"管理联系人","w":1,"h":1,"i":1,"moved":false},
+                {"x":2,"y":0,"text":"管理邮件","w":1,"h":1,"i":16,"moved":false}
             ],
             [
-                {"x":0,"y":0,"state":"","text":"查看主页"},
-                {"x":1,"y":0,"state":"","text":"查看推荐内容"},
-                {"x":3,"y":0,"state":"","text":"浏览分类"},
-                {"x":4,"y":0,"state":"","text":"直接搜索"},
+                {"x":0,"y":0,"state":"","text":"搜索","w":1,"h":1,"i":2,"moved":false},
+                {"x":1,"y":0,"state":"","text":"归档","w":1,"h":1,"i":3,"moved":false},
+                {"x":4,"y":0,"state":"","text":"创建","w":1,"h":1,"i":4,"moved":false},
+                {"x":5,"y":0,"state":"","text":"更新\n","w":1,"h":1,"i":5,"moved":false},
+                {"x":6,"y":0,"text":"删除","w":1,"h":1,"i":11,"moved":false},
+                {"x":2,"y":0,"text":"编辑并发送","w":1,"h":1,"i":14,"moved":false},
+                {"x":3,"y":0,"text":"","w":1,"h":1,"i":50,"moved":false}
             ],
             [
-                {"x":0,"y":0,"state":"Done","text":"先搞个小目标"},
-                {"x":0,"y":1,"state":"Doing","text":"假装赚了一个亿"},
-                {"x":1,"y":0,"state":"Todo","text":"做点小功能"},
+                {"x":0,"y":0,"state":"Done","text":"按关键词搜索","w":1,"h":1,"i":6,"moved":false},
+                {"x":1,"y":1,"state":"Doing","text":"创建子文件夹","w":1,"h":1,"i":7,"moved":false},
+                {"x":1,"y":0,"state":"Todo","text":"移动","w":1,"h":1,"i":8,"moved":false},
+                {"x":4,"y":0,"text":"基础创建功能","w":1,"h":1,"state":"Todo","i":30,"moved":false},
+                {"x":5,"y":0,"text":"","w":1,"h":1,"state":"Todo","i":35,"moved":false},
+                {"x":2,"y":0,"text":"文本邮件","w":1,"h":1,"state":"Todo","i":51,"moved":false}
             ],
+            [
+                {"x":0,"y":0,"text":"按单字段搜索","w":1,"h":1,"state":"Todo","i":9,"moved":false},
+                {"x":0,"y":1,"text":"按多字段搜索","w":1,"h":1,"state":"Todo","i":10,"moved":false},
+                {"x":4,"y":0,"text":"杂七杂八的创建功能\n杂七杂八的创建功能\n杂七杂八的创建功能\n杂七杂八的创建功能","w":1,"h":1,"state":"Todo","i":31,"moved":false},
+                {"x":2,"y":0,"text":"HTML邮件","w":1,"h":1,"state":"Todo","i":53,"moved":false}
+            ]
         ],
         isRotating: "",
     },
@@ -408,4 +428,5 @@ vm1.loadLayouts(title_app.mylayouts);
 
 window.onload = () => {
     vm1.updateDividers();
+    setTimeout(vm1.validatePositions, 500);
 };

@@ -69,26 +69,31 @@ div {margin:0;border:0;padding:0;}
 }
 .card.card-level1 {  /* activities */
     background: #aed9e9 !important;
+    box-shadow: 1px 1px 4px #aaa;
 }
 .card.card-level2 {  /* tasks */
     background: #f4e466 !important;
+    box-shadow: 1px 1px 4px #aaa;
 }
 
 .denote-release{
-    margin-left: 10px;
-    margin-top: 0;
+    padding-left: 10px;
+    margin-top: 1px;
     color:#0077B5;
     font-family: "Times New Roman";
     font-weight: 600;
     float: left;
     user-select: none;
+    background: gainsboro;
+    width: 100%;
+    height: 15px;
 }
 
 .layout-activities-divider {
     pointer-events: none;
     position: absolute;
     top: 0;
-    border-right: dashed #ccc 1px;
+    border-right: dashed #c6c6c6 1px;
 }
 
 .new-releases {
@@ -239,7 +244,6 @@ div {margin:0;border:0;padding:0;}
 
 .vue-grid-layout {
     background: #eee;
-    border-top: dashed #ccc 1px;
     cursor: default;
 }
 .vue-grid-layout.layout-level1 {
@@ -249,7 +253,6 @@ div {margin:0;border:0;padding:0;}
 .vue-grid-item:not(.vue-grid-placeholder) {
     background: #ccc;
     /* border: 1px solid rgb(235, 160, 160); */
-    box-shadow: 1px 1px 4px #aaa;
 }
 .vue-grid-item.static {
     background: #cce;
