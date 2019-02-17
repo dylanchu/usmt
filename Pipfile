@@ -1,5 +1,5 @@
 [[source]]
-url = "https://pypi.org/simple"
+url = "http://mirrors.aliyun.com/pypi/simple/"
 verify_ssl = true
 name = "pypi"
 
@@ -10,6 +10,12 @@ itsdangerous = "==1.1.0"
 "Jinja2" = "==2.10"
 MarkupSafe = "==1.1.0"
 Werkzeug = "==0.14.1"
+flask-login = "*"
+flask-logger = "*"
+redis = "*"
+flask-session = "*"
+flask-bootstrap = "*"
+flask-wtf = "*"
 
 [dev-packages]
 

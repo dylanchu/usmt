@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/static/img/logo.ico" type="image/x-icon">
     <title>Sign in or sign up</title>
     <!--<link rel="stylesheet" type="text/css" href="css/normalize.css" />-->
     <style type="text/css">
@@ -162,9 +162,9 @@
 
 
 <div style="align-items: center;display: flex;transform: scale(0.6);justify-content: center;">
-    <img src="img/logo.png">
+    <img src="/static/img/logo.png">
     <div style="display: inline;">
-        <div><img style="float:left;position: absolute;bottom: 90px;" src="img/yourstories.png"></div>
+        <div><img style="float:left;position: absolute;bottom: 90px;" src="/static/img/yourstories.png"></div>
         <p class="center" style="padding-top: 16px; float:left;text-align:left;font-size:24px;">The Online Story Mapping Tool</p>
     </div>
 </div>
@@ -201,7 +201,7 @@
             alert("Login successful!");
             $("#user_name").val("");
             $("#password").val("");
-            window.location.href="board.html"
+            window.location.href="/static/board.html"
 
 
         }
@@ -223,7 +223,7 @@
             alert("Registration complete!");
             $("#user_name").val("");
             $("#password").val("");
-            window.location.href="board.html"
+            window.location.href="/static/board.html"
         }
         else
         {

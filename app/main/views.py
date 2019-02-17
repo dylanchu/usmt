@@ -3,17 +3,17 @@
 #
 # Created by dylanchu on 19-1-1
 
-from flask import Flask, jsonify
-
-app = Flask(__name__)
-
-
-@app.route('/')
-def hello_world():
-    return '请访问/cards获取数据'
+from flask import jsonify, current_app
+from . import main
 
 
-@app.route('/cards')
+@main.route('/')
+@main.route('/index')
+def index():
+    return current_app.send_static_file('index.html')
+
+
+@main.route('/cards')
 def db_data_stub():
     data = {
         "target": "使用百度搜索新闻",
@@ -23,7 +23,3 @@ def db_data_stub():
         }
     }
     return jsonify(data)
-
-
-if __name__ == '__main__':
-    app.run()
