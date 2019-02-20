@@ -16,6 +16,7 @@ redis = "*"
 flask-session = "*"
 flask-bootstrap = "*"
 flask-wtf = "*"
+flask-mongoengine = "*"
 
 [dev-packages]
 

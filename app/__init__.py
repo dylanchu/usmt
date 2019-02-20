@@ -6,6 +6,9 @@
 from flask import Flask
 from flask_session import Session
 from config import DevelopmentConfig
+from flask_mongoengine import MongoEngine
+
+db = MongoEngine()
 
 
 def create_app():
@@ -15,6 +18,7 @@ def create_app():
     app.logger.setLevel(app.config['LOG_LEVEL'])
 
     Session(app)
+    db.init_app(app)
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint, static_folder='static')

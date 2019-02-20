@@ -19,6 +19,17 @@ class BaseConfig(object):
     SESSION_PERMANENT = True  # 是否长期有效，false则关闭浏览器失效
     PERMANENT_SESSION_LIFETIME = 3600  # session长期有效则设定session生命周期
 
+    # mongoengine, https://flask-mongoengine.readthedocs.io/en/latest/
+    MONGODB_SETTINGS = {
+        'db': 'usmt',
+        'host': '127.0.0.1',
+        'port': 27017,
+        # if authentication is needed:
+        # 'username': 'webapp',
+        # 'password': 'pwd123',
+        'connect': False  # False: connect when first connect instead of instantiated
+    }
+
 
 class DevelopmentConfig(BaseConfig):
     SESSION_USE_SIGNER = False
