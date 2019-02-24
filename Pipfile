@@ -1,5 +1,6 @@
 [[source]]
-url = "http://mirrors.aliyun.com/pypi/simple/"
+#url = "http://mirrors.aliyun.com/pypi/simple/"
+url = "http://mirrors.nju.edu.cn/pypi/web/simple/"
 verify_ssl = true
 name = "pypi"
 
@@ -17,6 +18,7 @@ flask-session = "*"
 flask-bootstrap = "*"
 flask-wtf = "*"
 flask-mongoengine = "*"
+flask-script = "*"
 
 [dev-packages]
 
