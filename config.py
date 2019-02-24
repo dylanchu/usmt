@@ -3,6 +3,7 @@
 #
 # Created by dylanchu on 19-2-15
 
+import hashlib
 from redis import Redis
 
 
@@ -10,7 +11,6 @@ class BaseConfig(object):
     LOG_LEVEL = 'DEBUG'  # DEBUG, INFO, WARNING, ERROR, CRITICAL. 可使用app.logger.exception(msg)，但level没有EXCEPTION
     SECRET_KEY = '8p25Nd19xi54h23BX90S932R'
     # SECRET_KEY = os.urandom(24)  # 设为24位的随机字符,每次运行服务器都不同,重启则上次的session清除
-    WTF_CSRF_ENABLED = False  # 是否开启flask-wtf的csrf保护，默认是True
 
     # session
     SESSION_TYPE = 'redis'
@@ -30,7 +30,12 @@ class BaseConfig(object):
         'connect': False  # False: connect when first connect instead of instantiated
     }
 
+    # 自定义
+    MD5_SALT = 'a random string'  # 用于密码验证
+    MD5_TOOL = hashlib.md5()
+
 
 class DevelopmentConfig(BaseConfig):
+    WTF_CSRF_ENABLED = False  # 是否开启flask-wtf的csrf保护,默认是True,用postman提交表单测试需要设为False
     SESSION_USE_SIGNER = False
     SESSION_REDIS = Redis(host='127.0.0.1', port=6379, db=0, password=None)

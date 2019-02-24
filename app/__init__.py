@@ -3,12 +3,16 @@
 #
 # Created by dylanchu on 19-2-15
 
-from flask import Flask
-from flask_session import Session
 from config import DevelopmentConfig
+from flask import Flask
+from flask_login import LoginManager
 from flask_mongoengine import MongoEngine
+from flask_session import Session
 
 db = MongoEngine()
+login_manager = LoginManager()
+login_manager.session_protection = 'strong'
+login_manager.login_view = 'auth.login'
 
 
 def create_app():
@@ -19,10 +23,13 @@ def create_app():
 
     Session(app)
     db.init_app(app)
+    login_manager.init_app(app)
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint, static_folder='static')
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
+
+    app.md5 = app.config['MD5_TOOL']
 
     return app

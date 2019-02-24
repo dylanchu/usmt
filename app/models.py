@@ -3,7 +3,9 @@
 #
 # Created by dylanchu on 19-2-20
 
+from . import login_manager
 from app import db
+from flask_login import UserMixin
 import datetime
 
 
@@ -20,7 +22,7 @@ class Role(db.Document):
             self.id, self.name, self.r_permission, self.w_permission)
 
 
-class User(db.Document):
+class User(UserMixin, db.Document):
     email = db.EmailField(max_length=128, required=True, unique=True)
     password = db.StringField(max_length=128, required=True)
     name = db.StringField(max_length=32, required=True)
@@ -35,3 +37,8 @@ class User(db.Document):
 
     def __repr__(self):
         return "{id:%s, email:%s, name:%s, role:%s}" % (self.id, self.email, self.name, self.role)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.objects(pk=user_id).first()
