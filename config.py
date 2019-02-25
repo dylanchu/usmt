@@ -22,7 +22,7 @@ class BaseConfig(object):
     # mongoengine, https://flask-mongoengine.readthedocs.io/en/latest/
     MONGODB_SETTINGS = {
         'db': 'usmt',
-        'host': '127.0.0.1',
+        'host': '172.19.240.16',
         'port': 27017,
         # if authentication is needed:
         # 'username': 'webapp',
@@ -31,8 +31,12 @@ class BaseConfig(object):
     }
 
     # 自定义
-    MD5_SALT = 'a random string'  # 用于密码验证
-    MD5_TOOL = hashlib.md5()
+    @staticmethod
+    def MD5_HASH(password) -> str:
+        _MD5_SALT = 'a random string'
+        _MD5_TOOL = hashlib.md5()
+        _MD5_TOOL.update((password + _MD5_SALT).encode())
+        return _MD5_TOOL.hexdigest()
 
 
 class DevelopmentConfig(BaseConfig):

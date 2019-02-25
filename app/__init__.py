@@ -30,6 +30,6 @@ def create_app():
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
-    app.md5 = app.config['MD5_TOOL']
+    app.md5_hash = app.config['MD5_HASH']
 
     return app
