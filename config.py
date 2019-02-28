@@ -41,7 +41,6 @@ class DevelopmentConfig(BaseConfig):
     SECRET_KEY = os.urandom(24)  # 设为24位的随机字符,重启服务器则上次session清除
     WTF_CSRF_ENABLED = False  # 是否开启flask-wtf的csrf保护,默认是True,用postman提交表单测试需要设为False
 
-    SESSION_USE_SIGNER = False
     # from redis import Redis
     # SESSION_TYPE = 'redis'  # null(采用flask默认的保存在cookie中) / redis / memcached / ..
     # SESSION_REDIS = Redis(host='127.0.0.1', port=6379, db=0, password=None)
