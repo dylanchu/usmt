@@ -5,6 +5,6 @@
 
 
 def is_local_url(url: str):
-    if url.startswith('/'):
+    if url and url.startswith('/'):
         return True
     return False
