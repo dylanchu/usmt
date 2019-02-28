@@ -3,14 +3,14 @@
 #
 # Created by dylanchu on 19-1-1
 
-from flask import jsonify, current_app
+from flask import jsonify, render_template
 from . import main
 
 
 @main.route('/')
 @main.route('/index')
 def index():
-    return current_app.send_static_file('index.html')
+    return render_template('index.html')
 
 
 @main.route('/cards')

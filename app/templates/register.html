@@ -1,13 +1,17 @@
-<h1>Registration</h1>
-<form action="{{ url_register }}" method="post">
-  <p>Email</p>
-  {{ form.email }}
-  <p>Password</p>
-  {{ form.password }}
-  <p>Name</p>
-  {{ form.name }}
-  {{ form.hidden_tag() }}
-  <br>
-  <br>
-  <input type="submit" value="Submit">
-</form>
+{% extends 'base.html' %}
+{% from 'bootstrap/form.html' import render_form %}
+
+{% block content %}
+<div class="container">
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;
+            </button> {{ message }}
+        </div>
+    {% endfor %}
+    <h1>Registration</h1>
+    {{ render_form(form) }}
+    <br>
+    <small>Already have an account? <a href='{{ url_for("auth.login") }}'>Click Here to Login</a></small>
+</div>
+{% endblock %}

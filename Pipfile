@@ -15,10 +15,10 @@ flask-login = "==0.3.2"
 flask-logger = "*"
 redis = "*"
 flask-session = "*"
-flask-bootstrap = "*"
 flask-wtf = "*"
 flask-mongoengine = "*"
 flask-script = "*"
+bootstrap-flask = "*"
 
 [dev-packages]
 

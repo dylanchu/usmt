@@ -6,7 +6,7 @@
 from flask import render_template, redirect, url_for, current_app, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
 from app.models import User, Role
 from app.utils import is_local_url
@@ -18,11 +18,14 @@ class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     name = StringField('Name', validators=[DataRequired()])
+    submit = SubmitField()
 
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
+    remember = BooleanField('Remember me')
+    submit = SubmitField()
 
 
 @auth.route('/register', methods=['GET', 'POST'])
@@ -41,7 +44,7 @@ def register():
             login_user(user)
             return redirect(url_for('auth.dashboard'))
         else:
-            flash('注册失败：用户以存在')
+            flash('注册失败：用户已存在')
             return redirect(url_for('auth.login'))
     return render_template('register.html', form=form, url_register=url_for('auth.register'))
 
@@ -55,7 +58,7 @@ def login():
         check_user = User.objects(email=form.email.data).first()
         if check_user:
             if check_user['password'] == current_app.md5_hash(form.password.data):
-                login_user(check_user)
+                login_user(check_user, remember=form.remember.data)
                 if is_local_url(request.args.get('next')):
                     return redirect(request.args.get('next'))
                 else:
