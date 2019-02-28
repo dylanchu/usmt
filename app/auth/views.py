@@ -3,12 +3,13 @@
 #
 # Created by dylanchu on 19-2-24
 
-from flask import render_template, redirect, url_for, current_app, flash
+from flask import render_template, redirect, url_for, current_app, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired
 from app.models import User, Role
+from app.utils import is_local_url
 
 from . import auth
 
@@ -55,12 +56,15 @@ def login():
         if check_user:
             if check_user['password'] == current_app.md5_hash(form.password.data):
                 login_user(check_user)
-                return redirect(url_for('auth.dashboard'))
+                if is_local_url(request.args.get('next')):
+                    return redirect(request.args.get('next'))
+                else:
+                    return redirect(url_for('auth.dashboard'))
             flash('登录失败：用户名或密码不正确')
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('auth.login', next=request.args.get('next')))
         flash('登录失败：用户不存在')
-        return redirect(url_for('auth.login'))
-    return render_template('login.html', form=form, url_login=url_for('auth.login'))
+        return redirect(url_for('auth.login', next=request.args.get('next')))
+    return render_template('login.html', form=form, url_login=url_for('auth.login', next=request.args.get('next')))
     # return current_app.send_static_file('login.html')
 
 
