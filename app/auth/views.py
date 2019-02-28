@@ -5,27 +5,11 @@
 
 from flask import render_template, redirect, url_for, current_app, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired
 from app.models import User, Role
 from app.utils import is_local_url
 
 from . import auth
-
-
-class RegisterForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    name = StringField('Name', validators=[DataRequired()])
-    submit = SubmitField()
-
-
-class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember = BooleanField('Remember me')
-    submit = SubmitField()
+from .forms import RegisterForm, LoginForm
 
 
 @auth.route('/register', methods=['GET', 'POST'])
@@ -81,4 +65,4 @@ def dashboard():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('auth.dashboard'))
+    return redirect(url_for('main.index'))
