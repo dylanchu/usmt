@@ -34,6 +34,8 @@ def create_app():
     app.register_blueprint(main_blueprint, static_folder='static')
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
+    from .api import api as api_blueprint
+    app.register_blueprint(api_blueprint, url_prefix='/api')
 
     app.md5_hash = app.config['MD5_HASH']
 
