@@ -13,8 +13,8 @@
         <li>
             <p>{{ k }}<br>
                 <small>
-                    <a href="{{ url_for('api.edit_map', id=k) }}">查看/编辑</a>
-                    <a href="{{ url_for('api.delete_map', id=k) }}">删除</a>
+                    <a href="{{ url_for('api.edit_map', name=k) }}">查看/编辑</a>
+                    <a href="{{ url_for('api.delete_map', name=k) }}">删除</a>
                 </small>
             </p>
         </li>

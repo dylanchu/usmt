@@ -4,13 +4,16 @@
 # Created by dylanchu on 19-3-1
 
 from . import api
+from flask import request, url_for
 
 
-@api.route('/edit/<id>')
-def edit_map(id):
-    return 'api edit map %s' % id
+@api.route('/edit')
+def edit_map():
+    name = request.args.get('name')
+    return 'api edit map %s' % name
 
 
-@api.route('/delete/<id>')
-def delete_map(id):
-    return 'api delete map %s' % id
+@api.route('/delete')
+def delete_map():
+    name = request.args.get('name')
+    return 'api delete map %s' % name
