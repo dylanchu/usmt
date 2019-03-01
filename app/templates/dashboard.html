@@ -1,37 +1,62 @@
 {% extends 'base.html' %}
+{% from 'bootstrap/form.html' import render_form, render_field %}
 
 {% block content %}
 <h1>管理面板</h1>
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;
+        </button> {{ message }}
+    </div>
+{% endfor %}
 <p>
-    我的身份：<br>
-    {{ name }} &nbsp; {{ email }}
+    我的信息： {{ name }} &nbsp; {{ email }} &nbsp; <a href='{{ url_for("auth.logout") }}'>注销</a>
 </p>
 <div class="container">
-    <p>我的故事地图:</p>
-    <ul>
-        {% for k in maps %}
-        <li>
-            <p>{{ k }}<br>
-                <small>
-                    <a href="{{ url_for('api.edit_map', name=k) }}">查看/编辑</a>
-                    <a href="{{ url_for('api.delete_map', name=k) }}">删除</a>
-                </small>
-            </p>
-        </li>
-        {% endfor %}
-    </ul>
-    <p>回收站:</p>
-    <ul>
-        {% for k in recycle_bin %}
-            <li>
-                <p>{{ k }}</p>
-                <small>
-                    <a href="{{ url_for('api.edit_map', id=k) }}">恢复</a>
-                    <a href="{{ url_for('api.delete_map', id=k) }}">彻底删除</a>
-                </small>
-            </li>
-        {% endfor %}
-    </ul>
+    <hr>
+    <div class="col-md-4">
+        {{ render_form(form) }}
+    </div>
+    <hr>
+<div class="row">
+    <div class="col-md-6">
+        <p>我的故事地图:</p>
+        <ul>
+            {% if maps %}
+                {% for k in maps %}
+                <li>
+                    <p>{{ k }}<br>
+                        <small>
+                            <a href="{{ url_for('main.edit_map', name=k) }}">查看/编辑</a>
+                            <a href="{{ url_for('main.trash_map', name=k) }}">移到回收站</a>
+                        </small>
+                    </p>
+                </li>
+                {% endfor %}
+            {% else %}
+                <small>空的</small>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <p>回收站:</p>
+        <ul>
+            {% if recycle_bin  %}
+                {% for k in recycle_bin %}
+                    <li>
+                        <p>{{ k }}<br>
+                            <small>
+                                <a href="{{ url_for('main.restore_map', name=k) }}">恢复</a>
+                                <a href="{{ url_for('main.delete_map', name=k) }}">彻底删除</a>
+                            </small>
+                        </p>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <small>空的</small>
+            {% endif %}
+        </ul>
+    </div>
 </div>
-<a href='{{ url_for("auth.logout") }}'>Logout</a>
+</div>
 {% endblock %}
