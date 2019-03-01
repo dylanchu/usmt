@@ -48,12 +48,11 @@ def edit_map():
 @main.route('/trash')
 def trash_map():
     map_id = request.args.get('sm')
-    map_name = current_user.maps.get(map_id)
-    if map_id and map_name:
-        current_user.maps.pop(map_id)
+    try:
+        map_name = current_user.maps.pop(map_id)
         current_user.recycle_bin[map_id] = map_name
         current_user.save()
-    else:
+    except KeyError or TypeError:
         flash('请求失败')
     return redirect(url_for('main.dashboard'))
 
@@ -61,12 +60,11 @@ def trash_map():
 @main.route('/restore')
 def restore_map():
     map_id = request.args.get('sm')
-    map_name = current_user.recycle_bin.get(map_id)
-    if map_id and map_name:
+    try:
+        map_name = current_user.recycle_bin.pop(map_id)
         current_user.maps[map_id] = map_name
-        current_user.recycle_bin.pop(map_id)
         current_user.save()
-    else:
+    except KeyError or TypeError:
         flash('请求失败')
     return redirect(url_for('main.dashboard'))
 
