@@ -13,7 +13,7 @@ db = MongoEngine()
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
-login_manager.login_message = 'Please login to access this page'
+login_manager.login_message = '请登录后操作'
 bootstrap = Bootstrap()
 
 
