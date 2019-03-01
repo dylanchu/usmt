@@ -4,6 +4,8 @@
 # Created by dylanchu on 19-1-1
 
 from flask import jsonify, render_template
+from flask_login import login_required, current_user
+
 from . import main
 
 
@@ -23,3 +25,10 @@ def db_data_stub():
         }
     }
     return jsonify(data)
+
+
+@main.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template('dashboard.html', name=current_user.name, email=current_user.email, maps=current_user.maps,
+                           recycle_bin=current_user.recycle_bin)

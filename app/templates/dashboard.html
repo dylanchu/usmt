@@ -7,5 +7,31 @@
     {{ name }}<br>
     {{ email }}
 </p>
+<div class="container">
+    <p>我的故事地图:</p>
+    <ul>
+        {% for k in maps %}
+        <li>
+            <p>{{ k }}</p>
+            <small>
+                <a href="{{ url_for('api.edit_map', id=k) }}">查看/编辑</a>
+                <a href="{{ url_for('api.delete_map', id=k) }}">删除</a>
+            </small>
+        </li>
+        {% endfor %}
+    </ul>
+    <p>回收站:</p>
+    <ul>
+        {% for k in recycle_bin %}
+            <li>
+                <p>{{ k }}</p>
+                <small>
+                    <a href="{{ url_for('api.edit_map', id=k) }}">恢复</a>
+                    <a href="{{ url_for('api.delete_map', id=k) }}">彻底删除</a>
+                </small>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
 <a href='{{ url_for("auth.logout") }}'>Logout</a>
 {% endblock %}

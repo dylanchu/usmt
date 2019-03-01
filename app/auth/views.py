@@ -26,7 +26,7 @@ def register():
             user.role = default_role
             user.save()
             login_user(user)
-            return redirect(url_for('auth.dashboard'))
+            return redirect(url_for('main.dashboard'))
         else:
             flash('注册失败：用户已存在')
             return redirect(url_for('auth.login'))
@@ -46,19 +46,13 @@ def login():
                 if is_local_url(request.args.get('next')):
                     return redirect(request.args.get('next'))
                 else:
-                    return redirect(url_for('auth.dashboard'))
+                    return redirect(url_for('main.dashboard'))
             flash('登录失败：用户名或密码不正确')
             return redirect(url_for('auth.login', next=request.args.get('next')))
         flash('登录失败：用户不存在')
         return redirect(url_for('auth.login', next=request.args.get('next')))
     return render_template('login.html', form=form, url_login=url_for('auth.login', next=request.args.get('next')))
     # return current_app.send_static_file('login.html')
-
-
-@auth.route('/dashboard')
-@login_required
-def dashboard():
-    return render_template('dashboard.html', name=current_user.name, email=current_user.email)
 
 
 @auth.route('/logout')
