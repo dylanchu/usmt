@@ -39,12 +39,14 @@ def dashboard():
 
 
 @main.route('/edit')
+@login_required
 def edit_map():
     map_id = request.args.get('sm')
     return redirect(url_for('static', filename='board.html', sm=map_id))
 
 
 @main.route('/trash')
+@login_required
 def trash_map():
     map_id = request.args.get('sm')
     try:
@@ -57,6 +59,7 @@ def trash_map():
 
 
 @main.route('/restore')
+@login_required
 def restore_map():
     map_id = request.args.get('sm')
     try:
@@ -69,6 +72,7 @@ def restore_map():
 
 
 @main.route('/delete')
+@login_required
 def delete_map():
     map_id = request.args.get('sm')
     try:

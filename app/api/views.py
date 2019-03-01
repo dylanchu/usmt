@@ -5,13 +5,14 @@
 
 from datetime import datetime
 from flask import request, jsonify, json
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 from app.models import StoryMap
 from . import api
 
 
 @api.route('get-map')
+@login_required
 def get_map():
     map_id = request.args.get('sm')
     map_name = current_user.maps.get(map_id)
@@ -23,6 +24,7 @@ def get_map():
 
 
 @api.route('save-map', methods=['POST'])
+@login_required
 def save_map():
     map_id = request.args.get('sm')
     map_name = current_user.maps.get(map_id)
