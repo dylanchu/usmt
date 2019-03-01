@@ -3,10 +3,9 @@
 #
 # Created by dylanchu on 19-1-1
 
-from flask import jsonify, render_template, request, flash, redirect, url_for, current_app
+from flask import jsonify, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from ..models import StoryMap
-import mongoengine
 
 from . import main
 from .forms import NewMapForm
