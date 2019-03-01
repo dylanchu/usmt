@@ -72,6 +72,15 @@ def restore_map():
 @main.route('/delete')
 def delete_map():
     map_id = request.args.get('sm')
-    map_name = current_user.recycle_bin.get(map_id)
-    flash('你点击了 彻底删除故事地图 %s' % map_name)
+    try:
+        map_name = current_user.recycle_bin.pop(map_id)
+        current_user.save()
+        the_map = StoryMap.objects.filter(id=map_id).first()
+        the_map.delete()
+    except KeyError or TypeError:  # TypeError:map_id为None,KeyError:map_id无效
+        flash('请求失败')
+    except AttributeError:
+        flash('所请求地图已不存在')
+    else:
+        flash('已彻底删除： %s' % map_name)
     return redirect(url_for('main.dashboard'))
