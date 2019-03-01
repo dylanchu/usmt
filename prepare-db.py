@@ -76,8 +76,8 @@ user1.email = 'aaa@site.com'
 user1.password = app.md5_hash('1234')
 user1.name = '张三'
 user1.role = default_role
-user1.maps[map1.name] = map1.id
-user1.maps[map2.name] = map2.id
+user1.maps[str(map1.id)] = map1.name
+user1.maps[str(map2.id)] = map2.name
 user1.save()
 
 user2 = User()

@@ -3,9 +3,10 @@
 #
 # Created by dylanchu on 19-1-1
 
-from flask import jsonify, render_template, request, flash, redirect, url_for
+from flask import jsonify, render_template, request, flash, redirect, url_for, current_app
 from flask_login import login_required, current_user
 from ..models import StoryMap
+import mongoengine
 
 from . import main
 from .forms import NewMapForm
@@ -28,33 +29,29 @@ def db_data_stub():
 def dashboard():
     form = NewMapForm()
     if form.validate_on_submit():
-        existing_map = StoryMap.objects.filter(name=form.name.data).first()
-        if existing_map:
-            flash('已存在同名地图!')
-            return redirect(url_for('main.dashboard'))
-        else:
-            sm = StoryMap()
-            sm.name = form.name.data
-            sm.save()
-            current_user.maps[sm.name] = sm.id
-            current_user.save()
+        sm = StoryMap()
+        sm.name = form.name.data
+        sm.save()
+        current_user.maps[str(sm.id)] = sm.name
+        current_user.save()
+        return redirect(url_for('main.dashboard'))
     return render_template('dashboard.html', name=current_user.name, email=current_user.email, maps=current_user.maps,
                            recycle_bin=current_user.recycle_bin, form=form)
 
 
 @main.route('/edit')
 def edit_map():
-    name = request.args.get('name')
-    return redirect(url_for('static', filename='board.html', name=name))
+    map_id = request.args.get('sm')
+    return redirect(url_for('static', filename='board.html', sm=map_id))
 
 
 @main.route('/trash')
 def trash_map():
-    name = request.args.get('name')
-    map_id = current_user.maps.get(name)
-    if map_id:
-        current_user.maps.pop(name)
-        current_user.recycle_bin[name] = map_id
+    map_id = request.args.get('sm')
+    map_name = current_user.maps.get(map_id)
+    if map_id and map_name:
+        current_user.maps.pop(map_id)
+        current_user.recycle_bin[map_id] = map_name
         current_user.save()
     else:
         flash('请求失败')
@@ -63,11 +60,11 @@ def trash_map():
 
 @main.route('/restore')
 def restore_map():
-    name = request.args.get('name')
-    map_id = current_user.recycle_bin.get(name)
-    if map_id:
-        current_user.maps[name] = map_id
-        current_user.recycle_bin.pop(name)
+    map_id = request.args.get('sm')
+    map_name = current_user.recycle_bin.get(map_id)
+    if map_id and map_name:
+        current_user.maps[map_id] = map_name
+        current_user.recycle_bin.pop(map_id)
         current_user.save()
     else:
         flash('请求失败')
@@ -76,6 +73,7 @@ def restore_map():
 
 @main.route('/delete')
 def delete_map():
-    name = request.args.get('name')
-    flash('你点击了 彻底删除故事地图 %s' % name)
+    map_id = request.args.get('sm')
+    map_name = current_user.recycle_bin.get(map_id)
+    flash('你点击了 彻底删除故事地图 %s' % map_name)
     return redirect(url_for('main.dashboard'))

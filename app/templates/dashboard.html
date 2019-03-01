@@ -23,12 +23,12 @@
         <p>我的故事地图:</p>
         <ul>
             {% if maps %}
-                {% for k in maps %}
+                {% for k,v in maps.items() %}
                 <li>
-                    <p>{{ k }}<br>
+                    <p>{{ v }}<br>
                         <small>
-                            <a href="{{ url_for('main.edit_map', name=k) }}">查看/编辑</a>
-                            <a href="{{ url_for('main.trash_map', name=k) }}">移到回收站</a>
+                            <a href="{{ url_for('main.edit_map', sm=k) }}">查看/编辑</a>
+                            <a href="{{ url_for('main.trash_map', sm=k) }}">移到回收站</a>
                         </small>
                     </p>
                 </li>
@@ -42,12 +42,12 @@
         <p>回收站:</p>
         <ul>
             {% if recycle_bin  %}
-                {% for k in recycle_bin %}
+                {% for k,v in recycle_bin.items() %}
                     <li>
-                        <p>{{ k }}<br>
+                        <p>{{ v }}<br>
                             <small>
-                                <a href="{{ url_for('main.restore_map', name=k) }}">恢复</a>
-                                <a href="{{ url_for('main.delete_map', name=k) }}">彻底删除</a>
+                                <a href="{{ url_for('main.restore_map', sm=k) }}">恢复</a>
+                                <a href="{{ url_for('main.delete_map', sm=k) }}">彻底删除</a>
                             </small>
                         </p>
                     </li>

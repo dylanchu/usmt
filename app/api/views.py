@@ -12,10 +12,10 @@ from . import api
 
 @api.route('get-map-by-name')
 def get_map_by_name():
-    name = request.args.get('name')
-    if name:
-        map_id = current_user.maps.get(name)
-        the_map = StoryMap.objects.filter(id=map_id).first()
+    map_id = request.args.get('sm')
+    map_name = current_user.maps.get(map_id)
+    if map_id and map_name:
+        the_map = StoryMap.objects.filter(id=map_id).first()  # 可以直接用字符串过滤,会自动转为ObjectId(map_id)
         if the_map:
             return jsonify(the_map)
     return 'bad request', 400
