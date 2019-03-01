@@ -12,11 +12,11 @@ class RegisterForm(FlaskForm):
     email = StringField('邮箱', validators=[DataRequired()])
     password = PasswordField('密码', validators=[DataRequired()])
     name = StringField('姓名', validators=[DataRequired()])
-    submit = SubmitField()
+    submit = SubmitField('提交')
 
 
 class LoginForm(FlaskForm):
     email = StringField('邮箱', validators=[DataRequired()])
     password = PasswordField('密码', validators=[DataRequired()])
     remember = BooleanField('记住我')
-    submit = SubmitField()
+    submit = SubmitField('提交')
