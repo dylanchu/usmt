@@ -379,32 +379,32 @@ title_app = new Vue({
     data: {
         mylayouts: [
             [
-                {"x":0,"y":0,"state":"","text":"组织邮件","w":1,"h":1,"i":0,"moved":false},
-                {"x":4,"y":0,"state":"","text":"管理联系人","w":1,"h":1,"i":1,"moved":false},
-                {"x":2,"y":0,"text":"管理邮件","w":1,"h":1,"i":16,"moved":false}
+                {"x":0,"y":0,"state":"","text":"组织邮件"},  // 去掉w,h,i,moved
+                {"x":4,"y":0,"state":"","text":"管理联系人"},
+                {"x":2,"y":0,"text":"管理邮件"}
             ],
             [
-                {"x":0,"y":0,"state":"","text":"搜索","w":1,"h":1,"i":2,"moved":false},
-                {"x":1,"y":0,"state":"","text":"归档","w":1,"h":1,"i":3,"moved":false},
-                {"x":4,"y":0,"state":"","text":"创建","w":1,"h":1,"i":4,"moved":false},
-                {"x":5,"y":0,"state":"","text":"更新\n","w":1,"h":1,"i":5,"moved":false},
-                {"x":6,"y":0,"text":"删除","w":1,"h":1,"i":11,"moved":false},
-                {"x":2,"y":0,"text":"编辑并发送","w":1,"h":1,"i":14,"moved":false},
-                {"x":3,"y":0,"text":"","w":1,"h":1,"i":50,"moved":false}
+                {"x":0,"y":0,"state":"","text":"搜索"},
+                {"x":1,"y":0,"state":"","text":"归档"},
+                {"x":4,"y":0,"state":"","text":"创建"},
+                {"x":5,"y":0,"state":"","text":"更新\n"},
+                {"x":6,"y":0,"text":"删除"},
+                {"x":2,"y":0,"text":"编辑并发送"},
+                {"x":3,"y":0,"text":""}
             ],
             [
-                {"x":0,"y":0,"state":"Done","text":"按关键词搜索","w":1,"h":1,"i":6,"moved":false},
-                {"x":1,"y":1,"state":"Doing","text":"创建子文件夹","w":1,"h":1,"i":7,"moved":false},
-                {"x":1,"y":0,"state":"Todo","text":"移动","w":1,"h":1,"i":8,"moved":false},
-                {"x":4,"y":0,"text":"基础创建功能","w":1,"h":1,"state":"Todo","i":30,"moved":false},
-                {"x":5,"y":0,"text":"","w":1,"h":1,"state":"Todo","i":35,"moved":false},
-                {"x":2,"y":0,"text":"文本邮件","w":1,"h":1,"state":"Todo","i":51,"moved":false}
+                {"x":0,"y":0,"state":"Done","text":"按关键词搜索"},
+                {"x":1,"y":1,"state":"Doing","text":"创建子文件夹"},
+                {"x":1,"y":0,"state":"Todo","text":"移动"},
+                {"x":4,"y":0,"text":"基础创建功能","state":"Todo"},
+                {"x":5,"y":0,"text":"","state":"Todo"},
+                {"x":2,"y":0,"text":"文本邮件","state":"Todo"}
             ],
             [
-                {"x":0,"y":0,"text":"按单字段搜索","w":1,"h":1,"state":"Todo","i":9,"moved":false},
-                {"x":0,"y":1,"text":"按多字段搜索","w":1,"h":1,"state":"Todo","i":10,"moved":false},
-                {"x":4,"y":0,"text":"杂七杂八的创建功能\n杂七杂八的创建功能\n杂七杂八的创建功能\n杂七杂八的创建功能","w":1,"h":1,"state":"Todo","i":31,"moved":false},
-                {"x":2,"y":0,"text":"HTML邮件","w":1,"h":1,"state":"Todo","i":53,"moved":false}
+                {"x":0,"y":0,"text":"按单字段搜索","state":"Todo"},
+                {"x":0,"y":1,"text":"按多字段搜索","state":"Todo"},
+                {"x":4,"y":0,"text":"杂七杂八的创建功能\n杂七杂八的创建功能\n杂七杂八的创建功能\n杂七杂八的创建功能","state":"Todo"},
+                {"x":2,"y":0,"text":"HTML邮件","state":"Todo"}
             ]
         ],
         isRotating: "",
