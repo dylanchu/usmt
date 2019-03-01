@@ -45,8 +45,7 @@ def dashboard():
 @main.route('/edit')
 def edit_map():
     name = request.args.get('name')
-    flash('你点击了 查看/编辑故事地图 %s' % name)
-    return redirect(url_for('main.dashboard'))
+    return redirect(url_for('static', filename='board.html', name=name))
 
 
 @main.route('/trash')
