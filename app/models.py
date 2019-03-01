@@ -5,7 +5,7 @@
 
 from . import login_manager, db
 from flask_login import UserMixin
-import datetime
+from datetime import datetime
 
 
 @login_manager.user_loader
@@ -48,8 +48,8 @@ class User(UserMixin, db.Document):
 class StoryMap(db.Document):
     name = db.StringField(max_length=128, required=True)
     visibility = db.StringField(default='default')
-    create_at = db.DateTimeField(default=lambda: datetime.datetime.utcnow())
-    last_edit = db.DateTimeField(default=lambda: datetime.datetime.utcnow())
+    create_at = db.DateTimeField(default=lambda: datetime.utcnow())
+    last_edit = db.DateTimeField(default=lambda: datetime.utcnow())
     data = db.ListField(default=[
         [{"x": 0, "y": 0, "state": "", "text": ""}]
     ])
