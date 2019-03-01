@@ -54,3 +54,8 @@ class StoryMap(db.Document):
     data = db.ListField(default=[
         [{"x": 0, "y": 0, "state": "", "text": ""}]
     ])
+
+    meta = {'collection': 'maps'}
+
+    def __repr__(self):
+        return "<StoryMap %s, id:%s}" % (self.name, self.id)
