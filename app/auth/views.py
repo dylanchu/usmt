@@ -5,8 +5,8 @@
 
 from flask import render_template, redirect, url_for, current_app, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
-from app.models import User, Role
-from app.utils import is_local_url
+from ..models import User, Role
+from ..utils import is_local_url
 
 from . import auth
 from .forms import RegisterForm, LoginForm

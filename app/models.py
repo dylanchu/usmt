@@ -3,8 +3,7 @@
 #
 # Created by dylanchu on 19-2-20
 
-from . import login_manager
-from app import db
+from . import login_manager, db
 from flask_login import UserMixin
 import datetime
 
