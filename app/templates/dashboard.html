@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Dashboard</h1>
+<h1>管理面板</h1>
 <p>
     我的身份：<br>
     {{ name }} &nbsp; {{ email }}
@@ -11,11 +11,12 @@
     <ul>
         {% for k in maps %}
         <li>
-            <p>{{ k }}</p>
-            <small>
-                <a href="{{ url_for('api.edit_map', id=k) }}">查看/编辑</a>
-                <a href="{{ url_for('api.delete_map', id=k) }}">删除</a>
-            </small>
+            <p>{{ k }}<br>
+                <small>
+                    <a href="{{ url_for('api.edit_map', id=k) }}">查看/编辑</a>
+                    <a href="{{ url_for('api.delete_map', id=k) }}">删除</a>
+                </small>
+            </p>
         </li>
         {% endfor %}
     </ul>
