@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'bootstrap/form.html' import render_form, render_field %}
+{% from 'bootstrap/form.html' import render_field %}
 
 {% block content %}
 <h1>管理面板</h1>
@@ -13,11 +13,29 @@
     我的信息： {{ name }} &nbsp; {{ email }} &nbsp; <a href='{{ url_for("auth.logout") }}'>注销</a>
 </p>
 <div class="container">
-    <hr>
-    <div class="col-md-4">
-        {{ render_form(form) }}
+<hr>
+<button class="btn btn-outline-secondary" data-toggle="modal" data-target="#create-map">创建新地图</button>
+<form method="post">
+{{ form.hidden_tag() }}  {# CSRF字段 #}
+<div class="modal fade" id="create-map" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                新建故事地图
+            </div>
+            <div class="modal-body">
+                {{ form.name }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                {{ render_field(form.submit) }}
+            </div>
+        </div>
     </div>
-    <hr>
+</div>
+</form>
+<hr>
 <div class="row">
     <div class="col-md-6">
         <p>我的故事地图:</p>
