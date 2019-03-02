@@ -17,12 +17,6 @@ def index():
     return render_template('index.html')
 
 
-@main.route('/cards')
-def db_data_stub():
-    data = StoryMap.objects.filter(name='邮箱应用开发故事地图').first()
-    return jsonify(data)
-
-
 @main.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
