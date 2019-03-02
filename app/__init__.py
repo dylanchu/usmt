@@ -18,7 +18,7 @@ bootstrap = Bootstrap()
 
 
 def create_app():
-    app = Flask(__name__, static_url_path='/static')  # 要映射静态文件到根目录下用static_url_path=''
+    app = Flask(__name__, static_url_path='')  # 要映射静态文件到根目录下用static_url_path=''
 
     app.config.from_object(DevelopmentConfig)
     app.logger.setLevel(app.config['LOG_LEVEL'])
