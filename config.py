@@ -4,6 +4,7 @@
 # Created by dylanchu on 19-2-15
 
 import hashlib
+from datetime import timedelta
 
 
 class BaseConfig(object):
@@ -15,6 +16,7 @@ class BaseConfig(object):
     SESSION_USE_SIGNER = True  # 是否强制加盐混淆session
     SESSION_PERMANENT = True  # 是否长期有效，false则关闭浏览器失效
     PERMANENT_SESSION_LIFETIME = 7200  # 重要,session有效期(秒),默认永久有效
+    REMEMBER_COOKIE_DURATION = timedelta(days=3)
 
     # mongoengine, https://flask-mongoengine.readthedocs.io/en/latest/
     MONGODB_SETTINGS = {
