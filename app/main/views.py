@@ -84,6 +84,4 @@ def delete_map():
         flash('请求失败')
     except AttributeError:
         flash('所请求地图已不存在')
-    else:
-        flash('已彻底删除： %s' % map_name)
     return redirect(url_for('main.dashboard'))

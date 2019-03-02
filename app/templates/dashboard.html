@@ -14,7 +14,7 @@
 </p>
 <div class="container">
 <hr>
-<button class="btn btn-outline-secondary" data-toggle="modal" data-target="#create-map">创建新地图</button>
+<button class="btn btn-outline-primary" data-toggle="modal" data-target="#create-map">创建新地图</button>
 <form method="post">
 {{ form.hidden_tag() }}  {# CSRF字段 #}
 <div class="modal fade" id="create-map" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -65,8 +65,26 @@
                         <p>{{ v }}<br>
                             <small>
                                 <a href="{{ url_for('main.restore_map', sm=k) }}">恢复</a>
-                                <a href="{{ url_for('main.delete_map', sm=k) }}">彻底删除</a>
+                                <a href="" data-toggle="modal" data-target="#confirm-delete">彻底删除</a>
                             </small>
+                            <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            请确认
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>故事地图："{{ v }}"</p>
+                                            <p>彻底删除后将不可恢复，您确定要继续操作吗？</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                            <a class="btn btn-danger" href="{{ url_for('main.delete_map', sm=k) }}">删除</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </p>
                     </li>
                 {% endfor %}
