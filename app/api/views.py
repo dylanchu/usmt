@@ -38,3 +38,20 @@ def save_map():
                 return jsonify(errors.success())
         return jsonify(errors.bad_request)
     return jsonify(errors.login_required)
+
+
+@api.route('/rename', methods=['POST'])
+def rename_map():
+    if current_user.is_authenticated:
+        map_id = request.form.get('sm')
+        new_name = request.form.get('nn')
+        try:
+            current_user.maps[map_id] = new_name
+            current_user.save()
+            the_map = StoryMap.objects.filter(id=map_id).first()
+            the_map.name = new_name
+            the_map.save()
+        except KeyError or TypeError or AttributeError:
+            return jsonify(errors.bad_request)
+        return jsonify(errors.success())
+    return jsonify(errors.login_required)

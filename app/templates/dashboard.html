@@ -46,6 +46,7 @@
                     <p>{{ v }}<br>
                         <small>
                             <a href="{{ url_for('main.edit_map', sm=k) }}">查看/编辑</a>
+                            <a href="#" id="rename-{{ k }}" onclick="renameMap(this.id, '{{ v }}')">重命名</a>
                             <a href="{{ url_for('main.trash_map', sm=k) }}">移到回收站</a>
                         </small>
                     </p>
@@ -95,4 +96,46 @@
     </div>
 </div>
 </div>
+<div class="modal fade" id="rename-map" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                重命名
+            </div>
+            <div class="modal-body">
+                <input type="text" hidden id="rename-map-id" />
+                <input class="form-control" type="text" name="new-name" id="rename-map-new-name" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="updateName()">提交更改</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+// rename map：
+function renameMap(btnId, oldName) {
+    // console.log(btnId); //like "rename-xxx"
+    $('#rename-map-id').val(btnId.slice(7,)); //将map的id写入模态框隐藏的input框
+    $('#rename-map-new-name').val(oldName);
+    $('#rename-map').modal('show');
+}
+function updateName() {
+    let sm = $('#rename-map-id').val(); //获取模态框数据
+    let nn = $('#rename-map-new-name').val();
+    $.ajax({
+        type: "post",
+        url: "{{ url_for('api.rename_map') }}",
+        data: "nn=" + nn + "&sm=" + sm,
+        dataType: 'json',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        success: function(result) {
+            console.log(result);
+            location.reload();
+        }
+    });
+}
+</script>
 {% endblock %}
