@@ -424,9 +424,50 @@ function parseDom(arg) {
     return objE.childNodes;
 }
 
-vm1.loadLayouts(title_app.mylayouts);
+function getQueryString(name) {  // 获取url参数
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
+}
+
+function loadMap(id) {
+    $.ajax({
+        // url: 'jsondata.ashx',
+        url : "/api/get-map?sm="+id,
+        type: 'GET',
+        dataType: 'json',
+        timeout: 5000,
+        cache: false,
+        success : function(data){
+            // console.log(typeof(data));  //already converted to object
+            if (data.code == 0){
+                map_data = data.sm.data;
+                vm1.loadLayouts(map_data);
+            } else {
+                alert(data.msg);
+                if (data.code == 1) {
+                    window.location.replace('/auth/login');
+                } else {
+                    window.location.replace('/');
+                }
+            }
+        },
+        error:function(data){
+            alert(data);
+        }
+    });
+}
 
 window.onload = () => {
+    smId = getQueryString('sm');
+    console.log('map id:', smId);
+    if (smId != null) {
+        data = loadMap(smId);
+    } else {
+        alert('无效请求');
+        window.location.replace('/');
+    }
     vm1.updateDividers();
     setTimeout(vm1.validatePositions, 500);
 };
