@@ -69,19 +69,3 @@ def restore_map():
     except KeyError or TypeError:
         flash('请求失败')
     return redirect(url_for('main.dashboard'))
-
-
-@main.route('/delete')
-@login_required
-def delete_map():
-    map_id = request.args.get('sm')
-    try:
-        map_name = current_user.recycle_bin.pop(map_id)
-        current_user.save()
-        the_map = StoryMap.objects.filter(id=map_id).first()
-        the_map.delete()
-    except KeyError or TypeError:  # TypeError:map_id为None,KeyError:map_id无效
-        flash('请求失败')
-    except AttributeError:
-        flash('所请求地图已不存在')
-    return redirect(url_for('main.dashboard'))

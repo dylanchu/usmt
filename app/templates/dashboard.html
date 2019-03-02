@@ -46,7 +46,7 @@
                     <p>{{ v }}<br>
                         <small>
                             <a href="{{ url_for('main.edit_map', sm=k) }}">查看/编辑</a>
-                            <a href="#" id="rename-{{ k }}" onclick="renameMap(this.id, '{{ v }}')">重命名</a>
+                            <a href="#" onclick="renameMap('{{ k }}','{{ v }}')">重命名</a>
                             <a href="{{ url_for('main.trash_map', sm=k) }}">移到回收站</a>
                         </small>
                     </p>
@@ -66,26 +66,8 @@
                         <p>{{ v }}<br>
                             <small>
                                 <a href="{{ url_for('main.restore_map', sm=k) }}">恢复</a>
-                                <a href="" data-toggle="modal" data-target="#confirm-delete">彻底删除</a>
+                                <a href="#" onclick="deleteMap('{{ k }}','{{ v }}')">彻底删除</a>
                             </small>
-                            <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            请确认
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>故事地图："{{ v }}"</p>
-                                            <p>彻底删除后将不可恢复，您确定要继续操作吗？</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                                            <a class="btn btn-danger" href="{{ url_for('main.delete_map', sm=k) }}">删除</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </p>
                     </li>
                 {% endfor %}
@@ -95,6 +77,25 @@
         </ul>
     </div>
 </div>
+</div>
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                请确认
+            </div>
+            <div class="modal-body">
+                <input type="text" hidden id="delete-map-id" />
+                <p>故事地图："<span id="confirm-delete-map-name"></span>"</p>
+                <p>彻底删除后将不可恢复，您确定要继续操作吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button class="btn btn-danger" onclick="performDelete()">删除</button>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="modal fade" id="rename-map" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
@@ -109,20 +110,40 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" onclick="updateName()">提交更改</button>
+                <button type="button" class="btn btn-primary" onclick="performRename()">提交更改</button>
             </div>
         </div>
     </div>
 </div>
 <script>
+// confirm delete:
+function deleteMap(mapId, name) {
+    $('#confirm-delete-map-name')[0].innerText=name;
+    $('#delete-map-id').val(mapId);
+    $('#confirm-delete').modal('show');
+}
+function performDelete() {
+    let sm = $('#delete-map-id').val();
+    $.ajax({
+        type: "post",
+        url: "{{ url_for('api.delete_map') }}",
+        data: "sm=" + sm,
+        dataType: 'json',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        success: function(result) {
+            console.log(result);
+            window.parent.location.reload();
+        }
+    });
+}
+
 // rename map：
-function renameMap(btnId, oldName) {
-    // console.log(btnId); //like "rename-xxx"
-    $('#rename-map-id').val(btnId.slice(7,)); //将map的id写入模态框隐藏的input框
+function renameMap(mapId, oldName) {
+    $('#rename-map-id').val(mapId); //将mapId写入模态框隐藏的input框
     $('#rename-map-new-name').val(oldName);
     $('#rename-map').modal('show');
 }
-function updateName() {
+function performRename() {
     let sm = $('#rename-map-id').val(); //获取模态框数据
     let nn = $('#rename-map-new-name').val();
     $.ajax({
@@ -133,7 +154,7 @@ function updateName() {
         contentType: "application/x-www-form-urlencoded; charset=utf-8",
         success: function(result) {
             console.log(result);
-            location.reload();
+            window.parent.location.reload();
         }
     });
 }
