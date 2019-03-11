@@ -37,29 +37,3 @@ def dashboard():
 def edit_map():
     map_id = request.args.get('sm')
     return redirect(url_for('static', filename='board.html', sm=map_id))
-
-
-@main.route('/trash')
-@login_required
-def trash_map():
-    map_id = request.args.get('sm')
-    try:
-        map_name = current_user.maps.pop(map_id)
-        current_user.recycle_bin[map_id] = map_name
-        current_user.save()
-    except KeyError or TypeError:
-        flash('请求失败')
-    return redirect(url_for('main.dashboard'))
-
-
-@main.route('/restore')
-@login_required
-def restore_map():
-    map_id = request.args.get('sm')
-    try:
-        map_name = current_user.recycle_bin.pop(map_id)
-        current_user.maps[map_id] = map_name
-        current_user.save()
-    except KeyError or TypeError:
-        flash('请求失败')
-    return redirect(url_for('main.dashboard'))

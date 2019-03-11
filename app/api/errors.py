@@ -26,5 +26,5 @@ def exception(data=None):
     return d
 
 
-bad_request = {'code': 4000, 'msg': 'bad request'}
-login_required = {'code': 4100, 'msg': 'login required'}
+Bad_request = {'code': 4000, 'msg': 'bad request'}
+Login_required = {'code': 4100, 'msg': 'login required'}

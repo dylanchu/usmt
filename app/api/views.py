@@ -20,8 +20,8 @@ def get_map():
             the_map = StoryMap.objects.filter(id=map_id).first()  # 可以直接用字符串过滤,会自动转为ObjectId(map_id)
             if the_map:
                 return jsonify(errors.success({'sm': the_map}))
-        return jsonify(errors.bad_request)
-    return jsonify(errors.login_required)
+        return jsonify(errors.Bad_request)
+    return jsonify(errors.Login_required)
 
 
 @api.route('save-map', methods=['POST'])
@@ -40,8 +40,8 @@ def save_map():
                 the_map.last_edit = datetime.utcnow()
                 the_map.save()
                 return jsonify(errors.success())
-        return jsonify(errors.bad_request)
-    return jsonify(errors.login_required)
+        return jsonify(errors.Bad_request)
+    return jsonify(errors.Login_required)
 
 
 @api.route('/rename', methods=['POST'])
@@ -57,8 +57,8 @@ def rename_map():
             the_map.save()
             return jsonify(errors.success())
         else:
-            return jsonify(errors.bad_request)
-    return jsonify(errors.login_required)
+            return jsonify(errors.Bad_request)
+    return jsonify(errors.Login_required)
 
 
 @api.route('/delete', methods=['POST'])
@@ -71,8 +71,36 @@ def delete_map():
             the_map = StoryMap.objects.filter(id=map_id).first()
             the_map.delete()
         except KeyError or TypeError:  # TypeError:map_id为None,KeyError:map_id无效
-            return jsonify(errors.bad_request)
+            return jsonify(errors.Bad_request)
         except Exception as e:
             current_app.logger.error(e)
         return jsonify(errors.success())
-    return jsonify(errors.login_required)
+    return jsonify(errors.Login_required)
+
+
+@api.route('/trash', methods=['POST'])
+def trash_map():
+    if current_user.is_authenticated:
+        map_id = request.form.get('sm')
+        try:
+            map_name = current_user.maps.pop(map_id)
+            current_user.recycle_bin[map_id] = map_name
+            current_user.save()
+        except KeyError or TypeError:
+            return jsonify(errors.Bad_request)
+        return jsonify(errors.success())
+    return jsonify(errors.Login_required)
+
+
+@api.route('/restore', methods=['POST'])
+def restore_map():
+    if current_user.is_authenticated:
+        map_id = request.form.get('sm')
+        try:
+            map_name = current_user.recycle_bin.pop(map_id)
+            current_user.maps[map_id] = map_name
+            current_user.save()
+        except KeyError or TypeError:
+            return jsonify(errors.Bad_request)
+        return jsonify(errors.success())
+    return jsonify(errors.Login_required)

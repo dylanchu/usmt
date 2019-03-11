@@ -51,8 +51,8 @@
             {% for k,v in maps.items() %}
                 <tr>
                     <td><a href="{{ url_for('main.edit_map', sm=k) }}" style="color: #000; text-decoration: none">{{ v }}</a></td>
-                    <td><a href="#" class="rename-button" id={{ k }} name={{ v }} onclick="renameMap(this.id,this.name)"><small>重命名</small></a></td>
-                    <td><a href="{{ url_for('main.trash_map', sm=k) }}"><small>移到回收站</small></a></td>
+                    <td><a href="#" class="rename-button" id={{ k }} name={{ v }} onclick="renameMap(this.id,this.name);return false;"><small>重命名</small></a></td>
+                    <td><a href="#" name="{{ k }}" onclick="trashMap(this.name);return false;"><small>移到回收站</small></a></td>
                 </tr>
             {% endfor %}
         {% else %}
@@ -79,8 +79,8 @@
             {% for k,v in recycle_bin.items() %}
                 <tr>
                 <td>{{ v }}</td>
-                <td><a href="{{ url_for('main.restore_map', sm=k) }}"><small>恢复</small></a></td>
-                <td><a href="#" class="delete-button" id={{ k }} name={{ v }} onclick="deleteMap(this.id,this.name)"><small>彻底删除</small></a></td>
+                <td><a href="#" name="{{ k }}" onclick="restoreMap(this.name);return false;"><small>恢复</small></a></td>
+                <td><a href="#" class="delete-button" id={{ k }} name={{ v }} onclick="deleteMap(this.id,this.name);return false;"><small>彻底删除</small></a></td>
                 </tr>
             {% endfor %}
         {% else %}
@@ -183,5 +183,55 @@ function performRename() {
         }
     });
 }
+function trashMap(smId) {
+    $.ajax({
+        type: "post",
+        url: "{{ url_for('api.trash_map') }}",
+        data: "sm=" + smId,
+        dataType: 'json',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        success: function(result) {
+            console.log(result);
+            window.parent.location.reload();
+        }
+    });
+}
+function restoreMap(smId) {
+    $.ajax({
+        type: "post",
+        url: "{{ url_for('api.restore_map') }}",
+        data: "sm=" + smId,
+        dataType: 'json',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        success: function(result) {
+            console.log(result);
+            window.parent.location.reload();
+        }
+    });
+}
+</script>
+<script>
+    // reload: save position and restore
+	window.onbeforeunload = () => {
+		let scrollPos;   
+		if (typeof window.pageYOffset != 'undefined') {
+		   scrollPos = window.pageYOffset;
+		}
+		else if (typeof document.compatMode != 'undefined' &&
+			 document.compatMode !== 'BackCompat') {
+		   scrollPos = document.documentElement.scrollTop;
+		}
+		else if (typeof document.body != 'undefined') {
+		   scrollPos = document.body.scrollTop;
+		}
+		document.cookie="scrollTop="+scrollPos; //存储滚动条位置到cookies中
+    };
+	window.onload = () => {
+		if(document.cookie.match(/scrollTop=([^;]+)(;|$)/)!=null){
+			let arr=document.cookie.match(/scrollTop=([^;]+)(;|$)/); //cookies中不为空，则读取滚动条位置
+			document.documentElement.scrollTop=parseInt(arr[1]);
+			document.body.scrollTop=parseInt(arr[1]);
+		}
+	}
 </script>
 {% endblock %}
