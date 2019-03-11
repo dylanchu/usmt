@@ -13,70 +13,83 @@
     我的信息： {{ name }} &nbsp; {{ email }} &nbsp; <a href='{{ url_for("auth.logout") }}'>注销</a>
 </p>
 <div class="container">
-<hr>
-<button class="btn btn-outline-primary" data-toggle="modal" data-target="#create-map">创建新地图</button>
-<form method="post">
-{{ form.hidden_tag() }}  {# CSRF字段 #}
-<div class="modal fade" id="create-map" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                新建故事地图
-            </div>
-            <div class="modal-body">
-                {{ form.name }}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                {{ render_field(form.submit) }}
+    <form method="post">
+        {{ form.hidden_tag() }}  {# CSRF字段 #}
+        <div class="modal fade" id="create-map" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        新建故事地图
+                    </div>
+                    <div class="modal-body">
+                        {{ form.name }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        {{ render_field(form.submit) }}
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-</form>
-<hr>
-<div class="row">
-    <div class="col-md-6">
-        <p>我的故事地图:</p>
-        <ul>
-            {% if maps %}
-                {% for k,v in maps.items() %}
-                <li>
-                    <p>{{ v }}<br>
-                        <small>
-                            <a href="{{ url_for('main.edit_map', sm=k) }}">查看/编辑</a>
-                            <a href="#" onclick="renameMap('{{ k }}','{{ v.replace('\\','\\\\').replace("'", "\\'") }}')">重命名</a>
-                            <a href="{{ url_for('main.trash_map', sm=k) }}">移到回收站</a>
-                        </small>
-                    </p>
-                </li>
-                {% endfor %}
-            {% else %}
-                <small>空的</small>
-            {% endif %}
-        </ul>
-    </div>
-    <div class="col-md-6">
-        <p>回收站:</p>
-        <ul>
-            {% if recycle_bin  %}
-                {% for k,v in recycle_bin.items() %}
-                    <li>
-                        <p>{{ v }}<br>
-                            <small>
-                                <a href="{{ url_for('main.restore_map', sm=k) }}">恢复</a>
-                                <a href="#" onclick="deleteMap('{{ k }}','{{ v.replace('\\','\\\\').replace("'", "\\'") }}')">彻底删除</a>
-                            </small>
-                        </p>
-                    </li>
-                {% endfor %}
-            {% else %}
-                <small>空的</small>
-            {% endif %}
-        </ul>
-    </div>
-</div>
+    </form>
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+            <th>
+                <div style="display: inline-block">我的故事地图</div>
+                <div style="display: inline-block; cursor: pointer; margin-left: 10px;" data-toggle="modal" data-target="#create-map">
+                    <i class="fa fa-plus-circle" style="color: dodgerblue;"><small> 新建</small></i>
+                </div>
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if maps %}
+            {% for k,v in maps.items() %}
+                <tr>
+                    <td>{{ v }}</td>
+                    <td><a href="{{ url_for('main.edit_map', sm=k) }}"><small>查看/编辑</small></a></td>
+                    <td><a href="#" class="rename-button" id={{ k }} name={{ v }} onclick="renameMap(this.id,this.name)"><small>重命名</small></a></td>
+                    <td><a href="{{ url_for('main.trash_map', sm=k) }}"><small>移到回收站</small></a></td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr><td>空的</td></tr>
+        {% endif %}
+        </tbody>
+    </table>
+    <br>
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+            <th>
+                <div style="display: inline-block">我的回收站</div>
+                <div style="display: inline-block; cursor: pointer; margin-left: 10px;" onclick="deleteMap('allTrashedItems', '所有回收站内容！')">
+                    <i class="fa fa-trash" style="color: dodgerblue;"><small> 清空</small></i>
+                </div>
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if recycle_bin  %}
+            {% for k,v in recycle_bin.items() %}
+                <tr>
+                <td>{{ v }}</td>
+                <td><a href="{{ url_for('main.restore_map', sm=k) }}"><small>恢复</small></a></td>
+                <td><a href="#" class="delete-button" id={{ k }} name={{ v }} onclick="deleteMap(this.id,this.name)"><small>彻底删除</small></a></td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr><td>空的</td></tr>
+        {% endif %}
+        </tbody>
+    </table>
 </div>
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
@@ -124,15 +137,29 @@ function deleteMap(mapId, name) {
 }
 function performDelete() {
     let sm = $('#delete-map-id').val();
+    if (sm === 'allTrashedItems') {
+        let allTrashedItems = document.getElementsByClassName('delete-button');
+        for (let item of allTrashedItems) {
+            console.log("going to delete: "+item.id);
+            ajaxDelete(item.id);
+        }
+    } else {
+        console.log("going to delete: "+sm);
+        ajaxDelete(sm);
+    }
+    window.parent.location.reload();
+}
+function ajaxDelete(smId) {
     $.ajax({
         type: "post",
+        async: false,  // 强制同步,以获取返回值
         url: "{{ url_for('api.delete_map') }}",
-        data: "sm=" + sm,
+        data: "sm=" + smId,
         dataType: 'json',
         contentType: "application/x-www-form-urlencoded; charset=utf-8",
         success: function(result) {
             console.log(result);
-            window.parent.location.reload();
+            return result.code === 0;
         }
     });
 }
