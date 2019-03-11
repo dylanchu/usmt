@@ -124,7 +124,7 @@ vm1 = new Vue({
             maxX = toRemove.length;  // 剩余不用移除的列数
             let minCol = Math.ceil(screen.width/cardWidth);
             this.colNum = maxX>minCol?maxX:minCol;
-            setTimeout(this.updateDividers, 100);
+            setTimeout(this.updateDividers, 300);
         },
         coordinates: (card) => {
             /* card为原生dom对象，返回卡片的: i(layouts index), x, y, 均从0开始 */
@@ -412,9 +412,21 @@ title_app = new Vue({
     methods: {
         reload: function() {
             this.isRotating = " fa-spin";
-            vm1.reloadLayouts(this.mylayouts);
+            smId = getQueryString('sm');
+            console.log('map id:', smId);
+            if (smId != null) {
+                data = loadMap(smId);
+            } else {
+                alert('无效请求');
+                window.location.replace('/');
+            }
+            vm1.updateDividers();
             setTimeout(()=>{this.isRotating = "";}, 300);
         },
+        saveCurrentLayout: function() {
+            smId = getQueryString('sm');
+            saveMap(smId, vm1.layouts);
+        }
     }
 });
 
@@ -443,7 +455,7 @@ function loadMap(id) {
             // console.log(typeof(data));  //already converted to object
             if (data.code == 0){
                 map_data = data.sm.data;
-                vm1.loadLayouts(map_data);
+                vm1.reloadLayouts(map_data);
             } else {
                 alert(data.msg);
                 if (data.code == 1) {
@@ -451,6 +463,37 @@ function loadMap(id) {
                 } else {
                     window.location.replace('/');
                 }
+            }
+        },
+        error:function(data){
+            alert(data);
+        }
+    });
+}
+
+function saveMap(id, mapLayout) {
+    let mapData = [];
+    for (let layer of mapLayout) {
+        let temp_layer = []
+        for (let c of layer) {
+            temp_layer.push({"x":c.x, "y":c.y, "state":c.state, "text":c.text});
+        }
+        mapData.push(temp_layer);
+    }
+    $.ajax({
+        url: "/api/save-map?sm="+id,
+        type: 'POST',
+        data: "mapLayout="+JSON.stringify(mapData),
+        dataType: 'json',
+        timeout: 5000,
+        cache: false,
+        success : function(data){
+            // console.log(typeof(data));  //already converted to object
+            if (data.code == 0){
+                console.log("map saved.");
+                alert("保存成功");
+            } else {
+                alert("保存失败："+data.msg);
             }
         },
         error:function(data){

@@ -32,8 +32,12 @@ def save_map():
         if map_id and map_name:
             the_map = StoryMap.objects.filter(id=map_id).first()  # 可以直接用字符串过滤,会自动转为ObjectId(map_id)
             if the_map:
-                the_map.data = json.loads(request.get_data())
-                the_map.last_edit = datetime.utcnow()  # 有效否?
+                try:
+                    map_layout = json.loads(request.form.get('mapLayout'))
+                except Exception as e:
+                    return jsonify(errors.exception({'Exception': str(e)}))
+                the_map.data = map_layout
+                the_map.last_edit = datetime.utcnow()
                 the_map.save()
                 return jsonify(errors.success())
         return jsonify(errors.bad_request)

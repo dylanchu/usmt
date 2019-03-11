@@ -238,7 +238,15 @@ div {margin:0;border:0;padding:0;}
     display: inline-block;
     margin: 18px;
     color: #fff;
-    opacity: 0.6;
+    opacity: 0.8;
+    cursor: pointer;
+    /* justify-content:center; */
+}
+.title .col-save{
+    display: inline-block;
+    margin: 18px;
+    color: #fff;
+    opacity: 0.8;
     cursor: pointer;
     /* justify-content:center; */
 }

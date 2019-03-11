@@ -5,11 +5,26 @@
 
 
 def success(data=None):
+    """
+    :type data: dict or None
+    :return: dict
+    """
     d = {'code': 0, 'msg': 'success'}
     if isinstance(data, dict):
         d.update(data)
     return d
 
 
-bad_request = {'code': 4, 'msg': 'bad request'}
-login_required = {'code': 1, 'msg': 'login required'}
+def exception(data=None):
+    """
+    :type data: dict or None
+    :return: dict
+    """
+    d = {'code': 2, 'msg': 'exception'}
+    if isinstance(data, dict):
+        d.update(data)
+    return d
+
+
+bad_request = {'code': 4000, 'msg': 'bad request'}
+login_required = {'code': 4100, 'msg': 'login required'}

@@ -23,7 +23,8 @@
 
 <div id="title" class="title" :style="'width:'+vm1.widthData+'px'">
     <h3 class="col-num-1">Story Map</h3>
-    <i :class="'col-reload fa fa-refresh'+isRotating" @click="reload"></i>
+    <i :class="'col-reload fa fa-refresh'+isRotating" @click="reload">重新加载</i>
+    <i class="col-save fa fa-floppy-o" @click="saveCurrentLayout">保存</i>
 </div>
 <div id="app1" v-bind:style="{width: widthData + 'px'}">
     <grid-layout v-for="(layout,index) in layouts"
