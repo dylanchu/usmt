@@ -44,15 +44,13 @@
             </th>
             <th></th>
             <th></th>
-            <th></th>
         </tr>
         </thead>
         <tbody>
         {% if maps %}
             {% for k,v in maps.items() %}
                 <tr>
-                    <td>{{ v }}</td>
-                    <td><a href="{{ url_for('main.edit_map', sm=k) }}"><small>查看/编辑</small></a></td>
+                    <td><a href="{{ url_for('main.edit_map', sm=k) }}" style="color: #000; text-decoration: none">{{ v }}</a></td>
                     <td><a href="#" class="rename-button" id={{ k }} name={{ v }} onclick="renameMap(this.id,this.name)"><small>重命名</small></a></td>
                     <td><a href="{{ url_for('main.trash_map', sm=k) }}"><small>移到回收站</small></a></td>
                 </tr>
