@@ -14,6 +14,7 @@ class NewMapForm(FlaskForm):
                        widget=widgets.TextInput(),
                        render_kw={
                            'class': 'form-control',
+                           'autofocus': 'autofocus',
                            'placeholder': '请输入新故事地图名称',
                            'required': ''
                        })
