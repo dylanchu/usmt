@@ -377,6 +377,7 @@ vm1 = new Vue({
 title_app = new Vue({
     el: '#title',
     data: {
+        mapName:  "story map",
         mylayouts: [
             [
                 {"x":0,"y":0,"state":"","text":"组织邮件"},  // 去掉w,h,i,moved
@@ -455,6 +456,8 @@ function loadMap(id) {
             // console.log(typeof(data));  //already converted to object
             if (data.code == 0){
                 map_data = data.sm.data;
+                document.title = data.sm.name;  // 设置标题
+                title_app.mapName = data.sm.name;  // 设置标题
                 vm1.reloadLayouts(map_data);
             } else {
                 alert(data.msg);

@@ -22,8 +22,9 @@
 <span id="variables" style="display: none"></span>
 
 <div id="title" class="title" :style="'width:'+vm1.widthData+'px'">
-    <h3 class="col-num-1">Story Map</h3>
-    <i :class="'col-reload fa fa-refresh'+isRotating" @click="reload">重新加载</i>
+    <h3 class="col-num-1"> {{mapName}} </h3>
+    <a class="col-reload" href="/dashboard"><i class="fa fa-home"></i>返回管理面板</a>
+    <span class="col-reload" @click="reload"><i :class="'fa fa-refresh'+isRotating"></i>重新加载</span>
     <i class="col-save fa fa-floppy-o" @click="saveCurrentLayout">保存</i>
 </div>
 <div id="app1" v-bind:style="{width: widthData + 'px'}">
