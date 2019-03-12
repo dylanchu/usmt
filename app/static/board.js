@@ -124,7 +124,7 @@ vm1 = new Vue({
             maxX = toRemove.length;  // 剩余不用移除的列数
             let minCol = Math.ceil(screen.width/cardWidth);
             this.colNum = maxX>minCol?maxX:minCol;
-            setTimeout(this.updateDividers, 300);
+            setTimeout(this.updateDividers, 200);
         },
         coordinates: (card) => {
             /* card为原生dom对象，返回卡片的: i(layouts index), x, y, 均从0开始 */
@@ -378,36 +378,6 @@ title_app = new Vue({
     el: '#title',
     data: {
         mapName:  "story map",
-        mylayouts: [
-            [
-                {"x":0,"y":0,"state":"","text":"组织邮件"},  // 去掉w,h,i,moved
-                {"x":4,"y":0,"state":"","text":"管理联系人"},
-                {"x":2,"y":0,"text":"管理邮件"}
-            ],
-            [
-                {"x":0,"y":0,"state":"","text":"搜索"},
-                {"x":1,"y":0,"state":"","text":"归档"},
-                {"x":4,"y":0,"state":"","text":"创建"},
-                {"x":5,"y":0,"state":"","text":"更新\n"},
-                {"x":6,"y":0,"text":"删除"},
-                {"x":2,"y":0,"text":"编辑并发送"},
-                {"x":3,"y":0,"text":""}
-            ],
-            [
-                {"x":0,"y":0,"state":"Done","text":"按关键词搜索"},
-                {"x":1,"y":1,"state":"Doing","text":"创建子文件夹"},
-                {"x":1,"y":0,"state":"Todo","text":"移动"},
-                {"x":4,"y":0,"text":"基础创建功能","state":"Todo"},
-                {"x":5,"y":0,"text":"","state":"Todo"},
-                {"x":2,"y":0,"text":"文本邮件","state":"Todo"}
-            ],
-            [
-                {"x":0,"y":0,"text":"按单字段搜索","state":"Todo"},
-                {"x":0,"y":1,"text":"按多字段搜索","state":"Todo"},
-                {"x":4,"y":0,"text":"杂七杂八的创建功能\n杂七杂八的创建功能\n杂七杂八的创建功能\n杂七杂八的创建功能","state":"Todo"},
-                {"x":2,"y":0,"text":"HTML邮件","state":"Todo"}
-            ]
-        ],
         isRotating: "",
     },
     methods: {
@@ -477,7 +447,7 @@ function loadMap(id) {
 function saveMap(id, mapLayout) {
     let mapData = [];
     for (let layer of mapLayout) {
-        let temp_layer = []
+        let temp_layer = [];
         for (let c of layer) {
             temp_layer.push({"x":c.x, "y":c.y, "state":c.state, "text":c.text});
         }
