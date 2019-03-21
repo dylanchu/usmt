@@ -5,11 +5,11 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired,Email
+from wtforms.validators import DataRequired
 
 
 class RegisterForm(FlaskForm):
-    email = StringField('邮箱', validators=[DataRequired(),Length(1,64),Email()])
+    email = StringField('邮箱', validators=[DataRequired()])
     password = PasswordField('密码', validators=[DataRequired()])
     name = StringField('姓名', validators=[DataRequired()])
     submit = SubmitField('提交')
