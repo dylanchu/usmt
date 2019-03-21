@@ -13,7 +13,7 @@ class RegisterForm(FlaskForm):
     email = StringField('邮箱', validators=[DataRequired(message='邮箱不能为空'),Email('邮箱格式不正确')])
     password = PasswordField('密码', validators=[DataRequired(message='密码不能为空')])
     repeatpassword=PasswordField('确认密码', validators=[DataRequired(message='确认密码不能为空'),EqualTo('password',message="两次密码输入不一致")])
-    name = StringField('用户名', validators=[DataRequired(message='用户名不能为空'),Length(min=2, max=10, message='用户名长度必须大于%(min)d且小于%(max)d')])
+    name = StringField('用户名', validators=[DataRequired(message='用户名不能为空')])
     submit = SubmitField('提交')
 
 
