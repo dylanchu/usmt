@@ -12,7 +12,7 @@ class RegisterForm(FlaskForm):
     #加入表单数据的验证
     email = StringField('邮箱', validators=[DataRequired(),Email('邮箱格式不正确')])
     password = PasswordField('密码', validators=[DataRequired()])
-    repeatpassword=PasswordField('确认密码', validators=[DataRequired(),EqualTo('password',message="两次密码输入不一致")])
+    repeatpassword=PasswordField('确认密码', validators=[DataRequired(),EqualTo('password',message='两次密码输入不一致')])
     name = StringField('用户名', validators=[DataRequired()])
     submit = SubmitField('提交')
 
