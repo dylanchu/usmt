@@ -5,12 +5,13 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired,Email,EqualTo
 
 
 class RegisterForm(FlaskForm):
-    email = StringField('邮箱', validators=[DataRequired()])
+    email = StringField('邮箱', validators=[DataRequired(),Email('邮箱格式不正确')])
     password = PasswordField('密码', validators=[DataRequired()])
+    repeatpassword=PasswordField('确认密码', validators=[DataRequired(),EqualTo('password',message="两次密码输入不一致")])
     name = StringField('姓名', validators=[DataRequired()])
     submit = SubmitField('提交')
 
