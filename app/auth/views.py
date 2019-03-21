@@ -59,5 +59,4 @@ def login():
 def logout():
     if current_user.is_authenticated:
         logout_user()
-        alert('注销成功')
     return redirect(url_for('main.index'))
