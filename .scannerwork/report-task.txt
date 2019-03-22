@@ -1,0 +1,6 @@
+projectKey=usmt
+serverUrl=http://172.19.240.132:9999
+serverVersion=6.7.6.38781
+dashboardUrl=http://172.19.240.132:9999/dashboard/index/usmt
+ceTaskId=AWmlRjkfF96vPv46LBa2
+ceTaskUrl=http://172.19.240.132:9999/api/ce/task?id=AWmlRjkfF96vPv46LBa2
